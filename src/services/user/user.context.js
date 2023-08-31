@@ -7,7 +7,7 @@ const UserContextProvider = ({ children }) => {
 
   useEffect(() => {
     setUser({ name: "default", email: "user@example.com" });
-  });
+  }, []);
   return (
     <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
   );
