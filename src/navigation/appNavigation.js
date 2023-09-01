@@ -8,6 +8,7 @@ import { MyTicketScreen } from "../screens/MyTicketScreen";
 import { Image, LogBox, Platform, Text, View } from "react-native";
 import { themeColors } from "../theme";
 import { ProfileScreen } from "../screens/ProfileScreen";
+import { MatchDetailScreen } from "../screens/MatchDetailScreen";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs([
@@ -32,6 +33,11 @@ export const AppNavigation = () => {
           options={{ headerShown: false }}
           component={ProfileScreen}
         />
+        <Stack.Screen
+          name="MatchDetail"
+          options={{ headerShown: false }}
+          component={MatchDetailScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -52,9 +58,9 @@ function HomeTabs() {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Match" component={LeaderBoardScreen} />
-      <Tab.Screen name="MyTicket" component={MatchScreen} />
-      <Tab.Screen name="LeaderBoard" component={MyTicketScreen} />
+      <Tab.Screen name="Match" component={MatchScreen} />
+      <Tab.Screen name="MyTicket" component={MyTicketScreen} />
+      <Tab.Screen name="LeaderBoard" component={LeaderBoardScreen} />
     </Tab.Navigator>
   );
 }
@@ -135,11 +141,5 @@ const menuIcons = (route, focused) => {
       </View>
     );
   }
-
-  let buttonClass = focused ? "bg-white" : "";
-  return (
-    <View className={"flex items-center rounded-full p-3 shadow" + buttonClass}>
-      {icon}
-    </View>
-  );
+  return icon;
 };
