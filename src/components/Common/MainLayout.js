@@ -9,14 +9,14 @@ export const MainLayout = ({ children }) => {
   return (
     <View className="flex-1 relative bg-black">
       <StatusBar />
-      <SafeAreaView
+      <View
         className={"bg-white flex-1"}
         style={{ backgroundColor: themeColors.bgScreen }}
       >
-        <View className="flex-row justify-center items-center h-20">
+        <View className="flex-row justify-center items-center h-24">
           <ImageBackground
             source={require("../../../assets/images/HeaderBackground.jpeg")}
-            className="flex-1 h-20 px-4 justify-between items-center flex-row"
+            className="flex-1 h-24 px-4 justify-between items-center flex-row"
           >
             {/* App Logo */}
             <Image
@@ -39,7 +39,7 @@ export const MainLayout = ({ children }) => {
         >
           {children}
         </View>
-      </SafeAreaView>
+      </View>
     </View>
   );
 };

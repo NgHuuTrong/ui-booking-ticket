@@ -51,16 +51,16 @@ function HomeTabs() {
         tabBarShowLabel: false,
         tabBarIcon: ({ focused }) => menuIcons(route, focused),
         tabBarStyle: {
-          height: 100,
+          height: 75,
           alignItems: "center",
           backgroundColor: themeColors.bgScreen,
         },
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Match" component={LeaderBoardScreen} />
-      <Tab.Screen name="MyTicket" component={MatchScreen} />
-      <Tab.Screen name="LeaderBoard" component={MyTicketScreen} />
+      <Tab.Screen name="Match" component={MatchScreen} />
+      <Tab.Screen name="MyTicket" component={MyTicketScreen} />
+      <Tab.Screen name="LeaderBoard" component={LeaderBoardScreen} />
     </Tab.Navigator>
   );
 }
