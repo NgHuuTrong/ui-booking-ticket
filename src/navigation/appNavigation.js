@@ -9,6 +9,7 @@ import { Image, LogBox, Platform, Text, View } from "react-native";
 import { themeColors } from "../theme";
 import { ProfileScreen } from "../screens/ProfileScreen";
 import { MatchDetailScreen } from "../screens/MatchDetailScreen";
+import { ClubDetailScreen } from "../screens/ClubDetailScreen";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs([
@@ -37,6 +38,11 @@ export const AppNavigation = () => {
           name="MatchDetail"
           options={{ headerShown: false }}
           component={MatchDetailScreen}
+        />
+        <Stack.Screen
+          name="ClubDetail"
+          options={{ headerShown: false }}
+          component={ClubDetailScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
