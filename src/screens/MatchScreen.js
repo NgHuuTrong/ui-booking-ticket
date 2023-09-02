@@ -43,7 +43,7 @@ export const MatchScreen = () => {
     }
 
     // Display the array of formatted dates
-    // console.log(formattedDateArray);
+    console.log(formattedDateArray);
     setDates(formattedDateArray);
   }, []);
 
