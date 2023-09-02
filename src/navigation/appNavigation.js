@@ -8,7 +8,7 @@ import { MyTicketScreen } from "../screens/MyTicketScreen";
 import { Image, LogBox, Platform, Text, View } from "react-native";
 import { themeColors } from "../theme";
 import { ProfileScreen } from "../screens/ProfileScreen";
-import { MatchDetailScreen } from "../screens/MatchDetailScreen";
+import { VideoPlayerScreen } from "../screens/VideoPlayerScreen";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs([
@@ -37,6 +37,11 @@ export const AppNavigation = () => {
           name="MatchDetail"
           options={{ headerShown: false }}
           component={MatchDetailScreen}
+        />
+        <Stack.Screen
+          name="Video"
+          options={{ headerShown: false }}
+          component={VideoPlayerScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
@@ -141,5 +146,11 @@ const menuIcons = (route, focused) => {
       </View>
     );
   }
-  return icon;
+
+  let buttonClass = focused ? "bg-white" : "";
+  return (
+    <View className={"flex items-center rounded-full p-3 shadow" + buttonClass}>
+      {icon}
+    </View>
+  );
 };
