@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import {
+  FlatList,
   Image,
   ImageBackground,
   ScrollView,
@@ -13,10 +14,72 @@ import { Tab } from "@rneui/themed";
 import { useState } from "react";
 import { themeColors } from "../theme";
 import { MatchTable } from "../components/Matches/MatchTable";
+import { PlayerCard } from "../components/Club/PlayerCard";
 export const ClubDetailScreen = () => {
   const navigation = useNavigation();
   const [ref, setRef] = useState(null);
   const [index, setIndex] = useState(0);
+  const playerData = [
+    {
+      firstName: "Aaron",
+      lastName: "Ramsdale",
+      appearances: 180,
+      cleanSheets: 37,
+      saves: 487,
+      goalsConceded: 217,
+      nationality: "England",
+      id: 1,
+    },
+    {
+      firstName: "Aaron",
+      lastName: "Ramsdale",
+      appearances: 180,
+      cleanSheets: 37,
+      saves: 487,
+      goalsConceded: 217,
+      nationality: "England",
+      id: 2,
+    },
+    {
+      firstName: "Aaron",
+      lastName: "Ramsdale",
+      appearances: 180,
+      cleanSheets: 37,
+      saves: 487,
+      goalsConceded: 217,
+      nationality: "England",
+      id: 3,
+    },
+    {
+      firstName: "Aaron",
+      lastName: "Ramsdale",
+      appearances: 180,
+      cleanSheets: 37,
+      saves: 487,
+      goalsConceded: 217,
+      nationality: "England",
+      id: 4,
+    },
+    {
+      firstName: "Aaron",
+      lastName: "Ramsdale",
+      appearances: 180,
+      cleanSheets: 37,
+      saves: 487,
+      goalsConceded: 217,
+      nationality: "England",
+      id: 5,
+    },
+  ];
+  const [sectionCords, setSectionCords] = useState([]);
+  const scrollHandler = (e) => {
+    setIndex(e);
+    ref.scrollTo({
+      x: 0,
+      y: sectionCords[e],
+      animated: true,
+    });
+  };
   return (
     <>
       <StatusBar></StatusBar>
@@ -44,7 +107,7 @@ export const ClubDetailScreen = () => {
 
         <Tab
           value={index}
-          onChange={(e) => setIndex(e)}
+          onChange={(e) => scrollHandler(e)}
           indicatorStyle={{
             backgroundColor: themeColors.bgButton,
             height: 3,
@@ -54,9 +117,27 @@ export const ClubDetailScreen = () => {
           }}
           variant="primary"
         >
-          <Tab.Item title="Overview" titleStyle={{ fontSize: 14 }} />
-          <Tab.Item title="Matches" titleStyle={{ fontSize: 14 }} />
-          <Tab.Item title="Squad" titleStyle={{ fontSize: 14 }} />
+          <Tab.Item
+            title="Overview"
+            titleStyle={{
+              fontSize: 14,
+              color: index === 0 ? themeColors.bgButton : "white",
+            }}
+          />
+          <Tab.Item
+            title="Matches"
+            titleStyle={{
+              fontSize: 14,
+              color: index === 1 ? themeColors.bgButton : "white",
+            }}
+          />
+          <Tab.Item
+            title="Squad"
+            titleStyle={{
+              fontSize: 14,
+              color: index === 2 ? themeColors.bgButton : "white",
+            }}
+          />
         </Tab>
 
         <ScrollView
@@ -66,7 +147,14 @@ export const ClubDetailScreen = () => {
           style={{ backgroundColor: themeColors.bgScreen }}
         >
           {/* Description */}
-          <View className="p-4">
+          <View
+            className="p-4"
+            onLayout={(event) => {
+              const layout = event.nativeEvent.layout;
+              sectionCords[0] = layout.y;
+              setSectionCords([...sectionCords]);
+            }}
+          >
             <Text className="text-white text-xl font-bold mb-4">
               Club Description
             </Text>
@@ -87,7 +175,14 @@ export const ClubDetailScreen = () => {
           </View>
 
           {/* Previous matches */}
-          <View className="mb-3 p-4">
+          <View
+            className="p-4"
+            onLayout={(event) => {
+              const layout = event.nativeEvent.layout;
+              sectionCords[1] = layout.y;
+              setSectionCords([...sectionCords]);
+            }}
+          >
             <Text className="text-white text-xl font-bold mb-4">
               Previous matches
             </Text>
@@ -97,6 +192,38 @@ export const ClubDetailScreen = () => {
           </View>
 
           {/* Squad */}
+          <View
+            className="p-4 pr-0"
+            style={{ backgroundColor: themeColors.bgCard }}
+            onLayout={(event) => {
+              const layout = event.nativeEvent.layout;
+              sectionCords[2] = layout.y;
+              setSectionCords([...sectionCords]);
+            }}
+          >
+            <Text className="text-white text-xl font-bold mb-4">
+              Goalkeepers
+            </Text>
+            <FlatList
+              data={playerData}
+              renderItem={PlayerCard}
+              keyExtractor={(item) => item.id}
+              horizontal
+            ></FlatList>
+          </View>
+
+          <View
+            className="p-4 pr-0"
+            style={{ backgroundColor: themeColors.bgCard }}
+          >
+            <Text className="text-white text-xl font-bold mb-4">Striker</Text>
+            <FlatList
+              data={playerData}
+              renderItem={PlayerCard}
+              keyExtractor={(item) => item.id}
+              horizontal
+            ></FlatList>
+          </View>
         </ScrollView>
       </View>
     </>
