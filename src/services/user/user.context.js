@@ -8,7 +8,7 @@ export const UserContext = createContext({
   logout: () => {},
 });
 
-const UserContextProvider = ({ children }) => {
+export const UserContextProvider = ({ children }) => {
   const [authToken, setAuthToken] = useState();
   const [email, setEmail] = useState();
   function authenticate(token, email) {
@@ -36,4 +36,4 @@ const UserContextProvider = ({ children }) => {
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 
-export default UserContextProvider;
+// export default UserContextProvider;
