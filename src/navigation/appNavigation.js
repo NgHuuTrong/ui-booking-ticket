@@ -11,6 +11,7 @@ import { themeColors } from "../theme";
 import { ProfileScreen } from "../screens/ProfileScreen";
 import { VideoPlayerScreen } from "../screens/VideoPlayerScreen";
 import { ClubDetailScreen } from "../screens/ClubDetailScreen";
+import { ChooseSeatScreen } from "../screens/ChooseSeatScreen";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs([
@@ -49,6 +50,11 @@ export const AppNavigation = () => {
           name="ClubDetail"
           options={{ headerShown: false }}
           component={ClubDetailScreen}
+        />
+        <Stack.Screen
+          name="ChooseSeat"
+          options={{ headerShown: false }}
+          component={ChooseSeatScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -7,7 +7,7 @@ export const MatchCard = () => {
   return (
     <Pressable
       className="flex-row p-2"
-      onPress={() => navigation.navigate("MatchDetail")}
+      onPress={() => navigation.navigate("ChooseSeat")}
     >
       <View className="flex-1 justify-center">
         <View className="flex-row justify-between mb-2">
