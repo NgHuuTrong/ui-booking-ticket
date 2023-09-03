@@ -41,9 +41,6 @@ export const MatchScreen = () => {
       ).format(currentDate);
       formattedDateArray.push(formattedDate);
     }
-
-    // Display the array of formatted dates
-    // console.log(formattedDateArray);
     setDates(formattedDateArray);
   }, []);
 
