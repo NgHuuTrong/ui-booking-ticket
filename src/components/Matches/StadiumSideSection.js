@@ -3,10 +3,12 @@ import { themeColors } from "../../theme";
 import { Text } from "react-native";
 import { useState } from "react";
 import { View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 export const StadiumSideSection = ({ title, unitPrice }) => {
     const [isShown, setShown] = useState(false);
-    const [numberTickets, setNumberTickers] = useState(0)
+    const [numberTickets, setNumberTickers] = useState(0);
+    const navigation = useNavigation();
 
     return <Pressable
         className={`mx-5 pt-3 my-3 rounded-md overflow-hidden ${isShown ? "border border-white" : ""}`}
@@ -62,8 +64,9 @@ export const StadiumSideSection = ({ title, unitPrice }) => {
                     style={{
                         backgroundColor: themeColors.bgButton
                     }}
+                    onPress={() => navigation.navigate("DetailOrderInfor")}
                 >
-                    <Text className="font-semibold" style={{ color: themeColors.bgScreen }}>Order Now</Text>
+                    <Text className="font-semibold" style={{ color: themeColors.bgScreen }}>Continue</Text>
                 </Pressable>
             </>
         }

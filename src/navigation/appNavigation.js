@@ -12,6 +12,7 @@ import { ProfileScreen } from "../screens/ProfileScreen";
 import { VideoPlayerScreen } from "../screens/VideoPlayerScreen";
 import { ClubDetailScreen } from "../screens/ClubDetailScreen";
 import { ChooseSeatScreen } from "../screens/ChooseSeatScreen";
+import { DetailOrderInforScreen } from "../screens/DetailOrderInforScreen";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs([
@@ -55,6 +56,11 @@ export const AppNavigation = () => {
           name="ChooseSeat"
           options={{ headerShown: false }}
           component={ChooseSeatScreen}
+        />
+        <Stack.Screen
+          name="DetailOrderInfor"
+          options={{ headerShown: false }}
+          component={DetailOrderInforScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
