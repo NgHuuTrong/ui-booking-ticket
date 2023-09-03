@@ -63,7 +63,7 @@ export const StadiumSideSection = ({ title, unitPrice }) => {
                         backgroundColor: themeColors.bgButton
                     }}
                 >
-                    <Text className="text-white font-semibold">Order Now</Text>
+                    <Text className="text-white font-semibold" style={{ color: themeColors.bgScreen }}>Order Now</Text>
                 </Pressable>
             </>
         }
