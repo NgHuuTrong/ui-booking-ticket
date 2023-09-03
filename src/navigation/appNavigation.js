@@ -4,6 +4,7 @@ import { HomeScreen } from "../screens/HomeScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { LeaderBoardScreen } from "../screens/LeaderBoardScreen";
 import { MatchScreen } from "../screens/MatchScreen";
+import { MatchDetailScreen } from "../screens/MatchDetailScreen";
 import { MyTicketScreen } from "../screens/MyTicketScreen";
 import { Image, LogBox, Platform, Text, View } from "react-native";
 import { themeColors } from "../theme";

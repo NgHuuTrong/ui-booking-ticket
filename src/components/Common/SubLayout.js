@@ -26,7 +26,7 @@ export const SubLayout = ({ children, title, goBackButton }) => {
             <Text className="text-lg font-bold text-white">{title}</Text>
           </View>
         </View>
-        <View className="flex-1 mt-8">{children}</View>
+        <View className="flex-1">{children}</View>
       </SafeAreaView>
     </View>
   );
