@@ -5,7 +5,7 @@ import { CheckBox } from "@rneui/themed";
 import { themeColors } from "../theme";
 import { useState } from "react";
 
-export const DetailOrderInforScreen = () => {
+export const DetailOrderPaymentScreen = () => {
     const [checked, setChecked] = useState(true);
 
     return (
@@ -66,8 +66,9 @@ export const DetailOrderInforScreen = () => {
                         style={{
                             backgroundColor: themeColors.bgButton
                         }}
+                        onPress={() => navigation.navigate("DetailOrderInfor")}
                     >
-                        <Text className="font-semibold" style={{ color: themeColors.bgScreen }}>Order now</Text>
+                        <Text className="font-semibold" style={{ color: themeColors.bgScreen }}>Continue</Text>
                     </Pressable>
                 </View>
             </ScrollView>
