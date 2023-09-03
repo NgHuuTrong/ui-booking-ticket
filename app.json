@@ -22,11 +22,15 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.namtranne.frontend"
+      "package": "com.trongnh2003.frontend"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "extra": {}
+    "extra": {
+      "eas": {
+        "projectId": "4bcea189-ce21-4de2-a244-dce5786c3cf1"
+      }
+    }
   }
 }
