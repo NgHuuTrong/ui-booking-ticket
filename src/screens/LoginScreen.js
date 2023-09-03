@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { SignUpForm } from "../components/Login/SignUpForm";
 import { themeColors } from "../theme";
 import { ResetPasswordForm } from "../components/Login/ResetPasswordForm";
+import { ScrollView } from "react-native";
 export const LoginScreen = () => {
   const [mode, setMode] = useState("signIn");
   const navigation = useNavigation();
@@ -38,7 +39,7 @@ export const LoginScreen = () => {
     setMode("resetPassword");
   }
   return (
-    <View className="p-4">
+    <ScrollView className="p-4">
       <View className="items-end">
         <Pressable onPress={() => navigation.goBack()}>
           <Text className="text-yellow-500 font-bold text-lg ">Close</Text>
@@ -82,6 +83,6 @@ export const LoginScreen = () => {
           </>
         )}
       </Pressable>
-    </View>
+    </ScrollView>
   );
 };
