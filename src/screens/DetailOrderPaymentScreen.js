@@ -1,76 +1,99 @@
-import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import { Image, Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { SubLayout } from "../components/Common/SubLayout";
 import { MatchCarousel } from "../components/Matches/MatchCarousel";
-import { CheckBox } from "@rneui/themed";
+import { BottomSheet } from "@rneui/themed";
 import { themeColors } from "../theme";
 import { useState } from "react";
+import { PaymentItem } from "../components/Payment/PaymentItem";
+
+const listPayment = [
+    { title: 'Paypal', image: require('../../assets/images/paypal-logo.png') },
+    { title: 'Visa', image: require('../../assets/images/visa-logo.png') },
+];
 
 export const DetailOrderPaymentScreen = () => {
-    const [checked, setChecked] = useState(true);
+    const [isVisible, setIsVisible] = useState(false);
+    const [paymentMethod, setPaymentMethod] = useState({
+        ...listPayment[0],
+        index: 0
+    });
 
     return (
-        <SubLayout title={'Personal Information'} goBackButton={true}>
+        <SubLayout title={'Payment'} goBackButton={true}>
             <MatchCarousel />
-            <ScrollView className="mt-5">
-                <View className="px-5 mb-4">
-                    <View className="flex-row">
-                        <Text className="mb-2 mr-1 text-white font-semibold">Name</Text>
-                        <Text className="text-red-500">*</Text>
+            <ScrollView className="mt-5 px-5">
+                <View className="justify-center items-center w-full">
+                    <Text className="text-white text font-semibold">TIME REMAINING TO PAY</Text>
+                    <View className="flex-row justify-center mt-4 border border-x-0 border-t-0 border-b-2 w-full">
+                        <Text className="text-white text-5xl font-bold mr-4">10</Text>
+                        <Text className="text-white text-5xl font-bold mr-4">:</Text>
+                        <Text className="text-white text-5xl font-bold">00</Text>
                     </View>
-                    <TextInput
-                        className="border border-white rounded-lg px-3 text-white opacity-80"
-                        editable={false}
-                        defaultValue="Nguyen Van Hieu"
-                    />
                 </View>
-                <View className="px-5 mb-4">
-                    <View className="flex-row">
-                        <Text className="mb-2 mr-1 text-white font-semibold">Phone number</Text>
-                        <Text className="text-red-500">*</Text>
+                <View
+                    className="rounded-lg w-full p-3 mt-5"
+                    style={{
+                        backgroundColor: themeColors.bgCard
+                    }}
+                >
+                    <View className="flex-row items-center">
+                        <Image
+                            className="mr-4"
+                            source={require('../../assets/images/alfamart.png')}
+                            style={{
+                                width: 80,
+                                height: 40
+                            }}
+                        />
+                        <Text className="text-white font-bold">ALFAMART</Text>
                     </View>
-                    <TextInput
-                        className="border border-white rounded-lg px-3 text-white"
-                    />
+                    <Text className="text-white text-sm mt-4">Payment Code</Text>
+                    <Text className="text-white text-lg font-semibold">XXXXXXXXX</Text>
                 </View>
-                <View className="px-5 mb-4">
-                    <View className="flex-row">
-                        <Text className="mb-2 mr-1 text-white font-semibold">Email</Text>
-                        <Text className="text-red-500">*</Text>
-                    </View>
-                    <TextInput
-                        className="border border-white rounded-lg px-3 text-white opacity-80"
-                        editable={false}
-                        defaultValue="vanhieu230303@gmail.com"
-                    />
-                </View>
-                <View className="flex-row justify-center items-center flex-wrap">
-                    <CheckBox
-                        containerStyle={{
-                            backgroundColor: themeColors.bgScreen,
-                            margin: 0,
-                            padding: 0
+                <View className="mt-4">
+                    <Text className="text-white text-lg font-bold">Detail Price</Text>
+                    <View
+                        className="rounded-lg w-full flex-row justify-around items-center p-3 mt-2"
+                        style={{
+                            backgroundColor: themeColors.bgCard
                         }}
-                        checked={checked}
-                        onPress={() => setChecked(!checked)}
-                        iconType="material-community"
-                        checkedIcon="checkbox-outline"
-                        uncheckedIcon={'checkbox-blank-outline'}
-                    />
-                    <Text className="text-white">I agree to receive notifications
-                        order tickets via email.</Text>
-                    <Text className="text-red-500">*</Text>
+                    >
+                        <Text className="text-white text-sm">Total price</Text>
+                        <Text className="text-white text-lg font-semibold">200€</Text>
+                    </View>
                 </View>
-                <View className="justify-center items-center">
+                <View className="mt-4">
+                    <Text className="text-white text-lg font-bold">Payment Method</Text>
+                    <Pressable
+                        className="rounded-lg w-full p-3 mt-2 opacity-70"
+                        style={{
+                            backgroundColor: themeColors.bgCard
+                        }}
+                        onPress={() => setIsVisible(true)}
+                    >
+                        <Text className="text-white">Payment ticket via {paymentMethod.title}</Text>
+                        <Text className="text-gray-500">Make sure that you have {paymentMethod.title} account to checkout</Text>
+                    </Pressable>
+                </View>
+                <View className="justify-center items-center mt-4 mb-5">
                     <Pressable
                         className="justify-center items-center w-1/2 rounded-lg py-3 mt-2"
                         style={{
                             backgroundColor: themeColors.bgButton
                         }}
-                        onPress={() => navigation.navigate("DetailOrderInfor")}
                     >
-                        <Text className="font-semibold" style={{ color: themeColors.bgScreen }}>Continue</Text>
+                        <Text className="font-semibold" style={{ color: themeColors.bgScreen }}>CHECKOUT</Text>
                     </Pressable>
                 </View>
+                <BottomSheet
+                    modalProps={{}}
+                    isVisible={isVisible}
+                    onBackdropPress={() => setIsVisible(false)}
+                >
+                    {
+                        listPayment.map((l, i) => <PaymentItem payment={l} index={i} key={i} checked={i === paymentMethod.index} handleSetPaymentMethod={setPaymentMethod} />)
+                    }
+                </BottomSheet>
             </ScrollView>
         </SubLayout>
     )
