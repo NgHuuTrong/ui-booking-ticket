@@ -6,18 +6,43 @@ import { LeaderBoardScreen } from "../screens/LeaderBoardScreen";
 import { MatchScreen } from "../screens/MatchScreen";
 import { MatchDetailScreen } from "../screens/MatchDetailScreen";
 import { MyTicketScreen } from "../screens/MyTicketScreen";
-import { Image, LogBox, Text, View } from "react-native";
+import { Easing, Image, LogBox, Text, View } from "react-native";
 import { themeColors } from "../theme";
 import { ProfileScreen } from "../screens/ProfileScreen";
 import { VideoPlayerScreen } from "../screens/VideoPlayerScreen";
 import { ClubDetailScreen } from "../screens/ClubDetailScreen";
+import { LoginScreen } from "../screens/LoginScreen";
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from "@react-navigation/stack";
+const Stack = createStackNavigator();
 import { ChooseSeatScreen } from "../screens/ChooseSeatScreen";
 import { DetailOrderInforScreen } from "../screens/DetailOrderInforScreen";
-const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
 ]);
+
+const config = {
+  animation: "spring",
+  config: {
+    stiffness: 1000,
+    damping: 50,
+    mass: 3,
+    overshootClamping: false,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
+};
+
+const closeConfig = {
+  animation: "timing",
+  config: {
+    duration: 200,
+    easing: Easing.linear,
+  },
+};
 
 export const AppNavigation = () => {
   return (
@@ -61,6 +86,20 @@ export const AppNavigation = () => {
           name="DetailOrderInfor"
           options={{ headerShown: false }}
           component={DetailOrderInforScreen}
+        />
+        <Stack.Screen
+          name="Login"
+          options={{
+            gestureDirection: "vertical",
+            headerShown: false,
+            transitionSpec: {
+              open: config,
+              close: closeConfig,
+            },
+            cardStyleInterpolator:
+              CardStyleInterpolators.forModalPresentationIOS,
+          }}
+          component={LoginScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
