@@ -17,13 +17,12 @@ import {
   CardStyleInterpolators,
   createStackNavigator,
 } from "@react-navigation/stack";
-const Stack = createStackNavigator();
 import { ChooseSeatScreen } from "../screens/ChooseSeatScreen";
 import { DetailOrderInforScreen } from "../screens/DetailOrderInforScreen";
 import { DetailOrderPaymentScreen } from "../screens/DetailOrderPaymentScreen";
 import { PaypalPayment } from "../screens/PaypalPayment";
 import { PaymentSuccess } from "../screens/PaymentSuccess";
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
