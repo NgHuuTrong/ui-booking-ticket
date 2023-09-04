@@ -11,7 +11,7 @@ export const Club = ({ name, uri }) => {
       onPress={() => navigation.navigate("ClubDetail")}
     >
       <Image source={{ uri }} style={{ height: 60, aspectRatio: 1 }}></Image>
-      <Text className="text-white mt-2 font-bold text-sm">{name}</Text>
+      <Text className="text-white mt-2 font-bold text-sm text-center">{name}</Text>
     </Pressable>
   );
 };
