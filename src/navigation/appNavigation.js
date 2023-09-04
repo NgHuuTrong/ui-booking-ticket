@@ -11,6 +11,7 @@ import { themeColors } from "../theme";
 import { ProfileScreen } from "../screens/ProfileScreen";
 import { VideoPlayerScreen } from "../screens/VideoPlayerScreen";
 import { ClubDetailScreen } from "../screens/ClubDetailScreen";
+import { TicketDetailScreen } from "../screens/TicketDetailScreen";
 import { LoginScreen } from "../screens/LoginScreen";
 import {
   CardStyleInterpolators,
@@ -19,6 +20,10 @@ import {
 const Stack = createStackNavigator();
 import { ChooseSeatScreen } from "../screens/ChooseSeatScreen";
 import { DetailOrderInforScreen } from "../screens/DetailOrderInforScreen";
+import { DetailOrderPaymentScreen } from "../screens/DetailOrderPaymentScreen";
+import { PaypalPayment } from "../screens/PaypalPayment";
+import { PaymentSuccess } from "../screens/PaymentSuccess";
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -78,6 +83,11 @@ export const AppNavigation = () => {
           component={ClubDetailScreen}
         />
         <Stack.Screen
+          name="TicketDetail"
+          options={{ headerShown: false }}
+          component={TicketDetailScreen}
+        />
+        <Stack.Screen
           name="ChooseSeat"
           options={{ headerShown: false }}
           component={ChooseSeatScreen}
@@ -86,6 +96,21 @@ export const AppNavigation = () => {
           name="DetailOrderInfor"
           options={{ headerShown: false }}
           component={DetailOrderInforScreen}
+        />
+        <Stack.Screen
+          name="DetailOrderPayment"
+          options={{ headerShown: false }}
+          component={DetailOrderPaymentScreen}
+        />
+        <Stack.Screen
+          name="PaypalPayment"
+          options={{ headerShown: false }}
+          component={PaypalPayment}
+        />
+        <Stack.Screen
+          name="PaymentSuccess"
+          options={{ headerShown: false }}
+          component={PaymentSuccess}
         />
         <Stack.Screen
           name="Login"

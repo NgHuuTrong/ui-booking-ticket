@@ -1,4 +1,6 @@
-import { Image, ImageBackground, Pressable, Text, View } from "react-native";
+import { Image, ImageBackground, Text, View } from "react-native";
+import { Club } from "../Club/Club";
+import clubs from '../../../assets/data/club.json'
 
 export const MatchCarousel = () => {
     return (
@@ -9,16 +11,9 @@ export const MatchCarousel = () => {
                 height: 230
             }}
         >
-            <View className="flex-row justify-center items-center px-3">
+            <View className="flex-row justify-center items-center">
                 <View className="w-1/3 justify-center items-center">
-                    <Image
-                        source={require('../../../assets/images/team1.png')}
-                        style={{
-                            width: 50,
-                            height: 50
-                        }}
-                    />
-                    <Text className="text-white font-bold mt-3">Manchester City</Text>
+                    <Club name={clubs[0].name} uri={clubs[0].logo} />
                 </View>
                 <View className="w-1/3 justify-center items-center">
                     <Text className="text-white">Group stage</Text>
@@ -27,14 +22,7 @@ export const MatchCarousel = () => {
                     <Text className="text-white text-lg font-bold">20:00 P.M</Text>
                 </View>
                 <View className="w-1/3 justify-center items-center">
-                    <Image
-                        source={require('../../../assets/images/team2.png')}
-                        style={{
-                            width: 45,
-                            height: 45
-                        }}
-                    />
-                    <Text className="text-white font-bold mt-3">Arsenal</Text>
+                    <Club name={clubs[1].name} uri={clubs[1].logo} />
                 </View>
             </View>
             <Text className="text-white text-xl font-extrabold mt-3">Santiago Bernabéu</Text>

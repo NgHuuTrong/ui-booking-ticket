@@ -1,4 +1,4 @@
-import { ImageBackground, Pressable, Text, TextInput } from "react-native";
+import { ImageBackground, Pressable, ScrollView, Text, TextInput } from "react-native";
 import { SubLayout } from "../components/Common/SubLayout";
 import { View } from "react-native";
 import { Avatar, Button, CheckBox, Stack } from "@rneui/themed";
@@ -6,6 +6,8 @@ import { useContext, useState } from "react";
 import { themeColors } from "../theme";
 import { UserContext } from "../services/user/user.context";
 import { useNavigation } from "@react-navigation/native";
+import { Button } from "react-native";
+import * as ImagePicker from 'expo-image-picker';
 
 export const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -30,39 +32,57 @@ export const ProfileScreen = () => {
     setEdited(false);
   };
 
-  return (
-    <SubLayout goBackButton={true} title="Profile">
-      <View>
-        <ImageBackground
-          source={require("../../assets/images/HeaderBackground.jpeg")}
-          className="w-full justify-center items-center"
-          style={{
-            height: 250,
-          }}
-        >
-          <Avatar
+  const [image, setImage] = useState(null);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
+  return <SubLayout goBackButton={true} title="Profile">
+    <View>
+      <ImageBackground
+        source={require('../../assets/images/HeaderBackground.jpeg')}
+        className="w-full justify-center items-center"
+        style={{
+          height: 250
+        }}
+      >
+        {
+          image && <Avatar
             size={120}
             rounded
-            source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
+            source={{ uri: image }}
             avatarStyle={{
-              borderColor: "#fff",
-              borderWidth: 5,
+              borderColor: '#fff',
+              borderWidth: 5
             }}
           />
-          <Text className="text-white text-lg font-bold mt-2">
-            Nguyen Van Hieu
-          </Text>
-          <Pressable
-            className="border border-3 border-white rounded-lg px-8 py-2 mt-3"
-            onPress={() => setEdited(true)}
-          >
-            <Text className="text-white">Edit Profile</Text>
-          </Pressable>
-        </ImageBackground>
+        }
+        <Text className="text-white text-lg font-bold mt-2">Nguyen Van Hieu</Text>
+        <Pressable
+          className="border border-3 border-white rounded-lg px-8 py-2 mt-3"
+          onPress={() => setEdited(true)}
+        >
+          <Text className="text-white">Edit Profile</Text>
+        </Pressable>
+      </ImageBackground>
+      <ScrollView>
         <View className="px-3 mt-5">
           <Text className="text-white font-bold">Email</Text>
           <TextInput
-            className="border border-t-0 border-x-0 border-b-3 border-white text-white"
+            className={`border border-t-0 border-x-0 border-b-3 border-white text-white ${isEdited ? '' : 'opacity-80'}`}
             value={inputs.email}
             onChangeText={(newText) => setInputs({ ...inputs, email: newText })}
             editable={isEdited}
@@ -71,7 +91,7 @@ export const ProfileScreen = () => {
         <View className="px-3 mt-3">
           <Text className="text-white font-bold">Phone number</Text>
           <TextInput
-            className="border border-t-0 border-x-0 border-b-3 border-white text-white"
+            className={`border border-t-0 border-x-0 border-b-3 border-white text-white ${isEdited ? '' : 'opacity-80'}`}
             value={inputs.phone}
             onChangeText={(newText) => setInputs({ ...inputs, phone: newText })}
             editable={isEdited}
@@ -80,7 +100,7 @@ export const ProfileScreen = () => {
         <View className="px-3 mt-3">
           <Text className="text-white font-bold">Name</Text>
           <TextInput
-            className="border border-t-0 border-x-0 border-b-3 border-white text-white"
+            className={`border border-t-0 border-x-0 border-b-3 border-white text-white ${isEdited ? '' : 'opacity-80'}`}
             value={inputs.name}
             onChangeText={(newText) => setInputs({ ...inputs, name: newText })}
             editable={isEdited}
@@ -89,11 +109,9 @@ export const ProfileScreen = () => {
         <View className="px-3 mt-3">
           <Text className="text-white font-bold">Password</Text>
           <TextInput
-            className="border border-t-0 border-x-0 border-b-3 border-white text-white"
+            className={`border border-t-0 border-x-0 border-b-3 border-white text-white ${isEdited ? '' : 'opacity-80'}`}
             value={inputs.password}
-            onChangeText={(newText) =>
-              setInputs({ ...inputs, password: newText })
-            }
+            onChangeText={(newText) => setInputs({ ...inputs, password: newText })}
             editable={isEdited}
           />
         </View>
@@ -114,12 +132,22 @@ export const ProfileScreen = () => {
             disabled={!isEdited}
           />
         </View>
-        {isEdited && (
-          <View className="w-full flex-row justify-center items-center mt-2">
+        <Pressable
+          className={`ml-3 mt-3 py-2 w-2/5 rounded-lg border border-white justify-center items-center ${isEdited ? '' : 'opacity-80'}`}
+          onPress={pickImage}
+          disabled={!isEdited}
+          style={{
+            backgroundColor: themeColors.bgCard
+          }}
+        >
+          <Text className="text-white font-bold">Upload avatar</Text>
+        </Pressable>
+        {
+          isEdited && <View className="w-full flex-row justify-center items-center mt-4">
             <Pressable
               className="w-1/4 py-3 rounded-xl justify-center items-center mr-2"
               style={{
-                backgroundColor: "#eb4134",
+                backgroundColor: '#eb4134'
               }}
               onPress={() => {
                 setEdited(false);
@@ -127,7 +155,7 @@ export const ProfileScreen = () => {
                   email: userCtx.email,
                   phone: userCtx.phone,
                   name: userCtx.name,
-                  password: userCtx.password,
+                  password: userCtx.password
                 });
               }}
             >
@@ -136,15 +164,16 @@ export const ProfileScreen = () => {
             <Pressable
               className="w-1/3 py-3 rounded-xl justify-center items-center"
               style={{
-                backgroundColor: themeColors.bgButton,
+                backgroundColor: themeColors.bgButton
               }}
               onPress={handleChangeProfile}
             >
-              <Text className="text-white font-bold">Update</Text>
+              <Text className="font-bold" style={{ color: themeColors.bgCard }}>Update</Text>
             </Pressable>
           </View>
-        )}
-      </View>
+        }
+      </ScrollView>
+    </View>
       <View className="items-center justify-center flex-row">
         <Button
           title="Login"
@@ -160,24 +189,23 @@ export const ProfileScreen = () => {
             marginRight: 20,
             marginVertical: 10,
           }}
-          onPress={() => navigation.navigate("Login")}
         />
+          onPress={() => navigation.navigate("Login")}
         <Button
           title="Signup"
-          titleStyle={{ fontWeight: "700", color: "white" }}
           buttonStyle={{
+          titleStyle={{ fontWeight: "700", color: "white" }}
             backgroundColor: "transparent",
             borderColor: "white",
             borderWidth: 1,
             borderRadius: 30,
-          }}
           containerStyle={{
+          }}
             width: 100,
             marginVertical: 10,
           }}
           // onPress={navigation}
         />
       </View>
-    </SubLayout>
-  );
+  </SubLayout>
 };

@@ -4,10 +4,11 @@ import { MatchCarousel } from "../components/Matches/MatchCarousel";
 import { CheckBox } from "@rneui/themed";
 import { themeColors } from "../theme";
 import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 export const DetailOrderInforScreen = () => {
-    const [checked, setChecked] = useState(true);
-
+    const [checked, setChecked] = useState(false);
+    const navigation = useNavigation();
     return (
         <SubLayout title={'Personal Information'} goBackButton={true}>
             <MatchCarousel />
@@ -66,9 +67,9 @@ export const DetailOrderInforScreen = () => {
                         style={{
                             backgroundColor: themeColors.bgButton
                         }}
-                        onPress={() => navigation.navigate("DetailOrderInfor")}
+                        onPress={() => navigation.navigate("DetailOrderPayment")}
                     >
-                        <Text className="font-semibold" style={{ color: themeColors.bgScreen }}>Continue</Text>
+                        <Text className="font-semibold" style={{ color: themeColors.bgScreen }}>Order Now</Text>
                     </Pressable>
                 </View>
             </ScrollView>
