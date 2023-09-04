@@ -13,6 +13,7 @@ import { VideoPlayerScreen } from "../screens/VideoPlayerScreen";
 import { ClubDetailScreen } from "../screens/ClubDetailScreen";
 import { ChooseSeatScreen } from "../screens/ChooseSeatScreen";
 import { DetailOrderInforScreen } from "../screens/DetailOrderInforScreen";
+import { DetailOrderPaymentScreen } from "../screens/DetailOrderPaymentScreen";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs([
@@ -61,6 +62,11 @@ export const AppNavigation = () => {
           name="DetailOrderInfor"
           options={{ headerShown: false }}
           component={DetailOrderInforScreen}
+        />
+        <Stack.Screen
+          name="DetailOrderPayment"
+          options={{ headerShown: false }}
+          component={DetailOrderPaymentScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
