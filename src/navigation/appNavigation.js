@@ -11,6 +11,7 @@ import { themeColors } from "../theme";
 import { ProfileScreen } from "../screens/ProfileScreen";
 import { VideoPlayerScreen } from "../screens/VideoPlayerScreen";
 import { ClubDetailScreen } from "../screens/ClubDetailScreen";
+import { TicketDetailScreen } from "../screens/TicketDetailScreen";
 import { ChooseSeatScreen } from "../screens/ChooseSeatScreen";
 import { DetailOrderInforScreen } from "../screens/DetailOrderInforScreen";
 import { DetailOrderPaymentScreen } from "../screens/DetailOrderPaymentScreen";
@@ -52,6 +53,11 @@ export const AppNavigation = () => {
           name="ClubDetail"
           options={{ headerShown: false }}
           component={ClubDetailScreen}
+        />
+        <Stack.Screen
+          name="TicketDetail"
+          options={{ headerShown: false }}
+          component={TicketDetailScreen}
         />
         <Stack.Screen
           name="ChooseSeat"

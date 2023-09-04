@@ -6,69 +6,78 @@ import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 export const StadiumSideSection = ({ title, unitPrice }) => {
-    const [isShown, setShown] = useState(false);
-    const [numberTickets, setNumberTickers] = useState(0);
-    const navigation = useNavigation();
+  const [isShown, setShown] = useState(false);
+  const [numberTickets, setNumberTickers] = useState(0);
+  const navigation = useNavigation();
 
-    return <Pressable
-        className={`mx-5 pt-3 my-3 rounded-md overflow-hidden ${isShown ? "border border-white" : ""}`}
-        style={{ backgroundColor: themeColors.bgCard }}
-        onPress={() => {
-            setShown(!isShown);
-            setNumberTickers(0);
-        }}
+  return (
+    <Pressable
+      className={`mx-5 pt-3 my-3 rounded-md overflow-hidden ${
+        isShown ? "border border-white" : ""
+      }`}
+      style={{ backgroundColor: themeColors.bgCard }}
+      onPress={() => {
+        setShown(!isShown);
+        setNumberTickers(0);
+      }}
     >
-        <Text className="text-white text-lg font-bold px-5 pb-3">{title}</Text>
-        {
-            isShown && <>
-                <View
-                    className="flex-row justify-around items-center px-5 py-3"
-                    style={{ backgroundColor: themeColors.bgScreen }}
-                >
-                    <Text className="text-white">Unit price: {unitPrice}€</Text>
-                    <View>
-                        <Text className="text-white font-bold">Number of tickets</Text>
-                        <View className="flex-row justify-evenly items-center mt-2">
-                            <Pressable
-                                className="rounded-xl justify-center items-center"
-                                style={{
-                                    backgroundColor: themeColors.bgButton,
-                                    width: 20,
-                                    height: 20
-                                }}
-                                onPress={() => {
-                                    if (numberTickets > 0) {
-                                        setNumberTickers(numberTickets - 1);
-                                    }
-                                }}
-                            >
-                                <Text className="text-white font-bold">-</Text>
-                            </Pressable>
-                            <Text className="text-white">{numberTickets}</Text>
-                            <Pressable
-                                className="rounded-xl justify-center items-center"
-                                style={{
-                                    backgroundColor: themeColors.bgButton,
-                                    width: 20,
-                                    height: 20
-                                }}
-                                onPress={() => setNumberTickers(numberTickets + 1)}
-                            >
-                                <Text className="text-white font-bold">+</Text>
-                            </Pressable>
-                        </View>
-                    </View>
-                </View>
+      <Text className="text-white text-lg font-bold px-5 pb-3">{title}</Text>
+      {isShown && (
+        <>
+          <View
+            className="flex-row justify-around items-center px-5 py-3"
+            style={{ backgroundColor: themeColors.bgScreen }}
+          >
+            <Text className="text-white">Unit price: {unitPrice}€</Text>
+            <View>
+              <Text className="text-white font-bold">Number of tickets</Text>
+              <View className="flex-row justify-evenly items-center mt-2">
                 <Pressable
-                    className="justify-center items-center py-3 mt-2"
-                    style={{
-                        backgroundColor: themeColors.bgButton
-                    }}
-                    onPress={() => navigation.navigate("DetailOrderInfor")}
+                  className="rounded-xl justify-center items-center"
+                  style={{
+                    backgroundColor: themeColors.bgButton,
+                    width: 20,
+                    height: 20,
+                  }}
+                  onPress={() => {
+                    if (numberTickets > 0) {
+                      setNumberTickers(numberTickets - 1);
+                    }
+                  }}
                 >
-                    <Text className="font-semibold" style={{ color: themeColors.bgScreen }}>Continue</Text>
+                  <Text className="text-white font-bold">-</Text>
                 </Pressable>
-            </>
-        }
-    </Pressable >
-}
+                <Text className="text-white">{numberTickets}</Text>
+                <Pressable
+                  className="rounded-xl justify-center items-center"
+                  style={{
+                    backgroundColor: themeColors.bgButton,
+                    width: 20,
+                    height: 20,
+                  }}
+                  onPress={() => setNumberTickers(numberTickets + 1)}
+                >
+                  <Text className="text-white font-bold">+</Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+          <Pressable
+            className="justify-center items-center py-3 mt-2"
+            style={{
+              backgroundColor: themeColors.bgButton,
+            }}
+            onPress={() => navigation.navigate("DetailOrderInfor")}
+          >
+            <Text
+              className="font-semibold"
+              style={{ color: themeColors.bgScreen }}
+            >
+              Continue
+            </Text>
+          </Pressable>
+        </>
+      )}
+    </Pressable>
+  );
+};

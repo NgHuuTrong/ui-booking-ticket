@@ -1,0 +1,122 @@
+[
+  {
+    "stadium_id": 494,
+    "name": "Emirates Stadium",
+    "address": "Queensland Road",
+    "capacity": 60383,
+    "location": "London",
+    "image": "https://media-2.api-sports.io/football/venues/494.png"
+  },
+  {
+    "stadium_id": 555,
+    "name": "Etihad Stadium",
+    "address": "Rowsley Street",
+    "capacity": 55097,
+    "location": "Manchester",
+    "image": "https://media.api-sports.io/football/venues/555.png"
+  },
+  {
+    "stadium_id": 550,
+    "name": "Anfield",
+    "address": "Anfield Road",
+    "capacity": 55212,
+    "location": "Liverpool",
+    "image": "https://media-2.api-sports.io/football/venues/550.png"
+  },
+  {
+    "stadium_id": 519,
+    "name": "Stamford Bridge",
+    "address": "Fulham Road",
+    "capacity": 41841,
+    "location": "London",
+    "image": "https://media-1.api-sports.io/football/venues/519.png"
+  },
+  {
+    "stadium_id": 1456,
+    "name": "Estadio Santiago Bernabéu",
+    "address": "Avenida de Concha Espina 1, Chamartín",
+    "capacity": 85454,
+    "location": "Madrid",
+    "image": "https://media-3.api-sports.io/football/venues/1456.png"
+  },
+  {
+    "stadium_id": 19939,
+    "name": "Estadi Olímpic Lluís Companys",
+    "address": "Carrer de l&apos;Estadi",
+    "capacity": 55926,
+    "location": "Barcelona",
+    "image": "https://media-1.api-sports.io/football/venues/19939.png"
+  },
+  {
+    "stadium_id": 700,
+    "name": "Allianz Arena",
+    "address": "Werner-Heisenberg-Allee 25",
+    "capacity": 75000,
+    "location": "München",
+    "image": "https://media-3.api-sports.io/football/venues/700.png"
+  },
+  {
+    "stadium_id": 671,
+    "name": "Parc des Princes",
+    "address": "24, rue du Commandant Guilbaud",
+    "capacity": 47929,
+    "location": "Paris",
+    "image": "https://media-2.api-sports.io/football/venues/671.png"
+  },
+  {
+    "stadium_id": 909,
+    "name": "Allianz Stadium",
+    "address": "Strada Comunale di Altessano 131",
+    "capacity": 45666,
+    "location": "Torino",
+    "image": "https://media-2.api-sports.io/football/venues/909.png"
+  },
+  {
+    "stadium_id": 556,
+    "name": "Old Trafford",
+    "address": "Sir Matt Busby Way",
+    "capacity": 76212,
+    "location": "Manchester",
+    "image": "https://media.api-sports.io/football/venues/556.png"
+  },
+  {
+    "stadium_id": 907,
+    "name": "Stadio Giuseppe Meazza",
+    "address": "Via Piccolomini 5",
+    "capacity": 80018,
+    "location": "Milano",
+    "image": "https://media-1.api-sports.io/football/venues/907.png"
+  },
+  {
+    "stadium_id": 19217,
+    "name": "Estádio Cívitas Metropolitano",
+    "address": "Rosas",
+    "capacity": 68456,
+    "location": "Madrid",
+    "image": "https://media-2.api-sports.io/football/venues/19217.png"
+  },
+  {
+    "stadium_id": 19381,
+    "name": "SIGNAL IDUNA PARK",
+    "address": "Strobelalle 50",
+    "capacity": 81365,
+    "location": "Dortmund",
+    "image": "https://media-3.api-sports.io/football/venues/19381.png"
+  },
+  {
+    "stadium_id": 593,
+    "name": "Tottenham Hotspur Stadium",
+    "address": "Bill Nicholson Way, 748 High Road",
+    "capacity": 62850,
+    "location": "London",
+    "image": "https://media-1.api-sports.io/football/venues/593.png"
+  },
+  {
+    "stadium_id": 11904,
+    "name": "Stadio Diego Armando Maradona",
+    "address": "Pizzale Vincenzo Tecchio",
+    "capacity": 60240,
+    "location": "Napoli",
+    "image": "https://media-2.api-sports.io/football/venues/11904.png"
+  }
+]
