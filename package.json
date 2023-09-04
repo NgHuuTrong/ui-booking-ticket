@@ -17,6 +17,7 @@
     "@rneui/themed": "^4.0.0-rc.8",
     "axios": "^1.5.0",
     "expo": "~49.0.8",
+    "expo-image-picker": "~14.3.2",
     "expo-status-bar": "~1.6.0",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
