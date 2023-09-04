@@ -15,6 +15,8 @@ import { TicketDetailScreen } from "../screens/TicketDetailScreen";
 import { ChooseSeatScreen } from "../screens/ChooseSeatScreen";
 import { DetailOrderInforScreen } from "../screens/DetailOrderInforScreen";
 import { DetailOrderPaymentScreen } from "../screens/DetailOrderPaymentScreen";
+import { PaypalPayment } from "../screens/PaypalPayment";
+import { PaymentSuccess } from "../screens/PaymentSuccess";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs([
@@ -73,6 +75,16 @@ export const AppNavigation = () => {
           name="DetailOrderPayment"
           options={{ headerShown: false }}
           component={DetailOrderPaymentScreen}
+        />
+        <Stack.Screen
+          name="PaypalPayment"
+          options={{ headerShown: false }}
+          component={PaypalPayment}
+        />
+        <Stack.Screen
+          name="PaymentSuccess"
+          options={{ headerShown: false }}
+          component={PaymentSuccess}
         />
       </Stack.Navigator>
     </NavigationContainer>
