@@ -62,13 +62,13 @@ export const TicketCard = ({ item, hasExpand = true }) => {
           <View className="justify-center flex-row items-center">
             <Text
               className="text-slate-900 font-bold text-base mr-8"
-              style={{ color: "#0f1143" }}
+              style={{ color: "#0e143c" }}
             >
               Area: {item.ticket.area}
             </Text>
             <Text
               className="text-slate-900 font-bold text-base"
-              style={{ color: "#0f1143" }}
+              style={{ color: "#0e143c" }}
             >
               Seat: {item.ticket.seat}
             </Text>
