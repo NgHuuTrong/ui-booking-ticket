@@ -6,7 +6,7 @@ export const MatchTable = () => {
   return (
     <View
       style={{ backgroundColor: themeColors.bgCard }}
-      className="rounded-lg"
+      className="rounded-lg mb-4"
     >
       <Text
         className="text-white font-semibold p-4 border-b-slate-500 "

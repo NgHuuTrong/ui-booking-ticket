@@ -7,13 +7,12 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { Tab, TabView } from "@rneui/themed";
 import { useState } from "react";
 import { themeColors } from "../theme";
 import { Ionicons } from "@expo/vector-icons";
+import { Club } from "../components/Club/Club";
 export const MatchDetailScreen = () => {
   const navigation = useNavigation();
   const [index, setIndex] = useState(0);
@@ -38,24 +37,18 @@ export const MatchDetailScreen = () => {
               </Text>
             </View>
             <View className="flex-row">
-              <Pressable className="items-center p-4">
-                <Image
-                  source={require("../../assets/images/team1.png")}
-                  style={{ height: 60, aspectRatio: 1 }}
-                ></Image>
-                <Text className="text-white">Man City</Text>
-              </Pressable>
+              <Club
+                name={"Mancity"}
+                uri={"https://media.api-sports.io/football/teams/50.png"}
+              />
               <View className="flex-1 items-center justify-center">
                 <Text className="text-white text-4xl font-bold ">5 - 1</Text>
                 <Text className="text-white">Full time</Text>
               </View>
-              <View className="items-center p-4">
-                <Image
-                  source={require("../../assets/images/team2.png")}
-                  style={{ height: 60, aspectRatio: 1 }}
-                ></Image>
-                <Text className="text-white">Arsenal</Text>
-              </View>
+              <Club
+                name={"Arsenal"}
+                uri={"https://media-3.api-sports.io/football/teams/42.png"}
+              />
             </View>
             <View className="flex-row justify-center">
               <View className="items-end">
