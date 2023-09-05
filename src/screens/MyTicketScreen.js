@@ -109,16 +109,10 @@ export const MyTicketScreen = () => {
   return (
     <MainLayout>
       <View>
-        <Text
-          style={{ color: themeColors.bgButton }}
-          className="text-2xl font-bold m-4"
-        >
-          My tickets
-        </Text>
         <View className="flex-row items-center mb-4">
           {part.map((ele, index) => (
             <TouchableOpacity
-              className="flex-1 p-6 items-center border-b-2"
+              className="flex-1 p-4 items-center border-b-2"
               style={{
                 backgroundColor: themeColors.bgCard,
                 borderBottomColor:
@@ -130,7 +124,7 @@ export const MyTicketScreen = () => {
               onPress={(e) => handleOnPress(e, index)}
             >
               <Text
-                className="text-14 font-bold"
+                className="text-base font-bold"
                 style={{
                   color: active === index ? themeColors.bgButton : "white",
                 }}
