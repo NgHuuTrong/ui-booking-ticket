@@ -51,7 +51,7 @@ export const TicketCard = ({ item, hasExpand = true }) => {
           </View>
 
           <View className="items-center justify-center">
-            <Text className="text-white text-2xl font-extrabold">VS</Text>
+            <Text className="text-slate-900  text-2xl font-extrabold">VS</Text>
           </View>
 
           <View className="flex-1 justify-center">
