@@ -65,21 +65,48 @@ export const ProfileScreen = () => {
   };
 
   return (
-    <View className="flex-1 bg-white">
+    <View
+      className="flex-1 bg-white"
+      style={{ backgroundColor: themeColors.bgCard }}
+    >
       <View>
-        <ImageBackground
-          source={require("../../assets/images/HeaderBackground.jpeg")}
-          className="w-full justify-center items-center"
+        <View
+          // source={require("../../assets/images/HeaderBackground.jpeg")}
+          className="w-full items-center pt-8"
           style={{
-            height: 150,
+            height: 200,
+            backgroundColor: themeColors.bgScreen,
           }}
         >
+          <View
+            style={{
+              width: windowWidth / 2,
+              height: windowWidth / 2,
+              position: "absolute",
+              top: 200 - windowWidth / 4 + 60,
+              left: -20,
+              backgroundColor: themeColors.bgCard,
+            }}
+            className="bg-white rounded-full"
+          ></View>
+          <View
+            style={{
+              width: windowWidth / 2,
+              height: windowWidth / 2,
+              position: "absolute",
+              top: 200 - windowWidth / 4 + 60,
+              right: -20,
+              backgroundColor: themeColors.bgCard,
+            }}
+            className="bg-white rounded-full"
+          ></View>
           <TouchableOpacity
             className=" rounded-full absolute left-2 top-6"
             onPress={() => navigation.goBack()}
           >
             <AntDesign name="left" size={30} color="white" />
           </TouchableOpacity>
+          <Text className="text-white top-0 text-xl font-bold">Profile</Text>
           <Pressable
             onPress={() => setEdited(true)}
             className="absolute right-2 top-7"
@@ -102,7 +129,7 @@ export const ProfileScreen = () => {
               </Pressable>
             )}
           </Pressable>
-        </ImageBackground>
+        </View>
         <View className="items-center" style={{ marginTop: -60 }}>
           <Avatar
             size={120}
@@ -136,7 +163,7 @@ export const ProfileScreen = () => {
               <Entypo name="pencil" size={24} color="rgb(59 130 246)" />
             </View>
           </Pressable>
-          <Text className="text-black text-xl font-bold mt-2">
+          <Text className="text-white text-xl font-bold mt-2">
             Nguyen Van Hieu
           </Text>
         </View>
@@ -148,6 +175,7 @@ export const ProfileScreen = () => {
                 borderRadius: 10,
                 paddingHorizontal: 9,
                 height: 60,
+                elevation: 2,
               }}
               errorMessage="Please enter your email address"
               placeholder="Enter your email"
@@ -172,6 +200,7 @@ export const ProfileScreen = () => {
                 borderRadius: 10,
                 paddingHorizontal: 9,
                 height: 60,
+                elevation: 2,
               }}
               errorMessage="Please enter your valid phone"
               placeholder="Enter your phone"
@@ -196,6 +225,7 @@ export const ProfileScreen = () => {
                 borderRadius: 10,
                 paddingHorizontal: 9,
                 height: 60,
+                elevation: 2,
               }}
               errorMessage="Please enter your name"
               placeholder="Enter your name"
@@ -220,6 +250,7 @@ export const ProfileScreen = () => {
                 borderRadius: 10,
                 paddingHorizontal: 9,
                 height: 60,
+                elevation: 2,
               }}
               errorMessage="Please enter your password"
               placeholder="Enter your password"
@@ -238,22 +269,24 @@ export const ProfileScreen = () => {
             ></Input>
           </View>
           <View className="px-3 flex-row items-center">
-            <Text className="ml-3 font-bold text-lg">Gender:</Text>
+            <Text className="ml-3 font-bold text-lg text-white">Gender:</Text>
             <CheckBox
-              title={<Text className="text-black ml-2">Male</Text>}
+              title={<Text className="text-white ml-2">Male</Text>}
               checked={isMale}
               onPress={() => setMale(true)}
               disabled={!isEdited}
               checkedIcon="dot-circle-o"
               uncheckedIcon="circle-o"
+              containerStyle={{ backgroundColor: "transparent" }}
             />
             <CheckBox
-              title={<Text className="text-black ml-2">Female</Text>}
+              title={<Text className="text-white ml-2">Female</Text>}
               checked={!isMale}
               onPress={() => setMale(false)}
               disabled={!isEdited}
               checkedIcon="dot-circle-o"
               uncheckedIcon="circle-o"
+              containerStyle={{ backgroundColor: "transparent" }}
             />
           </View>
 
