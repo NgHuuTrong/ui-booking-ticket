@@ -4,12 +4,14 @@ import React, { useState, createContext, useEffect } from "react";
 export const UserContext = createContext({
   access_token: "",
   isAuthenticated: false,
-  authenticate: (token) => { },
-  logout: () => { },
+  authenticate: (token) => {},
+  logout: () => {},
 });
 
 export const UserContextProvider = ({ children }) => {
-  const [accessToken, setAccessToken] = useState(null);
+  const [accessToken, setAccessToken] = useState(
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkzOTk0ODYzLCJleHAiOjE3MDE3NzA4NjN9.cW2ZNqsa9czdBZE7UYSwZ212Lc2M9CZ0Uvs6MPOOhks"
+  );
 
   function authenticate(token) {
     setAccessToken(token);
