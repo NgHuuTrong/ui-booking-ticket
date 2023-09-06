@@ -1,7 +1,6 @@
 import axios from "axios";
 import { createContext, useContext } from "react";
 import { UserContext } from "./user/user.context";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const AxiosContext = createContext();
 
@@ -16,27 +15,33 @@ export const AxiosContextProvider = ({ children }) => {
     });
 
     authAxios.interceptors.request.use(
-        config => {
+        (config) => {
             if (!config.headers.Authorization) {
                 config.headers.Authorization = `Bearer ${userCtx.access_token}`;
             }
 
             return config;
         },
-        error => {
-            return Promise.reject(error);
+        (error) => {
+            return error.response.data;
+        }
+    );
+
+    authAxios.interceptors.response.use(
+        (response) => {
+            return response;
+        },
+        (error) => {
+            return error.response.data;
         }
     );
 
     publicAxios.interceptors.response.use(
-        response => {
+        (response) => {
             return response;
         },
-        error => {
-            //handle common errors, EX: 401 -> accessToken is not valid
-            if (error.response.status === 401) {
-                AsyncStorage.removeItem("access_token");
-            }
+        (error) => {
+            return error.response.data;
         }
     );
 
