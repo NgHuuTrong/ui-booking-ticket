@@ -6,42 +6,23 @@ import {
   View,
 } from "react-native";
 import { MainLayout } from "../components/Common/MainLayout";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { themeColors } from "../theme";
 import { MatchCard } from "../components/Matches/MatchCard";
 import { DateSection } from "../components/Matches/DateSection";
+import { AxiosContext } from "../services/axios.context";
+import axios from "axios";
 
 export const MatchScreen = () => {
   // Create an array to store the dates
   const [dates, setDates] = useState([]);
+  const { authAxios, publicAxios } = useContext(AxiosContext);
   useEffect(() => {
-    // Define the start and end dates
-    const startDate = new Date(2023, 7, 1); // August is 7 because months are zero-indexed
-    const endDate = new Date(2023, 8, 1); // September is 8
-
-    // Create an array to store the formatted dates
-    const formattedDateArray = [];
-
-    // Options for formatting the date
-    const dateFormatOptions = {
-      weekday: "short",
-      day: "numeric",
-      month: "short",
+    const test = async () => {
+      const data = await authAxios.get("/matches");
+      console.log("res", data);
     };
-
-    // Loop through the dates and push formatted dates to the array
-    for (
-      let currentDate = startDate;
-      currentDate < endDate;
-      currentDate.setDate(currentDate.getDate() + 1)
-    ) {
-      const formattedDate = new Intl.DateTimeFormat(
-        "en-US",
-        dateFormatOptions
-      ).format(currentDate);
-      formattedDateArray.push(formattedDate);
-    }
-    setDates(formattedDateArray);
+    test();
   }, []);
 
   return (

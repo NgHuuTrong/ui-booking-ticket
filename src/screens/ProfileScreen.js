@@ -1,10 +1,8 @@
 import {
   Dimensions,
-  ImageBackground,
   Pressable,
   ScrollView,
   Text,
-  TextInput,
   TouchableOpacity,
 } from "react-native";
 import { SubLayout } from "../components/Common/SubLayout";
