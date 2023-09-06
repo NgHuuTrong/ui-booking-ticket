@@ -23,6 +23,7 @@ import {
 } from "@expo/vector-icons";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
+const circleRadius = ((windowWidth / 4) * (windowWidth / 4) + 43 * 43) / 86;
 export const ProfileScreen = () => {
   const navigation = useNavigation();
   const userCtx = useContext(UserContext);
@@ -80,22 +81,22 @@ export const ProfileScreen = () => {
         >
           <View
             style={{
-              width: windowWidth / 2,
-              height: windowWidth / 2,
+              width: circleRadius * 2,
+              height: circleRadius * 2,
               position: "absolute",
               top: 200 - windowWidth / 4 + 60,
-              left: -20,
+              left: windowWidth / 4 - circleRadius,
               backgroundColor: themeColors.bgCard,
             }}
             className="bg-white rounded-full"
           ></View>
           <View
             style={{
-              width: windowWidth / 2,
-              height: windowWidth / 2,
+              width: circleRadius * 2,
+              height: circleRadius * 2,
               position: "absolute",
               top: 200 - windowWidth / 4 + 60,
-              right: -20,
+              right: windowWidth / 4 - circleRadius,
               backgroundColor: themeColors.bgCard,
             }}
             className="bg-white rounded-full"
