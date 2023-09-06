@@ -1,65 +1,29 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState, createContext, useEffect } from "react";
 
 export const UserContext = createContext({
-  token: "",
-  email: "",
-  phone: "",
-  name: "",
-  password: "",
-  gender: "",
-  avatar: "",
-  changeProfile: (newProfile) => { },
+  access_token: "",
   isAuthenticated: false,
-  authenticate: (token, email) => { },
+  authenticate: (token) => { },
   logout: () => { },
 });
 
 export const UserContextProvider = ({ children }) => {
-  const [authToken, setAuthToken] = useState();
-  const [profile, setProfile] = useState({
-    email: "vanhieu@gmail.com",
-    phone: "091412412",
-    name: "Nguyen Van Hieu",
-    password: "12345",
-    gender: "Male",
-    avatar: "abc"
-  });
+  const [accessToken, setAccessToken] = useState(null);
 
-  function authenticate(token, email) {
-    setAuthToken(token);
-    setProfile({ ...profile, email });
-    AsyncStorage.setItem("token", token);
-    AsyncStorage.setItem("email", email);
+  function authenticate(token) {
+    setAccessToken(token);
+    AsyncStorage.setItem("access_token", token);
   }
 
   function logout() {
-    setAuthToken(null);
-    setProfile({ ...profile, email: "" });
-    AsyncStorage.removeItem("token");
-    AsyncStorage.removeItem("email");
-  }
-
-  function changeProfile(newProfile) {
-    setProfile({
-      ...profile,
-      email: newProfile.email,
-      phone: newProfile.phone,
-      name: newProfile.name,
-      password: newProfile.password,
-      gender: newProfile.gender
-    });
+    setAccessToken(null);
+    AsyncStorage.removeItem("access_token");
   }
 
   const value = {
-    token: authToken,
-    email: profile.email,
-    phone: profile.phone,
-    name: profile.name,
-    password: profile.password,
-    gender: profile.gender,
-    avatar: profile.avatar,
-    changeProfile: changeProfile,
-    isAuthenticated: !!authToken,
+    access_token: accessToken,
+    isAuthenticated: !!accessToken,
     authenticate: authenticate,
     logout: logout,
   };
