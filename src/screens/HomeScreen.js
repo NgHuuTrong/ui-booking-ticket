@@ -1,8 +1,9 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import { FlatList, Image, Linking, Pressable, Text, View } from "react-native";
 import { MainLayout } from "../components/Common/MainLayout";
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
+import { AxiosContext } from "../services/axios.context";
 
 const news = [
   {
@@ -53,6 +54,13 @@ export const HomeScreen = () => {
       Alert.alert(`Don't know how to open this URL: ${url}`);
     }
   }, []);
+  const { publicAxios } = useContext(AxiosContext);
+
+  // useEffect(async () => {
+  //   const response = await publicAxios.get('/matches');
+
+  //   console.log('response: ', response?.data);
+  // }, []);
 
   return (
     <MainLayout>

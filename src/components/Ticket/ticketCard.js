@@ -26,84 +26,65 @@ export const TicketCard = ({ item, hasExpand = true }) => {
 
   return (
     <View
-      className=" rounded-2xl m-4 items-center"
-      style={{ backgroundColor: themeColors.bgCard, width: width - 32 }}
+      className=" rounded-2xl m-4 items-center border-white overflow-hidden"
+      style={{
+        backgroundColor: themeColors.bgCard,
+        width: width - 32,
+        borderWidth: 0.9,
+      }}
     >
       <ImageBackground
         source={require("../../../assets/images/TicketBackground.jpg")}
         style={{ objectFit: "contain" }}
       >
-        <Text
-          style={{ color: themeColors.bgButton }}
-          className="text-white text-base font-bold"
-        >
-          {datetimeTransform(item.match.time, "date")}
-        </Text>
-        <Text
-          className="text-white text-base"
-          style={{ color: themeColors.bgButton }}
-        >
-          {datetimeTransform(item.match.time, "time")}
-        </Text>
-        <View className="flex-row w-full  items-center">
+        <View className="items-center pt-4">
+          <Text className="text-white text-xl font-bold">
+            {datetimeTransform(item.match.time, "date")}
+          </Text>
+          <Text className="text-white text-base font-bold">
+            {datetimeTransform(item.match.time, "time")}
+          </Text>
+        </View>
+        <View className="flex-row w-full items-center">
           <View className="flex-1 justify-center">
             <Club name={item.homeClub.name} uri={item.homeClub.logo} />
           </View>
 
-          <View className="flex-none">
-            <Text className="text-white text-base font-bold">VS</Text>
+          <View className="items-center justify-center">
+            <Text className="text-slate-900  text-2xl font-extrabold">VS</Text>
           </View>
 
           <View className="flex-1 justify-center">
             <Club name={item.awayClub.name} uri={item.awayClub.logo} />
           </View>
         </View>
+        <View className="flex-row bg-white p-2 justify-between opacity-80">
+          <View className="justify-center flex-row items-center">
+            <Text
+              className="text-slate-900 font-bold text-base mr-8"
+              style={{ color: "#0e143c" }}
+            >
+              Area: {item.ticket.area}
+            </Text>
+            <Text
+              className="text-slate-900 font-bold text-base"
+              style={{ color: "#0e143c" }}
+            >
+              Seat: {item.ticket.seat}
+            </Text>
+          </View>
+
+          <View className="items-center justify-center">
+            <TouchableOpacity
+              onPress={() => navigation.navigate("TicketDetail", { item })}
+              style={{ backgroundColor: "#002fa5" }}
+              className="rounded-lg p-2 items-center w-28"
+            >
+              <Text className="font-bold text-white">View details</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </ImageBackground>
-      {hasExpand &&
-        (expand ? (
-          <View className="w-full">
-            <View className="flex-row">
-              <View className="flex-1">
-                <Text className="text-white font-light">
-                  Area: {item.ticket.area}
-                </Text>
-                <Text className="text-white font-light">
-                  Seat: {item.ticket.seat}
-                </Text>
-              </View>
-
-              <View className="flex-1">
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("TicketDetail", { item })}
-                  style={{ backgroundColor: themeColors.bgButton }}
-                  className="rounded-lg p-2 items-center"
-                >
-                  <Text className="font-bold">Detail</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            <View className="mt-2 h-0.5 bg-white w-full"></View>
-            <TouchableOpacity
-              className="w-full items-center"
-              style={{ backgroundColor: themeColors.bgScreen }}
-              onPress={handleExpand}
-            >
-              <Entypo name="arrow-bold-up" color={"white"} size={22} />
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <View className=" w-full">
-            <View className="h-0.5 bg-white w-full"></View>
-            <TouchableOpacity
-              className="w-full items-center"
-              style={{ backgroundColor: themeColors.bgScreen }}
-              onPress={handleExpand}
-            >
-              <Entypo name="arrow-bold-down" color={"white"} size={22} />
-            </TouchableOpacity>
-          </View>
-        ))}
     </View>
   );
 };
