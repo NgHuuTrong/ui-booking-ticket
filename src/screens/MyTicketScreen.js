@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -10,6 +10,9 @@ import {
 import { MainLayout } from "../components/Common/MainLayout";
 import { themeColors } from "../theme";
 import { TicketCard } from "../components/Ticket/ticketCard";
+import { getAllMatch } from "../services/ticket.service";
+
+import { AxiosContext } from "../services/axios.context";
 
 const { width } = Dimensions.get("window");
 
@@ -72,6 +75,8 @@ export const MyTicketScreen = () => {
   const flatListRef = useRef(null);
   const [ticket, setTicket] = useState([]);
 
+  const { authAxios, publicAxios } = useContext(AxiosContext);
+
   useEffect(() => {
     const fetchTicket = () => {
       const res = data.map((ele) => {
@@ -92,6 +97,11 @@ export const MyTicketScreen = () => {
       return res;
     };
     setTicket(fetchTicket);
+
+    async function fetchData() {
+      await getAllMatch(authAxios);
+    }
+    fetchData();
   }, []);
 
   const handleOnScroll = useCallback((event) => {
