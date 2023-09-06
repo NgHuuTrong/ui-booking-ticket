@@ -4,6 +4,7 @@ import { UserContextProvider } from "./src/services/user/user.context";
 import "react-native-gesture-handler";
 import "react-native-reanimated";
 import { AppIntroPage } from "./src/components/AppIntroPage";
+import { AxiosContextProvider } from "./src/services/axios.context";
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -14,7 +15,9 @@ export default function App() {
   }
   return (
     <UserContextProvider>
-      <AppNavigation></AppNavigation>
+      <AxiosContextProvider>
+        <AppNavigation />
+      </AxiosContextProvider>
     </UserContextProvider>
   );
 }
