@@ -1,19 +1,15 @@
 import {
   Dimensions,
-  ImageBackground,
   Pressable,
   ScrollView,
   Text,
-  TextInput,
   TouchableOpacity,
 } from "react-native";
-import { SubLayout } from "../components/Common/SubLayout";
 import { View } from "react-native";
-import { Avatar, Button, CheckBox, Input, Stack } from "@rneui/themed";
-import { useContext, useState } from "react";
+import { Avatar, Button, CheckBox, Input } from "@rneui/themed";
+import { useContext, useEffect, useState } from "react";
 import { themeColors } from "../theme";
-import { UserContext } from "../services/user/user.context";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import {
   AntDesign,
@@ -21,28 +17,63 @@ import {
   Entypo,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
+import { getUser, updateUser } from "../services/user/user.service";
+import { AxiosContext } from "../services/axios.context";
+import { UserContext } from "../services/user/user.context";
+import { AuthSection } from "../components/AuthSection";
+
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 const circleRadius = ((windowWidth / 4) * (windowWidth / 4) + 43 * 43) / 86;
+
 export const ProfileScreen = () => {
   const navigation = useNavigation();
-  const userCtx = useContext(UserContext);
   const [isEdited, setEdited] = useState(false);
-  const [inputs, setInputs] = useState({
-    email: userCtx.email,
-    phone: userCtx.phone,
-    name: userCtx.name,
-    password: userCtx.password,
+  const [currentName, setCurrentName] = useState('');
+  const [details, setDetails] = useState({
+    email: '',
+    phone: '',
+    name: '',
+    gender: '',
+    photo: '',
   });
-  const [isMale, setMale] = useState(
-    userCtx.gender.toLowerCase() === "male" ? true : false
-  );
+  const [inputs, setInputs] = useState({
+    email: '',
+    phone: '',
+    name: '',
+    gender: '',
+    photo: ''
+  });
+  const isFocused = useIsFocused();
+  const { access_token } = useContext(UserContext);
+  const { authAxios } = useContext(AxiosContext);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getUser(authAxios);
+
+      setCurrentName(res.name);
+      setDetails({
+        email: res.email,
+        phone: res.phone,
+        name: res.name,
+        gender: res.gender
+      });
+      setInputs({
+        email: res.email,
+        phone: res.phone,
+        name: res.name,
+        gender: res.gender
+      });
+    };
+
+    if (access_token) {
+      fetchData();
+    }
+  }, [isFocused]);
 
   const handleChangeProfile = () => {
-    userCtx.changeProfile({
-      ...inputs,
-      gender: isMale ? "male" : "female",
-    });
+    // update user here 
 
     setEdited(false);
   };
@@ -112,23 +143,27 @@ export const ProfileScreen = () => {
             onPress={() => setEdited(true)}
             className="absolute right-2 top-7"
           >
-            {!isEdited ? (
-              <EvilIcons name="pencil" size={38} color="white" />
-            ) : (
-              <Pressable
-                onPress={() => {
-                  setEdited(false);
-                  setInputs({
-                    email: userCtx.email,
-                    phone: userCtx.phone,
-                    name: userCtx.name,
-                    password: userCtx.password,
-                  });
-                }}
-              >
-                <Text className="text-white text-lg font-semibold">Cancel</Text>
-              </Pressable>
-            )}
+            {
+              access_token ? (
+                !isEdited ? (
+                  <EvilIcons name="pencil" size={38} color="white" />
+                ) : (
+                  <Pressable
+                    onPress={() => {
+                      setEdited(false);
+                      setInputs({
+                        email: details.email,
+                        phone: details.phone,
+                        name: details.name,
+                        gender: details.gender
+                      });
+                    }}
+                  >
+                    <Text className="text-white text-lg font-semibold">Cancel</Text>
+                  </Pressable>
+                )
+              ) : ''
+            }
           </Pressable>
         </View>
         <View className="items-center" style={{ marginTop: -60 }}>
@@ -147,9 +182,8 @@ export const ProfileScreen = () => {
             className
           />
           <Pressable
-            className={`justify-center items-center ${
-              isEdited ? "" : "opacity-80"
-            } absolute`}
+            className={`justify-center items-center ${isEdited ? "" : "opacity-80"
+              } absolute`}
             onPress={pickImage}
             disabled={!isEdited}
             style={{
@@ -164,8 +198,8 @@ export const ProfileScreen = () => {
               <Entypo name="pencil" size={24} color="rgb(59 130 246)" />
             </View>
           </Pressable>
-          <Text className="text-white text-xl font-bold mt-2">
-            Nguyen Van Hieu
+          <Text className="text-white text-xl font-bold my-2">
+            {currentName}
           </Text>
         </View>
         <ScrollView style={{ height: windowHeight - 150.095 - 156.1904 + 60 }}>
@@ -178,7 +212,7 @@ export const ProfileScreen = () => {
                 height: 60,
                 elevation: 2,
               }}
-              errorMessage="Please enter your email address"
+              //errorMessage="Please enter your email address"
               placeholder="Enter your email"
               leftIcon={
                 <MaterialCommunityIcons
@@ -203,7 +237,7 @@ export const ProfileScreen = () => {
                 height: 60,
                 elevation: 2,
               }}
-              errorMessage="Please enter your valid phone"
+              //errorMessage="Please enter your valid phone"
               placeholder="Enter your phone"
               leftIcon={
                 <MaterialCommunityIcons
@@ -228,7 +262,7 @@ export const ProfileScreen = () => {
                 height: 60,
                 elevation: 2,
               }}
-              errorMessage="Please enter your name"
+              //errorMessage="Please enter your name"
               placeholder="Enter your name"
               leftIcon={
                 <MaterialCommunityIcons
@@ -244,7 +278,7 @@ export const ProfileScreen = () => {
               value={inputs.name}
             ></Input>
           </View>
-          <View className="px-3 mt-3">
+          {/* <View className="px-3 mt-3">
             <Input
               inputContainerStyle={{
                 backgroundColor: "#f9f9f9",
@@ -253,7 +287,7 @@ export const ProfileScreen = () => {
                 height: 60,
                 elevation: 2,
               }}
-              errorMessage="Please enter your password"
+              //errorMessage="Please enter your password"
               placeholder="Enter your password"
               leftIcon={
                 <MaterialCommunityIcons
@@ -263,18 +297,18 @@ export const ProfileScreen = () => {
                 />
               }
               disabled={!isEdited}
-              value={inputs.password}
+              value={details.password}
               onChangeText={(newText) =>
-                setInputs({ ...inputs, password: newText })
+                setDetails({ ...details, password: newText })
               }
             ></Input>
-          </View>
+          </View> */}
           <View className="px-3 flex-row items-center">
             <Text className="ml-3 font-bold text-lg text-white">Gender:</Text>
             <CheckBox
               title={<Text className="text-white ml-2">Male</Text>}
-              checked={isMale}
-              onPress={() => setMale(true)}
+              checked={inputs.gender === 'male' ? true : false}
+              onPress={() => setInputs({ ...inputs, gender: 'male' })}
               disabled={!isEdited}
               checkedIcon="dot-circle-o"
               uncheckedIcon="circle-o"
@@ -282,87 +316,58 @@ export const ProfileScreen = () => {
             />
             <CheckBox
               title={<Text className="text-white ml-2">Female</Text>}
-              checked={!isMale}
-              onPress={() => setMale(false)}
+              checked={inputs.gender === 'female' ? true : false}
+              onPress={() => setInputs({ ...inputs, gender: 'female' })}
               disabled={!isEdited}
               checkedIcon="dot-circle-o"
               uncheckedIcon="circle-o"
               containerStyle={{ backgroundColor: "transparent" }}
             />
           </View>
-
-          {isEdited && (
-            <View className="w-full justify-center items-center mt-4">
-              <Button
-                title="Update"
-                titleStyle={{ fontWeight: "700", color: "white" }}
-                buttonStyle={{
-                  backgroundColor: "#7d6bfc",
-                  borderColor: "white",
-                  borderWidth: 1,
-                  borderRadius: 14,
-                  height: 60,
-                }}
-                containerStyle={{
-                  width: "90%",
-                  marginVertical: 10,
-                }}
-                onPress={handleChangeProfile}
-              />
-            </View>
-          )}
-          <View className="p-4">
-            <View className="justify-center bg-slate-800 p-4 items-center rounded-lg">
-              <View className="w-full items-start">
-                <Text className="text-white text-xl font-bold">
-                  Get more from UEFA
-                </Text>
-                <Text className="flex-wrap text-white font-semibold">
-                  Get your account and enjoy unrivalled access to match
-                  highlights, latests news, official games and more.
-                </Text>
-              </View>
-              <View className="flex-row">
+          {
+            access_token && <Button
+              title="Update password"
+              titleStyle={{
+                fontWeight: "700",
+                color: themeColors.bgButton,
+              }}
+              buttonStyle={{
+                backgroundColor: "transparent",
+                borderColor: themeColors.bgButton,
+                borderWidth: 1,
+              }}
+              containerStyle={{
+                width: windowWidth / 2 - 33,
+                marginLeft: 20,
+                marginVertical: 10,
+              }}
+            />
+          }
+          {
+            isEdited && (
+              <View className="w-full justify-center items-center mt-4">
                 <Button
-                  title="Login"
-                  titleStyle={{
-                    fontWeight: "700",
-                    color: themeColors.bgScreen,
-                  }}
+                  title="Update"
+                  titleStyle={{ fontWeight: "700", color: "white" }}
                   buttonStyle={{
-                    backgroundColor: themeColors.bgButton,
-                    borderColor: "transparent",
-                    borderWidth: 0,
-                    borderRadius: 10,
-                  }}
-                  containerStyle={{
-                    width: windowWidth / 2 - 33,
-                    marginRight: 10,
-                    marginVertical: 10,
-                  }}
-                  onPress={() => navigation.navigate("Login")}
-                />
-
-                <Button
-                  title="Create account"
-                  titleStyle={{
-                    fontWeight: "700",
-                    color: themeColors.bgButton,
-                  }}
-                  buttonStyle={{
-                    backgroundColor: "transparent",
-                    borderColor: themeColors.bgButton,
+                    backgroundColor: "#7d6bfc",
+                    borderColor: "white",
                     borderWidth: 1,
-                    borderRadius: 10,
+                    borderRadius: 14,
+                    height: 60,
                   }}
                   containerStyle={{
-                    width: windowWidth / 2 - 33,
+                    width: "90%",
                     marginVertical: 10,
                   }}
+                  onPress={handleChangeProfile}
                 />
               </View>
-            </View>
-          </View>
+            )
+          }
+          {
+            !access_token && <AuthSection />
+          }
         </ScrollView>
       </View>
     </View>
