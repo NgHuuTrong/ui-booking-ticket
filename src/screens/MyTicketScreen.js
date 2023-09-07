@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -6,93 +6,61 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 
 import { MainLayout } from "../components/Common/MainLayout";
 import { themeColors } from "../theme";
 import { TicketCard } from "../components/Ticket/ticketCard";
+import { AxiosContext } from "../services/axios.context";
+import { getMyTicket } from "../services/ticket.service";
 
 const { width } = Dimensions.get("window");
 
 const List = ({ data }) => {
   return (
-    <FlatList
-      data={data}
-      keyExtractor={(item) => item.ticket.ticket_id}
-      contentContainerStyle={{
-        paddingBottom: 250,
-        minHeight: "100%",
-      }}
-      renderItem={({ item }) => {
-        return <TicketCard item={item} />;
-      }}
-    />
+    <>
+      {data && data.length === 0 ? (
+        <View className="items-center" style={{ width: width }}>
+          <Text className="font-bold text-white">
+            You don't have any ticket here!
+          </Text>
+        </View>
+      ) : (
+        <FlatList
+          data={data}
+          keyExtractor={(item) => item.ticketId}
+          contentContainerStyle={{
+            paddingBottom: 250,
+            minHeight: "100%",
+          }}
+          renderItem={({ item }) => {
+            return <TicketCard item={item} />;
+          }}
+        />
+      )}
+    </>
   );
 };
 
-const data = [
-  {
-    ticket_id: 1,
-    user_id: 1,
-    match_id: 1,
-    area: "North",
-    seat: 1,
-    price: 100,
-    code: "0e76b6a34e920044edcb9cd3f4afb744565d49baa212321a64cffe8e80eae930",
-    order_time: "2023-08-30 15:00:00",
-  },
-  {
-    ticket_id: 2,
-    user_id: 1,
-    match_id: 5,
-    area: "North",
-    seat: 1,
-    price: 100,
-    code: "0e76b6a34e920044edcb9cd3f4afb744565d49baa212321a64cffe8e80eae930",
-    order_time: "2023-08-30 15:00:00",
-  },
-  {
-    ticket_id: 3,
-    user_id: 1,
-    match_id: 10,
-    area: "North",
-    seat: 1,
-    price: 100,
-    code: "0e76b6a34e920044edcb9cd3f4afb744565d49baa212321a64cffe8e80eae930",
-    order_time: "2023-08-30 15:00:00",
-  },
-];
-
-const part = ["Waiting", "Active", "History"];
-const match = require("../../assets/data/match.json");
-const club = require("../../assets/data/club.json");
-const stadium = require("../../assets/data/stadium.json");
+const part = ["Active", "History"];
 
 export const MyTicketScreen = () => {
   const [active, setActive] = useState(0);
   const flatListRef = useRef(null);
   const [ticket, setTicket] = useState([]);
 
+  const { authAxios, publicAxios } = useContext(AxiosContext);
+
+  const isFocused = useIsFocused();
+
   useEffect(() => {
-    const fetchTicket = () => {
-      const res = data.map((ele) => {
-        const tmp = match.find((el) => el.match_id === ele.match_id);
-        const homeClub = club.find((el) => el.club_id === tmp.home_club_id);
-        const awayClub = club.find((el) => el.club_id === tmp.away_club_id);
-        const tmpStadium = stadium.find(
-          (el) => el.stadium_id === tmp.stadium_id
-        );
-        return {
-          ticket: ele,
-          match: tmp,
-          homeClub,
-          awayClub,
-          stadium: tmpStadium,
-        };
-      });
-      return res;
+    const fetchData = async () => {
+      const res = await getMyTicket(authAxios);
+      setTicket(res);
     };
-    setTicket(fetchTicket);
-  }, []);
+
+    fetchData();
+  }, [isFocused]);
 
   const handleOnScroll = useCallback((event) => {
     const index = event.nativeEvent.contentOffset.x / width;
@@ -105,7 +73,6 @@ export const MyTicketScreen = () => {
       index: index,
     });
   };
-
   return (
     <MainLayout>
       <View>
@@ -143,10 +110,10 @@ export const MyTicketScreen = () => {
           horizontal
           pagingEnabled
           snapToAlignment="center"
-          keyExtractor={(item, index) => index}
+          keyExtractor={({ item, index }) => index}
           data={part}
           showsHorizontalScrollIndicator={false}
-          renderItem={() => <List data={ticket} />}
+          renderItem={({ item, index }) => <List data={ticket[index]} />}
           onScroll={handleOnScroll}
         />
       </View>

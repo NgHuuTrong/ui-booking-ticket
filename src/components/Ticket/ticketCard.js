@@ -23,7 +23,6 @@ export const TicketCard = ({ item, hasExpand = true }) => {
   const handleExpand = () => {
     setExpand((prev) => (prev = !prev));
   };
-
   return (
     <View
       className=" rounded-2xl m-4 items-center border-white overflow-hidden"
@@ -47,7 +46,10 @@ export const TicketCard = ({ item, hasExpand = true }) => {
         </View>
         <View className="flex-row w-full items-center">
           <View className="flex-1 justify-center">
-            <Club name={item.homeClub.name} uri={item.homeClub.logo} />
+            <Club
+              name={item.match.homeClub.name}
+              uri={item.match.homeClub.logo}
+            />
           </View>
 
           <View className="items-center justify-center">
@@ -55,7 +57,10 @@ export const TicketCard = ({ item, hasExpand = true }) => {
           </View>
 
           <View className="flex-1 justify-center">
-            <Club name={item.awayClub.name} uri={item.awayClub.logo} />
+            <Club
+              name={item.match.awayClub.name}
+              uri={item.match.awayClub.logo}
+            />
           </View>
         </View>
         <View className="flex-row bg-white p-2 justify-between opacity-80">
@@ -64,13 +69,13 @@ export const TicketCard = ({ item, hasExpand = true }) => {
               className="text-slate-900 font-bold text-base mr-8"
               style={{ color: "#0e143c" }}
             >
-              Area: {item.ticket.area}
+              Area: {item.area}
             </Text>
             <Text
               className="text-slate-900 font-bold text-base"
               style={{ color: "#0e143c" }}
             >
-              Seat: {item.ticket.seat}
+              Seat: {item.seat}
             </Text>
           </View>
 
