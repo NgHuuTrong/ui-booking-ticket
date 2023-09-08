@@ -23,7 +23,7 @@
     "expo-image-picker": "~14.3.2",
     "expo-status-bar": "~1.6.0",
     "lottie-ios": "^3.4.0",
-    "lottie-react-native": "^5.1.4",
+    "lottie-react-native": "^5.1.6",
     "moti": "^0.26.0",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
