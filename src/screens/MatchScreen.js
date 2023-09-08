@@ -14,9 +14,9 @@ import { AxiosContext } from "../services/axios.context";
 import axios from "axios";
 import { datetimeTransform } from "../utils/timeTransform";
 import { getAllMatches } from "../services/match.service";
+import InAppLoading from "../components/InAppLoading";
 
 export const MatchScreen = () => {
-  // Create an array to store the dates
   const { authAxios, publicAxios } = useContext(AxiosContext);
   const [ref, setRef] = useState(null);
   const [tapRef, setTapRef] = useState(null);
@@ -24,6 +24,7 @@ export const MatchScreen = () => {
   const [index, setIndex] = useState(0);
   const [sectionCords, setSectionCords] = useState([]);
   const [tapCords, setTapCords] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const scrollHandler = (e) => {
     setIndex(e);
     ref.scrollTo({
@@ -67,6 +68,18 @@ export const MatchScreen = () => {
     };
     fetchMatches();
   }, []);
+  useEffect(() => {
+    const dataLength = Object.keys(matchDataGroupByDate).length;
+    console.log(sectionCords.length, tapCords.length);
+    if (
+      sectionCords.length > 0 &&
+      tapCords.length > 0 &&
+      sectionCords.length === dataLength &&
+      tapCords.length === dataLength
+    ) {
+      setIsLoading(false);
+    }
+  }, [sectionCords, tapCords]);
   const handleScroll = (event) => {
     const scrollY = event.nativeEvent.contentOffset.y;
     for (let i = 0; i < sectionCords.length; i++) {
@@ -84,6 +97,7 @@ export const MatchScreen = () => {
       }
     }
   };
+
   return (
     <MainLayout>
       <View className="h-14 mt-2">
@@ -161,6 +175,7 @@ export const MatchScreen = () => {
           );
         })}
       </ScrollView>
+      <InAppLoading visible={isLoading}></InAppLoading>
     </MainLayout>
   );
 };
