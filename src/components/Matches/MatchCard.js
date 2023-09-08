@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 
 export const MatchCard = ({ matchData }) => {
   const navigation = new useNavigation();
+  console.log(matchData);
   return (
     <Pressable
       className="flex-row p-2"
@@ -17,7 +18,9 @@ export const MatchCard = ({ matchData }) => {
         <View className="flex-row justify-between mb-2">
           <View className="flex-row">
             <Image
-              source={require("../../../assets/images/team1.png")}
+              source={{
+                uri: matchData.home_club.logo,
+              }}
               className="w-6 h-6 mr-2"
             ></Image>
             <Text className="text-white font-semibold">
@@ -31,7 +34,9 @@ export const MatchCard = ({ matchData }) => {
         <View className="flex-row justify-between">
           <View className="flex-row">
             <Image
-              source={require("../../../assets/images/team1.png")}
+              source={{
+                uri: matchData.away_club.logo,
+              }}
               className="w-6 h-6 mr-2"
             ></Image>
             <Text className="text-white font-semibold">
