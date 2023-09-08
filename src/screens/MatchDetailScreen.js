@@ -9,13 +9,23 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { themeColors } from "../theme";
 import { Ionicons } from "@expo/vector-icons";
 import { Club } from "../components/Club/Club";
-export const MatchDetailScreen = () => {
-  const navigation = useNavigation();
-  const [index, setIndex] = useState(0);
+import { AxiosContext } from "../services/axios.context";
+import { getAllMatches } from "../services/match.service";
+export const MatchDetailScreen = ({ navigation, route }) => {
+  const { authAxios, publicAxios } = useContext(AxiosContext);
+  const { matchData } = route.params;
+  console.log(matchData);
+  useEffect(() => {
+    // async function fetchMachDetail() {
+    //   const data = await getAllMatches(authAxios);
+    //   console.log(data);
+    // }
+    // test();
+  }, []);
   return (
     <>
       <StatusBar></StatusBar>
@@ -31,11 +41,6 @@ export const MatchDetailScreen = () => {
             >
               <AntDesign name="left" size={30} color="white" />
             </TouchableOpacity>
-            <View className="items-center">
-              <Text className="text-white">
-                Man City win on penalties {" (5-4)"}
-              </Text>
-            </View>
             <View className="flex-row">
               <Club
                 name={"Mancity"}
@@ -49,29 +54,6 @@ export const MatchDetailScreen = () => {
                 name={"Arsenal"}
                 uri={"https://media-3.api-sports.io/football/teams/42.png"}
               />
-            </View>
-            <View className="flex-row justify-center">
-              <View className="items-end">
-                <Text className="text-white text-sm ">
-                  <Text className="font-bold">Earling Halland</Text> 1', 10',
-                  30'
-                </Text>
-                <Text className="text-white ">
-                  <Text className="font-bold">Phil Folden</Text> 2', 25',
-                </Text>
-              </View>
-              <View className="w-8"></View>
-              <View className="items-start">
-                <Text className="text-white ">
-                  <Text className="font-bold">Earling Halland</Text> 89'
-                </Text>
-              </View>
-            </View>
-            <View className="flex-row justify-center items-center mt-4">
-              <AntDesign name="play" size={24} color="white" />
-              <Text className="text-white font-semibold ml-2">
-                Watch highlights
-              </Text>
             </View>
           </ImageBackground>
         </View>

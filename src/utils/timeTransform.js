@@ -1,3 +1,28 @@
+const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
+const dayNames = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
 export const datetimeTransform = (datetime, type = "all") => {
   const transform = new Date(datetime);
 
@@ -24,5 +49,14 @@ export const datetimeTransform = (datetime, type = "all") => {
         hour: "2-digit",
         hour12: true,
       });
+    case "CustomForMatchScreen": {
+      const inputDate = new Date(datetime);
+      const day = dayNames[inputDate.getUTCDay()];
+      const month = monthNames[inputDate.getUTCMonth()];
+      const year = inputDate.getUTCFullYear();
+      const dayOfMonth = inputDate.getUTCDate();
+      const formattedDate = `${day}, ${dayOfMonth} ${month}, ${year}`;
+      return formattedDate;
+    }
   }
 };
