@@ -36,8 +36,11 @@ export const MatchScreen = () => {
   useEffect(() => {
     const fetchMatches = async () => {
       let data = await getAllMatches(authAxios);
+      const sortedData = data.sort(
+        (data1, data2) => new Date(data1.time) - new Date(data2.time)
+      );
       const dataGroupByDate = {};
-      data.forEach((match) => {
+      sortedData.forEach((match) => {
         const date = datetimeTransform(match.time, "CustomForMatchScreen");
         if (!dataGroupByDate[date]) {
           dataGroupByDate[date] = [];
