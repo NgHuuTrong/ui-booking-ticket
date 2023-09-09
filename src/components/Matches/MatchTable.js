@@ -2,7 +2,7 @@ import { Text, View } from "react-native";
 import { MatchCard } from "./MatchCard";
 import { themeColors } from "../../theme";
 
-export const MatchTable = () => {
+export const MatchTable = ({ roundTitle, roundMatches }) => {
   return (
     <View
       style={{ backgroundColor: themeColors.bgCard }}
@@ -12,9 +12,11 @@ export const MatchTable = () => {
         className="text-white font-semibold p-4 border-b-slate-500 "
         style={{ borderBottomWidth: 1 }}
       >
-        Second qualifying round - 2nd leg
+        {roundTitle}
       </Text>
-      <MatchCard></MatchCard>
+      {roundMatches.map((match, i) => {
+        return <MatchCard key={match.match_id} matchData={match}></MatchCard>;
+      })}
     </View>
   );
 };

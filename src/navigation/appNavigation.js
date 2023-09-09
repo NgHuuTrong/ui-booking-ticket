@@ -4,17 +4,49 @@ import { HomeScreen } from "../screens/HomeScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { LeaderBoardScreen } from "../screens/LeaderBoardScreen";
 import { MatchScreen } from "../screens/MatchScreen";
+import { MatchDetailScreen } from "../screens/MatchDetailScreen";
 import { MyTicketScreen } from "../screens/MyTicketScreen";
-import { Image, LogBox, Platform, Text, View } from "react-native";
+import { Easing, Image, LogBox, Text, View } from "react-native";
 import { themeColors } from "../theme";
 import { ProfileScreen } from "../screens/ProfileScreen";
-import { MatchDetailScreen } from "../screens/MatchDetailScreen";
+import { VideoPlayerScreen } from "../screens/VideoPlayerScreen";
 import { ClubDetailScreen } from "../screens/ClubDetailScreen";
-const Stack = createNativeStackNavigator();
+import { TicketDetailScreen } from "../screens/TicketDetailScreen";
+import { LoginScreen } from "../screens/LoginScreen";
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from "@react-navigation/stack";
+import { ChooseSeatScreen } from "../screens/ChooseSeatScreen";
+import { DetailOrderInforScreen } from "../screens/DetailOrderInforScreen";
+import { DetailOrderPaymentScreen } from "../screens/DetailOrderPaymentScreen";
+import { PaypalPayment } from "../screens/PaypalPayment";
+import { PaymentSuccess } from "../screens/PaymentSuccess";
+const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
 ]);
+
+const config = {
+  animation: "spring",
+  config: {
+    stiffness: 1000,
+    damping: 50,
+    mass: 3,
+    overshootClamping: false,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
+};
+
+const closeConfig = {
+  animation: "timing",
+  config: {
+    duration: 200,
+    easing: Easing.linear,
+  },
+};
 
 export const AppNavigation = () => {
   return (
@@ -40,9 +72,58 @@ export const AppNavigation = () => {
           component={MatchDetailScreen}
         />
         <Stack.Screen
+          name="Video"
+          options={{ headerShown: false }}
+          component={VideoPlayerScreen}
+        />
+        <Stack.Screen
           name="ClubDetail"
           options={{ headerShown: false }}
           component={ClubDetailScreen}
+        />
+        <Stack.Screen
+          name="TicketDetail"
+          options={{ headerShown: false }}
+          component={TicketDetailScreen}
+        />
+        <Stack.Screen
+          name="ChooseSeat"
+          options={{ headerShown: false }}
+          component={ChooseSeatScreen}
+        />
+        <Stack.Screen
+          name="DetailOrderInfor"
+          options={{ headerShown: false }}
+          component={DetailOrderInforScreen}
+        />
+        <Stack.Screen
+          name="DetailOrderPayment"
+          options={{ headerShown: false }}
+          component={DetailOrderPaymentScreen}
+        />
+        <Stack.Screen
+          name="PaypalPayment"
+          options={{ headerShown: false }}
+          component={PaypalPayment}
+        />
+        <Stack.Screen
+          name="PaymentSuccess"
+          options={{ headerShown: false }}
+          component={PaymentSuccess}
+        />
+        <Stack.Screen
+          name="Login"
+          options={{
+            gestureDirection: "vertical",
+            headerShown: false,
+            transitionSpec: {
+              open: config,
+              close: closeConfig,
+            },
+            cardStyleInterpolator:
+              CardStyleInterpolators.forModalPresentationIOS,
+          }}
+          component={LoginScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
@@ -147,5 +228,11 @@ const menuIcons = (route, focused) => {
       </View>
     );
   }
-  return icon;
+
+  let buttonClass = focused ? "bg-white" : "";
+  return (
+    <View className={"flex items-center rounded-full p-3 shadow" + buttonClass}>
+      {icon}
+    </View>
+  );
 };

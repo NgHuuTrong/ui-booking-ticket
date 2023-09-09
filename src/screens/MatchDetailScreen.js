@@ -1,196 +1,179 @@
 import { StatusBar } from "expo-status-bar";
 import {
+  Dimensions,
   Image,
   ImageBackground,
   Pressable,
+  ScrollView,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { themeColors } from "../theme";
-import { Ionicons } from "@expo/vector-icons";
-export const MatchDetailScreen = () => {
-  const navigation = useNavigation();
-  const [index, setIndex] = useState(0);
+import { Club } from "../components/Club/Club";
+import { AxiosContext } from "../services/axios.context";
+import { getAllMatches, getMatch } from "../services/match.service";
+import { getStadium } from "../services/stadium.service";
+import InAppLoading from "../components/InAppLoading";
+import { datetimeTransform } from "../utils/timeTransform";
+import { Button } from "@rneui/themed";
+
+const windowWidth = Dimensions.get("window").width;
+export const MatchDetailScreen = ({ navigation, route }) => {
+  const [stadium, setStadium] = useState(null);
+  const [matchData, setMatchData] = useState(null);
+  const { authAxios, publicAxios } = useContext(AxiosContext);
+  const { matchId } = route.params;
+  useEffect(() => {
+    async function fetchMatch() {
+      const matchData = await getMatch(authAxios, matchId);
+      matchData.time = datetimeTransform(matchData.time);
+      matchData.remainSeats =
+        matchData.remain_seats_north +
+        matchData.remain_seats_south +
+        matchData.remain_seats_east +
+        matchData.remain_seats_west;
+      setMatchData(matchData);
+      fetchStadium(matchData.stadium_id);
+    }
+    async function fetchStadium(stadium_id) {
+      const data = await getStadium(authAxios, stadium_id);
+      setTimeout(() => setStadium(data), 1000);
+    }
+    fetchMatch();
+  }, []);
+  const handleNavigate = () => {
+    if (matchData.happened == false && matchData.remainSeats > 0) {
+      navigation.navigate("ChooseSeat", { matchId: matchData.match_id });
+    }
+  };
   return (
     <>
       <StatusBar></StatusBar>
       <View className="flex-1">
         <View>
           <ImageBackground
-            source={require("../../assets/images/HeaderBackground.jpeg")}
+            source={require("../../assets/images/MatchDetailBackground.jpg")}
             className="pt-20 pb-4"
           >
-            <TouchableOpacity
-              className=" rounded-full absolute left-2 top-4"
-              onPress={() => navigation.goBack()}
-            >
-              <AntDesign name="left" size={30} color="white" />
-            </TouchableOpacity>
-            <View className="items-center">
-              <Text className="text-white">
-                Man City win on penalties {" (5-4)"}
-              </Text>
-            </View>
-            <View className="flex-row">
-              <Pressable
-                className="items-center p-4"
-                onPress={() => navigation.navigate("ClubDetail")}
-              >
-                <Image
-                  source={require("../../assets/images/team1.png")}
-                  style={{ height: 60, aspectRatio: 1 }}
-                ></Image>
-                <Text className="text-white">Man City</Text>
-              </Pressable>
-              <View className="flex-1 items-center justify-center">
-                <Text className="text-white text-4xl font-bold ">5 - 1</Text>
-                <Text className="text-white">Full time</Text>
-              </View>
-              <Pressable
-                className="items-center p-4"
-                onPress={() => navigation.navigate("ClubDetail")}
-              >
-                <Image
-                  source={require("../../assets/images/team2.png")}
-                  style={{ height: 60, aspectRatio: 1 }}
-                ></Image>
-                <Text className="text-white">Arsenal</Text>
-              </Pressable>
-            </View>
-            <View className="flex-row justify-center">
-              <View className="items-end">
-                <Text className="text-white text-sm ">
-                  <Text className="font-bold">Earling Halland</Text> 1', 10',
-                  30'
-                </Text>
-                <Text className="text-white ">
-                  <Text className="font-bold">Phil Folden</Text> 2', 25',
-                </Text>
-              </View>
-              <View className="w-8"></View>
-              <View className="items-start">
-                <Text className="text-white ">
-                  <Text className="font-bold">Earling Halland</Text> 89'
-                </Text>
-              </View>
-            </View>
-            <View className="flex-row justify-center items-center mt-4">
-              <AntDesign name="play" size={24} color="white" />
-              <Text className="text-white font-semibold ml-2">
-                Watch highlights
-              </Text>
-            </View>
+            {matchData && (
+              <>
+                <TouchableOpacity
+                  className=" rounded-full absolute left-2 top-4"
+                  onPress={() => navigation.goBack()}
+                >
+                  <AntDesign name="left" size={30} color="white" />
+                </TouchableOpacity>
+                <View className="flex-row py-8">
+                  <Club
+                    name={matchData.home_club.name}
+                    uri={matchData.home_club.logo}
+                  />
+                  <View className="flex-1 items-center justify-center">
+                    {matchData.happened ? (
+                      <>
+                        <Text className="text-white text-4xl font-bold ">
+                          {matchData.result[0]} - {matchData.result[2]}
+                        </Text>
+                        <Text className="text-white">Full time</Text>
+                      </>
+                    ) : (
+                      <Text className="text-white text-4xl font-bold ">
+                        - - -
+                      </Text>
+                    )}
+                  </View>
+                  <Club
+                    name={matchData.away_club.name}
+                    uri={matchData.away_club.logo}
+                  />
+                </View>
+              </>
+            )}
           </ImageBackground>
         </View>
-
         <View
-          className="p-4 flex-1"
-          style={{ backgroundColor: themeColors.bgScreen }}
+          className="flex-1 p-4 mb-2"
+          style={{ backgroundColor: "#060e3c" }}
         >
-          <View className="mb-3">
-            <Text className="text-white text-xl font-bold mb-4">Line-ups</Text>
-          </View>
-          <View
-            className="flex-row flex-1 border-white p-4 rounded-lg"
-            style={{ borderWidth: 1 }}
-          >
-            <View className="w-1/2">
-              <View className="items-center flex-row mb-4">
+          <ScrollView className="flex-1">
+            {stadium && (
+              <View
+                className="p-4 items-center mb-4"
+                style={{ backgroundColor: themeColors.bgCard }}
+              >
+                <View className="w-full">
+                  <Text className="text-white text-xl font-semibold">
+                    Stadium: {stadium.name}
+                  </Text>
+                  <Text className="text-white text-base font-medium">
+                    Address: {stadium.address}
+                  </Text>
+                  <Text className="text-white text-base font-medium">
+                    Location: {stadium.location}
+                  </Text>
+                  <Text className="text-white text-base font-medium mb-2">
+                    Capacity: {stadium.capacity}
+                  </Text>
+                </View>
+
                 <Image
-                  source={require("../../assets/images/team1.png")}
-                  style={{ width: 40, aspectRatio: 1 }}
+                  source={{ uri: stadium.image }}
+                  style={{
+                    width: windowWidth - 58,
+                    height: (15.88 * (windowWidth - 58)) / 21.17,
+                  }}
                 ></Image>
-                <Text className="text-white">Man City</Text>
               </View>
-              <View className="flex-row mb-4">
-                <View className="justify-center items-center w-10">
-                  <Ionicons
-                    name="shirt"
-                    size={30}
-                    color="blue"
-                    style={{ position: "absolute" }}
-                  />
-                  <Text className="text-white ">9</Text>
+            )}
+            {matchData && (
+              <>
+                <View
+                  className="p-4 mb-4"
+                  style={{ backgroundColor: themeColors.bgCard }}
+                >
+                  <Text className="text-white text-base font-semibold mb-4">
+                    {matchData.round}
+                  </Text>
+                  <Text className="text-stone-300 ">{matchData.time}</Text>
                 </View>
-                <Text className="text-white">Erling Haaland</Text>
-              </View>
-              <View className="flex-row mb-4">
-                <View className="justify-center items-center w-10">
-                  <Ionicons
-                    name="shirt"
-                    size={30}
-                    color="blue"
-                    style={{ position: "absolute" }}
+                <View
+                  className="p-4"
+                  style={{ backgroundColor: themeColors.bgCard }}
+                >
+                  <Button
+                    title={
+                      matchData.happened
+                        ? "Match is overed"
+                        : matchData.remainSeats == 0
+                        ? "Sold out"
+                        : "Choose seat"
+                    }
+                    titleStyle={{ fontWeight: "700", color: "white" }}
+                    buttonStyle={{
+                      backgroundColor: "#7d6bfc",
+                      height: 60,
+                    }}
+                    disabled={
+                      matchData.happened || matchData.remainSeats == 0
+                        ? true
+                        : false
+                    }
+                    containerStyle={{
+                      width: "100%",
+                      marginVertical: 10,
+                    }}
+                    onPress={handleNavigate}
                   />
-                  <Text className="text-white ">9</Text>
                 </View>
-                <Text className="text-white">Erling Haaland</Text>
-              </View>
-              <View className="flex-row mb-4">
-                <View className="justify-center items-center w-10">
-                  <Ionicons
-                    name="shirt"
-                    size={30}
-                    color="blue"
-                    style={{ position: "absolute" }}
-                  />
-                  <Text className="text-white ">9</Text>
-                </View>
-                <Text className="text-white">Erling Haaland</Text>
-              </View>
-            </View>
-            <View className="w-1/2">
-              <View className="items-center flex-row mb-4">
-                <Image
-                  source={require("../../assets/images/team1.png")}
-                  style={{ width: 40, aspectRatio: 1 }}
-                ></Image>
-                <Text className="text-white">Man City</Text>
-              </View>
-              <View className="flex-row mb-4">
-                <View className="justify-center items-center w-10">
-                  <Ionicons
-                    name="shirt"
-                    size={30}
-                    color="blue"
-                    style={{ position: "absolute" }}
-                  />
-                  <Text className="text-white ">9</Text>
-                </View>
-                <Text className="text-white">Erling Haaland</Text>
-              </View>
-              <View className="flex-row mb-4">
-                <View className="justify-center items-center w-10">
-                  <Ionicons
-                    name="shirt"
-                    size={30}
-                    color="blue"
-                    style={{ position: "absolute" }}
-                  />
-                  <Text className="text-white ">9</Text>
-                </View>
-                <Text className="text-white">Erling Haaland</Text>
-              </View>
-              <View className="flex-row mb-4">
-                <View className="justify-center items-center w-10">
-                  <Ionicons
-                    name="shirt"
-                    size={30}
-                    color="blue"
-                    style={{ position: "absolute" }}
-                  />
-                  <Text className="text-white ">9</Text>
-                </View>
-                <Text className="text-white">Erling Haaland</Text>
-              </View>
-            </View>
-          </View>
+              </>
+            )}
+          </ScrollView>
         </View>
       </View>
+      <InAppLoading visible={stadium == null}></InAppLoading>
     </>
   );
 };

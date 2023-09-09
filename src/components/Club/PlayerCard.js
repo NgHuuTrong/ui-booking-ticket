@@ -2,7 +2,6 @@ import { Image, Text, View } from "react-native";
 import { themeColors } from "../../theme";
 
 export const PlayerCard = ({ item }) => {
-  //   console.log({ item });
   return (
     <View className="bg-white rounded-lg mr-2">
       <View className="flex-row">
