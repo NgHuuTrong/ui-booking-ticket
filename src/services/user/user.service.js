@@ -4,12 +4,12 @@ export const getUser = async (axios) => {
     try {
         const response = await axios.get('/users/me');
 
-        if (response.data.status === "success") {
+        if (!response.error && response?.data.status === "success") {
             return camelize(response?.data?.data?.data);
         } else {
-            return response.message;
+            throw response;
         }
     } catch (error) {
-        console.log(error);
+        throw error.message;
     }
 }

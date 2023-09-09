@@ -5,6 +5,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { AxiosContext } from "../services/axios.context";
 import { getAllNews } from "../services/news.service";
+import { ErrorAlertModal } from "../components/ErrorAlertModal";
 
 // const news = [
 //   {
@@ -56,6 +57,7 @@ export const HomeScreen = () => {
     }
   }, []);
   const [news, setNews] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const isFocused = useIsFocused();
 
@@ -63,8 +65,12 @@ export const HomeScreen = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getAllNews(publicAxios);
-      setNews(res);
+      try {
+        const res = await getAllNews(publicAxios);
+        setNews(res);
+      } catch (error) {
+        setErrorMessage(error);
+      }
     };
 
     fetchData();
@@ -72,6 +78,7 @@ export const HomeScreen = () => {
 
   return (
     <MainLayout>
+      {errorMessage && <ErrorAlertModal message={errorMessage} />}
       <FlatList
         data={news}
         renderItem={({ item }) => (

@@ -2,8 +2,8 @@ import { Button } from "@rneui/themed";
 import { useState } from "react";
 import { Image, Modal, Text, View } from "react-native";
 
-export const ErrorAlertModal = ({ message, onDismiss, onDisplay }) => {
-  const [isDisplayed, setDisplayed] = useState(onDisplay);
+export const ErrorAlertModal = ({ message, onDismiss }) => {
+  const [isDisplayed, setDisplayed] = useState(true);
 
   return (
     <Modal transparent={true} visible={isDisplayed} animationType="slide">

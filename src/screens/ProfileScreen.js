@@ -21,6 +21,7 @@ import { getUser, updateUser } from "../services/user/user.service";
 import { AxiosContext } from "../services/axios.context";
 import { UserContext } from "../services/user/user.context";
 import { AuthSection } from "../components/AuthSection";
+import { ErrorAlertModal } from "../components/ErrorAlertModal";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -44,27 +45,32 @@ export const ProfileScreen = () => {
     gender: "",
     photo: "",
   });
+  const [errorMessage, setErrorMessage] = useState('');
   const isFocused = useIsFocused();
   const { access_token } = useContext(UserContext);
   const { authAxios } = useContext(AxiosContext);
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getUser(authAxios);
+      try {
+        const res = await getUser(authAxios);
 
-      setCurrentName(res.name);
-      setDetails({
-        email: res.email,
-        phone: res.phone,
-        name: res.name,
-        gender: res.gender,
-      });
-      setInputs({
-        email: res.email,
-        phone: res.phone,
-        name: res.name,
-        gender: res.gender,
-      });
+        setCurrentName(res.name);
+        setDetails({
+          email: res.email,
+          phone: res.phone,
+          name: res.name,
+          gender: res.gender,
+        });
+        setInputs({
+          email: res.email,
+          phone: res.phone,
+          name: res.name,
+          gender: res.gender,
+        });
+      } catch (error) {
+        setErrorMessage(error);
+      }
     };
 
     if (access_token) {
@@ -101,6 +107,7 @@ export const ProfileScreen = () => {
       className="flex-1 bg-white"
       style={{ backgroundColor: themeColors.bgCard }}
     >
+      {errorMessage && <ErrorAlertModal message={errorMessage} />}
       <View>
         <View
           // source={require("../../assets/images/HeaderBackground.jpeg")}
@@ -184,9 +191,8 @@ export const ProfileScreen = () => {
             className
           />
           <Pressable
-            className={`justify-center items-center ${
-              isEdited ? "" : "opacity-80"
-            } absolute`}
+            className={`justify-center items-center ${isEdited ? "" : "opacity-80"
+              } absolute`}
             onPress={pickImage}
             disabled={!isEdited}
             style={{

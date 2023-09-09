@@ -4,16 +4,16 @@ export const getAllNews = async (axios) => {
     try {
         const response = await axios.get('/news');
 
-        if (response.data.status === "success") {
+        if (!response.error && response.data.status === "success") {
             const result = [];
             response?.data?.data?.data.forEach((ele) => {
                 result.push(ele);
             });
             return camelize(result);
         } else {
-            return response.message;
+            throw response;
         }
     } catch (error) {
-        console.log(error);
+        throw error.message;
     }
 }
