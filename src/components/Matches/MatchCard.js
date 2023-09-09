@@ -4,13 +4,12 @@ import { useNavigation } from "@react-navigation/native";
 
 export const MatchCard = ({ matchData }) => {
   const navigation = new useNavigation();
-  console.log(matchData);
   return (
     <Pressable
       className="flex-row p-2"
       onPress={() =>
         navigation.navigate("MatchDetail", {
-          matchData: matchData,
+          matchId: matchData.match_id,
         })
       }
     >

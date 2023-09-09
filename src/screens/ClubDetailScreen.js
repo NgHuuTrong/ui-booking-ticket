@@ -186,9 +186,9 @@ export const ClubDetailScreen = () => {
             <Text className="text-white text-xl font-bold mb-4">
               Previous matches
             </Text>
+            {/* <MatchTable></MatchTable>
             <MatchTable></MatchTable>
-            <MatchTable></MatchTable>
-            <MatchTable></MatchTable>
+            <MatchTable></MatchTable> */}
           </View>
 
           {/* Squad */}
