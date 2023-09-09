@@ -18,13 +18,7 @@ const InAppLoading = ({ visible }) => {
         className="flex-1 items-center justify-center "
         style={{ backgroundColor: "rgba(15, 23, 42, .6)" }}
       >
-        <View
-          className="flex-1 p-2 items-center justify-center px-4"
-          onLayout={(event) => {
-            const { width, height } = event.nativeEvent.layout;
-            console.log(width, height);
-          }}
-        >
+        <View className="flex-1 p-2 items-center justify-center px-4">
           <View className="items-center">
             <LottieView
               source={require("../../assets/Lottie/InAppLoading.json")}

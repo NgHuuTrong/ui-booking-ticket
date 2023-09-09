@@ -29,20 +29,20 @@ const circleRadius = ((windowWidth / 4) * (windowWidth / 4) + 43 * 43) / 86;
 export const ProfileScreen = () => {
   const navigation = useNavigation();
   const [isEdited, setEdited] = useState(false);
-  const [currentName, setCurrentName] = useState('');
+  const [currentName, setCurrentName] = useState("");
   const [details, setDetails] = useState({
-    email: '',
-    phone: '',
-    name: '',
-    gender: '',
-    photo: '',
+    email: "",
+    phone: "",
+    name: "",
+    gender: "",
+    photo: "",
   });
   const [inputs, setInputs] = useState({
-    email: '',
-    phone: '',
-    name: '',
-    gender: '',
-    photo: ''
+    email: "",
+    phone: "",
+    name: "",
+    gender: "",
+    photo: "",
   });
   const isFocused = useIsFocused();
   const { access_token } = useContext(UserContext);
@@ -57,13 +57,13 @@ export const ProfileScreen = () => {
         email: res.email,
         phone: res.phone,
         name: res.name,
-        gender: res.gender
+        gender: res.gender,
       });
       setInputs({
         email: res.email,
         phone: res.phone,
         name: res.name,
-        gender: res.gender
+        gender: res.gender,
       });
     };
 
@@ -73,7 +73,7 @@ export const ProfileScreen = () => {
   }, [isFocused]);
 
   const handleChangeProfile = () => {
-    // update user here 
+    // update user here
 
     setEdited(false);
   };
@@ -143,27 +143,29 @@ export const ProfileScreen = () => {
             onPress={() => setEdited(true)}
             className="absolute right-2 top-7"
           >
-            {
-              access_token ? (
-                !isEdited ? (
-                  <EvilIcons name="pencil" size={38} color="white" />
-                ) : (
-                  <Pressable
-                    onPress={() => {
-                      setEdited(false);
-                      setInputs({
-                        email: details.email,
-                        phone: details.phone,
-                        name: details.name,
-                        gender: details.gender
-                      });
-                    }}
-                  >
-                    <Text className="text-white text-lg font-semibold">Cancel</Text>
-                  </Pressable>
-                )
-              ) : ''
-            }
+            {access_token ? (
+              !isEdited ? (
+                <EvilIcons name="pencil" size={38} color="white" />
+              ) : (
+                <Pressable
+                  onPress={() => {
+                    setEdited(false);
+                    setInputs({
+                      email: details.email,
+                      phone: details.phone,
+                      name: details.name,
+                      gender: details.gender,
+                    });
+                  }}
+                >
+                  <Text className="text-white text-lg font-semibold">
+                    Cancel
+                  </Text>
+                </Pressable>
+              )
+            ) : (
+              ""
+            )}
           </Pressable>
         </View>
         <View className="items-center" style={{ marginTop: -60 }}>
@@ -182,8 +184,9 @@ export const ProfileScreen = () => {
             className
           />
           <Pressable
-            className={`justify-center items-center ${isEdited ? "" : "opacity-80"
-              } absolute`}
+            className={`justify-center items-center ${
+              isEdited ? "" : "opacity-80"
+            } absolute`}
             onPress={pickImage}
             disabled={!isEdited}
             style={{
@@ -307,8 +310,8 @@ export const ProfileScreen = () => {
             <Text className="ml-3 font-bold text-lg text-white">Gender:</Text>
             <CheckBox
               title={<Text className="text-white ml-2">Male</Text>}
-              checked={inputs.gender === 'male' ? true : false}
-              onPress={() => setInputs({ ...inputs, gender: 'male' })}
+              checked={inputs.gender === "male" ? true : false}
+              onPress={() => setInputs({ ...inputs, gender: "male" })}
               disabled={!isEdited}
               checkedIcon="dot-circle-o"
               uncheckedIcon="circle-o"
@@ -316,16 +319,16 @@ export const ProfileScreen = () => {
             />
             <CheckBox
               title={<Text className="text-white ml-2">Female</Text>}
-              checked={inputs.gender === 'female' ? true : false}
-              onPress={() => setInputs({ ...inputs, gender: 'female' })}
+              checked={inputs.gender === "female" ? true : false}
+              onPress={() => setInputs({ ...inputs, gender: "female" })}
               disabled={!isEdited}
               checkedIcon="dot-circle-o"
               uncheckedIcon="circle-o"
               containerStyle={{ backgroundColor: "transparent" }}
             />
           </View>
-          {
-            access_token && <Button
+          {access_token && (
+            <Button
               title="Update password"
               titleStyle={{
                 fontWeight: "700",
@@ -342,32 +345,28 @@ export const ProfileScreen = () => {
                 marginVertical: 10,
               }}
             />
-          }
-          {
-            isEdited && (
-              <View className="w-full justify-center items-center mt-4">
-                <Button
-                  title="Update"
-                  titleStyle={{ fontWeight: "700", color: "white" }}
-                  buttonStyle={{
-                    backgroundColor: "#7d6bfc",
-                    borderColor: "white",
-                    borderWidth: 1,
-                    borderRadius: 14,
-                    height: 60,
-                  }}
-                  containerStyle={{
-                    width: "90%",
-                    marginVertical: 10,
-                  }}
-                  onPress={handleChangeProfile}
-                />
-              </View>
-            )
-          }
-          {
-            !access_token && <AuthSection />
-          }
+          )}
+          {isEdited && (
+            <View className="w-full justify-center items-center mt-4">
+              <Button
+                title="Update"
+                titleStyle={{ fontWeight: "700", color: "white" }}
+                buttonStyle={{
+                  backgroundColor: "#7d6bfc",
+                  borderColor: "white",
+                  borderWidth: 1,
+                  borderRadius: 14,
+                  height: 60,
+                }}
+                containerStyle={{
+                  width: "90%",
+                  marginVertical: 10,
+                }}
+                onPress={handleChangeProfile}
+              />
+            </View>
+          )}
+          {!access_token && <AuthSection />}
         </ScrollView>
       </View>
     </View>

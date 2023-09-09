@@ -70,7 +70,6 @@ export const MatchScreen = () => {
   }, []);
   useEffect(() => {
     const dataLength = Object.keys(matchDataGroupByDate).length;
-    console.log(sectionCords.length, tapCords.length);
     if (
       sectionCords.length > 0 &&
       tapCords.length > 0 &&
