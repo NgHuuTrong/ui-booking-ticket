@@ -3,11 +3,9 @@ export const getAllMatches = async (axios) => {
     const response = await axios.get("/matches");
     if (response.data.status === "success") {
       return response?.data?.data?.data;
-    } else {
-      return response.message;
     }
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    throw err.data.message;
   }
 };
 export const getMatch = async (axios, matchId) => {
@@ -15,10 +13,8 @@ export const getMatch = async (axios, matchId) => {
     const response = await axios.get("/matches/" + matchId);
     if (response.data.status === "success") {
       return response?.data?.data?.data;
-    } else {
-      return response.message;
     }
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    throw err.data.message;
   }
 };

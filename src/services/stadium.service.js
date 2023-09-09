@@ -6,10 +6,8 @@ export const getStadium = async (axios, stadiumId) => {
 
     if (response.data.status === "success") {
       return response?.data?.data?.data;
-    } else {
-      return response.message;
     }
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    throw err.data.message;
   }
 };
