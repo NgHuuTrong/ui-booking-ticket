@@ -15,14 +15,8 @@ import { datetimeTransform } from "../../utils/timeTransform";
 
 const { width } = Dimensions.get("window");
 
-export const TicketCard = ({ item, hasExpand = true }) => {
+export const TicketCard = ({ ticket }) => {
   const navigation = useNavigation();
-
-  const [expand, setExpand] = useState(false);
-
-  const handleExpand = () => {
-    setExpand((prev) => (prev = !prev));
-  };
   return (
     <View
       className=" rounded-2xl m-4 items-center border-white overflow-hidden"
@@ -38,17 +32,17 @@ export const TicketCard = ({ item, hasExpand = true }) => {
       >
         <View className="items-center pt-4">
           <Text className="text-white text-xl font-bold">
-            {datetimeTransform(item.match.time, "date")}
+            {datetimeTransform(ticket.match.time, "date")}
           </Text>
           <Text className="text-white text-base font-bold">
-            {datetimeTransform(item.match.time, "time")}
+            {datetimeTransform(ticket.match.time, "time")}
           </Text>
         </View>
         <View className="flex-row w-full items-center">
           <View className="flex-1 justify-center">
             <Club
-              name={item.match.homeClub.name}
-              uri={item.match.homeClub.logo}
+              name={ticket.match.homeClub.name}
+              uri={ticket.match.homeClub.logo}
             />
           </View>
 
@@ -58,30 +52,35 @@ export const TicketCard = ({ item, hasExpand = true }) => {
 
           <View className="flex-1 justify-center">
             <Club
-              name={item.match.awayClub.name}
-              uri={item.match.awayClub.logo}
+              name={ticket.match.awayClub.name}
+              uri={ticket.match.awayClub.logo}
             />
           </View>
         </View>
+
         <View className="flex-row bg-white p-2 justify-between opacity-80">
           <View className="justify-center flex-row items-center">
             <Text
               className="text-slate-900 font-bold text-base mr-8"
               style={{ color: "#0e143c" }}
             >
-              Area: {item.area}
+              Area: {ticket.area}
             </Text>
             <Text
               className="text-slate-900 font-bold text-base"
               style={{ color: "#0e143c" }}
             >
-              Seat: {item.seat}
+              Seat: {ticket.seat}
             </Text>
           </View>
 
           <View className="items-center justify-center">
             <TouchableOpacity
-              onPress={() => navigation.navigate("TicketDetail", { item })}
+              onPress={() =>
+                navigation.navigate("TicketDetail", {
+                  ticketId: ticket.ticketId,
+                })
+              }
               style={{ backgroundColor: "#002fa5" }}
               className="rounded-lg p-2 items-center w-28"
             >
