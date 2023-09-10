@@ -22,6 +22,7 @@ import { DetailOrderInforScreen } from "../screens/DetailOrderInforScreen";
 import { DetailOrderPaymentScreen } from "../screens/DetailOrderPaymentScreen";
 import { PaypalPayment } from "../screens/PaypalPayment";
 import { PaymentSuccess } from "../screens/PaymentSuccess";
+import { GroupDetailScreen } from "../screens/GroupDetailScreen";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs([
@@ -124,6 +125,11 @@ export const AppNavigation = () => {
               CardStyleInterpolators.forModalPresentationIOS,
           }}
           component={LoginScreen}
+        />
+        <Stack.Screen
+          name="GroupDetail"
+          options={{ headerShown: false }}
+          component={GroupDetailScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

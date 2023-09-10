@@ -15,7 +15,7 @@ export const MatchTable = ({ roundTitle, roundMatches }) => {
         {roundTitle}
       </Text>
       {roundMatches.map((match, i) => {
-        return <MatchCard key={match.match_id} matchData={match}></MatchCard>;
+        return <MatchCard key={match.matchId} matchData={match}></MatchCard>;
       })}
     </View>
   );

@@ -45,7 +45,7 @@ export const ProfileScreen = () => {
     gender: "",
     photo: "",
   });
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const isFocused = useIsFocused();
   const { access_token } = useContext(UserContext);
   const { authAxios } = useContext(AxiosContext);
@@ -94,8 +94,6 @@ export const ProfileScreen = () => {
       aspect: [4, 3],
       quality: 1,
     });
-
-    console.log(result);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
@@ -191,8 +189,9 @@ export const ProfileScreen = () => {
             className
           />
           <Pressable
-            className={`justify-center items-center ${isEdited ? "" : "opacity-80"
-              } absolute`}
+            className={`justify-center items-center ${
+              isEdited ? "" : "opacity-80"
+            } absolute`}
             onPress={pickImage}
             disabled={!isEdited}
             style={{

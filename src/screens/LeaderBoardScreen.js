@@ -1,56 +1,62 @@
 import { ScrollView, Text, View } from "react-native";
 import { MainLayout } from "../components/Common/MainLayout";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { themeColors } from "../theme";
 import { GroupCart } from "../components/LeaderBoard/groupCart";
+import { AxiosContext } from "../services/axios.context";
+import { getAllGroup } from "../services/group.service";
+import { Loading } from "../components/Loading";
+import { useIsFocused } from "@react-navigation/native";
 
 export const LeaderBoardScreen = () => {
   const [groups, setGroups] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+  const isFocused = useIsFocused();
+
+  const { publicAxios } = useContext(AxiosContext);
 
   useEffect(() => {
-    const fetchData = () => {
-      const _group = require("../../assets/data/group.json");
-      const _groupClub = require("../../assets/data/groupClub.json");
-      const _club = require("../../assets/data/club.json");
-
-      const result = _group.map((ele) => {
-        const tmpGrCl = _groupClub.filter((el) => el.group_id === ele.group_id);
-        const tmpCl = tmpGrCl.map((res) => {
-          const dummy = _club.find((c) => c.club_id === res.club_id);
-          return {
-            ...res,
-            club_name: dummy.name,
-            club_logo: dummy.logo,
-          };
-        });
-        tmpCl.sort(function (a, b) {
-          return b.points - a.points;
-        });
-        return {
-          group_id: ele.group_id,
-          group_name: ele.group_name,
-          clubs: tmpCl,
-        };
-      });
-      return result;
-    };
-    setGroups(fetchData);
-  }, []);
+    if (isFocused) {
+      const fetchData = async () => {
+        try {
+          setLoading(true);
+          const res = await getAllGroup(publicAxios);
+          res.forEach((ele) =>
+            ele.groupClubs.sort(function (a, b) {
+              return b.points - a.points;
+            })
+          );
+          setGroups(res);
+          setLoading(false);
+        } catch (err) {
+          setLoading(false);
+          setErrorMessage(err);
+        }
+      };
+      fetchData();
+    }
+  }, [isFocused]);
 
   return (
-    <MainLayout>
-      <ScrollView>
-        <Text
-          style={{ color: themeColors.bgButton }}
-          className=" text-2xl font-bold m-4"
-        >
-          Group stage standings
-        </Text>
-        {groups &&
-          groups.map((group) => (
-            <GroupCart group={group} key={group.group_id} />
-          ))}
-      </ScrollView>
-    </MainLayout>
+    <>
+      {loading ? (
+        <Loading />
+      ) : (
+        <MainLayout>
+          <ScrollView>
+            <Text
+              style={{ color: themeColors.bgButton }}
+              className=" text-3xl font-bold m-4"
+            >
+              Group stage standings
+            </Text>
+            {groups.map((group) => (
+              <GroupCart group={group} key={group.groupId} />
+            ))}
+          </ScrollView>
+        </MainLayout>
+      )}
+    </>
   );
 };

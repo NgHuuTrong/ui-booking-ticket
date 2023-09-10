@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Dimensions, Image } from "react-native";
 import { WebView } from "react-native-webview";
+import { UserContext } from "../services/user/user.context";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -11,13 +12,20 @@ export const PaypalPayment = ({ navigation }) => {
       navigation.navigate("PaymentSuccess");
     }
   };
+  const userCtx = useContext(UserContext);
 
   return (
     <WebView
       startInLoadingState={true}
       onNavigationStateChange={stateChng}
       renderLoading={() => <Loading />}
-      source={{ uri: `${process.env.EXPO_PUBLIC_API_URL}/pay` }}
+      source={{
+        uri: `${process.env.EXPO_PUBLIC_API_URL}/pay`,
+        headers: {
+          Authorization: `Bearer ${userCtx.access_token}`,
+        },
+        body: {},
+      }}
     />
   );
 };

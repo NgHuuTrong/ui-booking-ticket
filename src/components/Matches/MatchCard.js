@@ -9,7 +9,7 @@ export const MatchCard = ({ matchData }) => {
       className="flex-row p-2"
       onPress={() =>
         navigation.navigate("MatchDetail", {
-          matchId: matchData.match_id,
+          matchId: matchData.matchId,
         })
       }
     >
@@ -18,12 +18,12 @@ export const MatchCard = ({ matchData }) => {
           <View className="flex-row">
             <Image
               source={{
-                uri: matchData.home_club.logo,
+                uri: matchData.homeClub.logo,
               }}
               className="w-6 h-6 mr-2"
             ></Image>
             <Text className="text-white font-semibold">
-              {matchData.home_club.name}
+              {matchData.homeClub.name}
             </Text>
           </View>
           <Text className="text-white font-semibold">
@@ -34,12 +34,12 @@ export const MatchCard = ({ matchData }) => {
           <View className="flex-row">
             <Image
               source={{
-                uri: matchData.away_club.logo,
+                uri: matchData.awayClub.logo,
               }}
               className="w-6 h-6 mr-2"
             ></Image>
             <Text className="text-white font-semibold">
-              {matchData.away_club.name}
+              {matchData.awayClub.name}
             </Text>
           </View>
           <Text className="text-white font-semibold">
