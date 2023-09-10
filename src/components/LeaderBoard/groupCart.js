@@ -10,7 +10,7 @@ export const GroupCart = ({ group }) => {
       style={{ backgroundColor: themeColors.bgCard }}
     >
       <Text className="text-white text-xl font-bold mb-4">
-        Group {group.group_name}
+        Group {group.groupName}
       </Text>
       <View className="flex-row items-center mb-2">
         <View className="flex-row w-1/2"></View>
@@ -31,8 +31,8 @@ export const GroupCart = ({ group }) => {
           <Text className="text-white font-semibold items-center">Pts</Text>
         </View>
       </View>
-      {group.clubs.map((club) => (
-        <GroupClub club={club} key={club.club_id} />
+      {group.groupClubs.map((groupClub) => (
+        <GroupClub groupClub={groupClub} key={groupClub.clubId} />
       ))}
     </View>
   );
