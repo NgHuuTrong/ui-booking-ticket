@@ -47,7 +47,7 @@ export const LeaderBoardScreen = () => {
           <ScrollView>
             <Text
               style={{ color: themeColors.bgButton }}
-              className=" text-2xl font-bold m-4"
+              className=" text-3xl font-bold m-4"
             >
               Group stage standings
             </Text>

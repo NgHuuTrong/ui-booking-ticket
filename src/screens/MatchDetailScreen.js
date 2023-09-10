@@ -31,22 +31,22 @@ export const MatchDetailScreen = ({ navigation, route }) => {
       const matchData = await getMatch(authAxios, matchId);
       matchData.time = datetimeTransform(matchData.time);
       matchData.remainSeats =
-        matchData.remain_seats_north +
-        matchData.remain_seats_south +
-        matchData.remain_seats_east +
-        matchData.remain_seats_west;
+        matchData.remainSeatsNorth +
+        matchData.remainSeatsSouth +
+        matchData.remainSeatsEast +
+        matchData.remainSeatsWest;
       setMatchData(matchData);
-      fetchStadium(matchData.stadium_id);
+      fetchStadium(matchData.stadiumId);
     }
-    async function fetchStadium(stadium_id) {
-      const data = await getStadium(authAxios, stadium_id);
+    async function fetchStadium(stadiumId) {
+      const data = await getStadium(authAxios, stadiumId);
       setTimeout(() => setStadium(data), 1000);
     }
     fetchMatch();
   }, []);
   const handleNavigate = () => {
     if (matchData.happened == false && matchData.remainSeats > 0) {
-      navigation.navigate("ChooseSeat", { matchId: matchData.match_id });
+      navigation.navigate("ChooseSeat", { matchId: matchData.matchId });
     }
   };
   return (
@@ -68,8 +68,8 @@ export const MatchDetailScreen = ({ navigation, route }) => {
                 </TouchableOpacity>
                 <View className="flex-row py-8">
                   <Club
-                    name={matchData.home_club.name}
-                    uri={matchData.home_club.logo}
+                    name={matchData.homeClub.name}
+                    uri={matchData.homeClub.logo}
                   />
                   <View className="flex-1 items-center justify-center">
                     {matchData.happened ? (
@@ -86,8 +86,8 @@ export const MatchDetailScreen = ({ navigation, route }) => {
                     )}
                   </View>
                   <Club
-                    name={matchData.away_club.name}
-                    uri={matchData.away_club.logo}
+                    name={matchData.awayClub.name}
+                    uri={matchData.awayClub.logo}
                   />
                 </View>
               </>

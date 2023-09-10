@@ -14,7 +14,6 @@ import { TicketCard } from "../components/Ticket/ticketCard";
 import { AxiosContext } from "../services/axios.context";
 import { getMyTicket } from "../services/ticket.service";
 import { Loading } from "../components/Loading";
-import InAppLoading from "../components/InAppLoading";
 import { ErrorAlertModal } from "../components/ErrorAlertModal";
 
 const { width } = Dimensions.get("window");
@@ -74,9 +73,10 @@ export const MyTicketScreen = () => {
           setErrorMessage(err);
         }
       };
-
+      setActive((prev) => prev);
       fetchData();
     } else {
+      setLoading(false);
       setErrorMessage("");
     }
   }, [isFocused]);
@@ -92,6 +92,7 @@ export const MyTicketScreen = () => {
       index: index,
     });
   };
+  console.log(active);
   return (
     <>
       {loading ? (

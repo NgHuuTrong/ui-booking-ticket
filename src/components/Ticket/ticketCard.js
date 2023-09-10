@@ -39,7 +39,7 @@ export const TicketCard = ({ ticket }) => {
           </Text>
         </View>
         <View className="flex-row w-full items-center">
-          <View className="flex-1 justify-center">
+          <View className="flex-1 items-center">
             <Club
               name={ticket.match.homeClub.name}
               uri={ticket.match.homeClub.logo}
@@ -50,7 +50,7 @@ export const TicketCard = ({ ticket }) => {
             <Text className="text-slate-900  text-2xl font-extrabold">VS</Text>
           </View>
 
-          <View className="flex-1 justify-center">
+          <View className="flex-1 items-center">
             <Club
               name={ticket.match.awayClub.name}
               uri={ticket.match.awayClub.logo}

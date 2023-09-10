@@ -39,20 +39,31 @@ export const TicketDetailScreen = ({ route }) => {
   const { ticketId } = route.params;
   const [ticket, setTicket] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const { authAxios } = useContext(AxiosContext);
 
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const res = await getMyTicketById(authAxios, ticketId);
-      setTicket(res);
-      setLoading(false);
-    };
+    if (isFocused) {
+      try {
+        const fetchData = async () => {
+          setLoading(true);
+          const res = await getMyTicketById(authAxios, ticketId);
+          setTicket(res);
+          setLoading(false);
+        };
 
-    fetchData();
+        fetchData();
+      } catch (err) {
+        setLoading(false);
+        setErrorMessage(err);
+      }
+    } else {
+      setLoading(true);
+      setErrorMessage("");
+    }
   }, [isFocused]);
 
   return (
