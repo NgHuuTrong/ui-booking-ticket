@@ -3,19 +3,27 @@ import { SubLayout } from "../components/Common/SubLayout"
 import { MatchCarousel } from "../components/Matches/MatchCarousel"
 import { StadiumSideSection } from "../components/Matches/StadiumSideSection"
 import { useContext, useEffect, useState } from "react"
-import { useIsFocused, useRoute } from "@react-navigation/native";
+import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
 import { AxiosContext } from "../services/axios.context"
 import { ErrorAlertModal } from "../components/ErrorAlertModal"
 import { getMatch } from "../services/match.service"
+import { UserContext } from "../services/user/user.context"
 
 export const ChooseSeatScreen = () => {
     const route = useRoute();
     const [matchData, setMatchData] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
+    const { isAuthenticated } = useContext(UserContext);
     const { authAxios } = useContext(AxiosContext);
     const isFocused = useIsFocused();
+    const navigation = useNavigation();
+
 
     useEffect(() => {
+        if (!isAuthenticated && isFocused) {
+            setErrorMessage("You must login to order ticket !");
+            return;
+        }
         const fetchData = async () => {
             try {
                 const res = await getMatch(authAxios, route.params.matchId);
@@ -29,7 +37,10 @@ export const ChooseSeatScreen = () => {
     }, [isFocused]);
 
     return <SubLayout title={'Choose Seat'} goBackButton={true}>
-        {errorMessage && <ErrorAlertModal message={errorMessage} />}
+        {errorMessage && <ErrorAlertModal message={errorMessage} onDismiss={() => {
+            setErrorMessage('');
+            navigation.goBack()
+        }} />}
         {matchData && <MatchCarousel matchData={matchData} />}
         <ScrollView>
             <View className="justify-center items-center mt-5">
