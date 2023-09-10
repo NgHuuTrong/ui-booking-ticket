@@ -10,7 +10,7 @@ export const UserContext = createContext({
 
 export const UserContextProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsImlhdCI6MTY5NDIyNDk5NywiZXhwIjoxNzAyMDAwOTk3fQ.E7oikVpIbLKDA1xdtzluucLfHQnZXxFdnZRH4q42OHE"
+    ""
   );
 
   function authenticate(token) {

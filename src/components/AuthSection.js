@@ -38,7 +38,7 @@ export const AuthSection = () => {
                         marginRight: 10,
                         marginVertical: 10,
                     }}
-                    onPress={() => navigation.navigate("Login")}
+                    onPress={() => navigation.navigate("Login", { mode: "signIn" })}
                 />
 
                 <Button
@@ -57,6 +57,7 @@ export const AuthSection = () => {
                         width: windowWidth / 2 - 33,
                         marginVertical: 10,
                     }}
+                    onPress={() => navigation.navigate("Login", { mode: "signUp" })}
                 />
             </View>
         </View>

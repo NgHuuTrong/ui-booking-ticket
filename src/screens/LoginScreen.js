@@ -3,13 +3,14 @@ import { MotiView, useAnimationState } from "moti";
 import { useEffect, useState } from "react";
 import { Button } from "@rneui/themed";
 import { LoginForm } from "../components/Login/LoginForm";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { SignUpForm } from "../components/Login/SignUpForm";
 import { themeColors } from "../theme";
 import { ResetPasswordForm } from "../components/Login/ResetPasswordForm";
 import { ScrollView } from "react-native";
 export const LoginScreen = () => {
-  const [mode, setMode] = useState("signIn");
+  const route = useRoute();
+  const [mode, setMode] = useState(route.params.mode);
   const navigation = useNavigation();
   const animationState = useAnimationState({
     resetPassword: {

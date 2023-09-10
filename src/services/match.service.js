@@ -8,6 +8,7 @@ export const getAllMatches = async (axios) => {
     throw err.data.message;
   }
 };
+
 export const getMatch = async (axios, matchId) => {
   try {
     const response = await axios.get("/matches/" + matchId);

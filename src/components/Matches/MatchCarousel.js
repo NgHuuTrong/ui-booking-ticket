@@ -1,8 +1,8 @@
-import { Image, ImageBackground, Text, View } from "react-native";
+import { ImageBackground, Text, View } from "react-native";
 import { Club } from "../Club/Club";
-import clubs from '../../../assets/data/club.json'
+import { datetimeTransform } from "../../utils/timeTransform";
 
-export const MatchCarousel = () => {
+export const MatchCarousel = ({ matchData }) => {
     return (
         <ImageBackground
             source={require('../../../assets/images/HeaderBackground.jpeg')}
@@ -13,19 +13,27 @@ export const MatchCarousel = () => {
         >
             <View className="flex-row justify-center items-center">
                 <View className="w-1/3 justify-center items-center">
-                    <Club name={clubs[0].name} uri={clubs[0].logo} />
+                    <Club name={matchData.home_club.name} uri={matchData.home_club.logo} />
                 </View>
                 <View className="w-1/3 justify-center items-center">
-                    <Text className="text-white">Group stage</Text>
-                    <Text className="text-white font-bold">September 3, 2023</Text>
+                    <Text className="text-white text-center">{matchData.round?.split('-')[0]}</Text>
+                    <Text className="text-white text-center">{matchData.round?.split('-')[1]}</Text>
+                    <Text className="text-white text-center">{matchData.round?.split('-')[2]}</Text>
+                    <Text className="text-white font-bold">
+                        {datetimeTransform(matchData.time, "date")}
+                    </Text>
                     <Text className="text-white mt-3">KICK OFF</Text>
-                    <Text className="text-white text-lg font-bold">20:00 P.M</Text>
+                    <Text className="text-white text-lg font-bold">
+                        {datetimeTransform(matchData.time, "time")}
+                    </Text>
                 </View>
                 <View className="w-1/3 justify-center items-center">
-                    <Club name={clubs[1].name} uri={clubs[1].logo} />
+                    <Club name={matchData.away_club.name} uri={matchData.away_club.logo} />
                 </View>
             </View>
-            <Text className="text-white text-xl font-extrabold mt-3">Santiago Bernabéu</Text>
+            <Text className="text-white text-xl font-extrabold mt-3">
+                {matchData.stadium.name}
+            </Text>
         </ImageBackground>
     );
 };

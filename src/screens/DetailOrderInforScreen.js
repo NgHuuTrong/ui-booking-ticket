@@ -3,15 +3,37 @@ import { SubLayout } from "../components/Common/SubLayout";
 import { MatchCarousel } from "../components/Matches/MatchCarousel";
 import { CheckBox } from "@rneui/themed";
 import { themeColors } from "../theme";
-import { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useContext, useEffect, useState } from "react";
+import { useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
+import { ErrorAlertModal } from "../components/ErrorAlertModal";
+import { AxiosContext } from "../services/axios.context";
+import { getMatch } from "../services/match.service";
 
 export const DetailOrderInforScreen = () => {
-    const [checked, setChecked] = useState(false);
     const navigation = useNavigation();
+    const route = useRoute(); // .params.matchId, .params.numberTickets, .params.side
+    const isFocused = useIsFocused();
+    const [matchData, setMatchData] = useState(null);
+    const [checked, setChecked] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    const { authAxios } = useContext(AxiosContext);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await getMatch(authAxios, route.params.matchId);
+                setMatchData(res);
+            } catch (error) {
+                setErrorMessage(error);
+            }
+        }
+
+        fetchData();
+    }, [isFocused]);
     return (
         <SubLayout title={'Personal Information'} goBackButton={true}>
-            <MatchCarousel />
+            {errorMessage && <ErrorAlertModal message={errorMessage} onDismiss={() => setErrorMessage('')} />}
+            {matchData && <MatchCarousel matchData={matchData} />}
             <ScrollView className="mt-5">
                 <View className="px-5 mb-4">
                     <View className="flex-row">
@@ -21,7 +43,6 @@ export const DetailOrderInforScreen = () => {
                     <TextInput
                         className="border border-white rounded-lg px-3 text-white opacity-80"
                         editable={false}
-                        defaultValue="Nguyen Van Hieu"
                     />
                 </View>
                 <View className="px-5 mb-4">
@@ -41,7 +62,6 @@ export const DetailOrderInforScreen = () => {
                     <TextInput
                         className="border border-white rounded-lg px-3 text-white opacity-80"
                         editable={false}
-                        defaultValue="vanhieu230303@gmail.com"
                     />
                 </View>
                 <View className="flex-row justify-center items-center flex-wrap">
