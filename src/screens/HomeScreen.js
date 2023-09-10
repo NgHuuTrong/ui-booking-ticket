@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { FlatList, Image, Linking, Pressable, Text, View } from "react-native";
 import { MainLayout } from "../components/Common/MainLayout";
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign } from "@expo/vector-icons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { AxiosContext } from "../services/axios.context";
 import { getAllNews } from "../services/news.service";
@@ -57,7 +57,7 @@ export const HomeScreen = () => {
     }
   }, []);
   const [news, setNews] = useState([]);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   const isFocused = useIsFocused();
 
@@ -87,36 +87,42 @@ export const HomeScreen = () => {
               className="my-4 rounded-xl overflow-hidden relative"
               style={{
                 width: 370,
-                height: 200
+                height: 200,
               }}
               onPress={() => {
-                if (item.type === 'article') {
-                  handlePress(item.url)
+                if (item.type === "article") {
+                  handlePress(item.url);
                 } else {
                   navigation.navigate("Video", {
                     title: item.title,
-                    videoId: item.url.split('https://youtu.be/')[1]
-                  })
+                    videoId: item.url.split("https://youtu.be/")[1],
+                  });
                 }
               }}
             >
-              <Image source={{ uri: item.thumbnail }} className="top-0 bottom-0 left-0 right-0 absolute" />
-              <View className="absolute top-0 bottom-0 left-0 right-0" style={{
-                backgroundColor: 'rgba(0,0,0,0.4)'
-              }} />
+              <Image
+                source={{ uri: item.thumbnail }}
+                className="top-0 bottom-0 left-0 right-0 absolute"
+              />
+              <View
+                className="absolute top-0 bottom-0 left-0 right-0"
+                style={{
+                  backgroundColor: "rgba(0,0,0,0.4)",
+                }}
+              />
               <View className="absolute bottom-1 flex-row justify-around items-center px-4">
                 <Text className="text-lg text-white font-extrabold mr-10">
                   {item.title}
                 </Text>
-                {
-                  item.type === 'article' && <AntDesign name="upload" size={20} color="white" />
-                }
+                {item.type === "article" && (
+                  <AntDesign name="upload" size={20} color="white" />
+                )}
               </View>
-              {
-                item.type === 'video' && <View className="absolute top-2 right-2">
+              {item.type === "video" && (
+                <View className="absolute top-2 right-2">
                   <AntDesign name="playcircleo" size={24} color="white" />
                 </View>
-              }
+              )}
             </Pressable>
           </View>
         )}
