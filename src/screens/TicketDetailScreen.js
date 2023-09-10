@@ -47,19 +47,18 @@ export const TicketDetailScreen = ({ route }) => {
 
   useEffect(() => {
     if (isFocused) {
-      try {
-        const fetchData = async () => {
+      const fetchData = async () => {
+        try {
           setLoading(true);
           const res = await getMyTicketById(authAxios, ticketId);
           setTicket(res);
           setLoading(false);
-        };
-
-        fetchData();
-      } catch (err) {
-        setLoading(false);
-        setErrorMessage(err);
-      }
+        } catch (err) {
+          setLoading(false);
+          setErrorMessage(err);
+        }
+      };
+      fetchData();
     } else {
       setLoading(true);
       setErrorMessage("");
@@ -74,7 +73,7 @@ export const TicketDetailScreen = ({ route }) => {
         <SubLayout title={"Ticket Detail"} goBackButton={true}>
           <ScrollView>
             <View className="mt-8">
-              <MatchCarousel />
+              <MatchCarousel matchData={ticket.match} />
             </View>
             <View className="my-8">
               <Text

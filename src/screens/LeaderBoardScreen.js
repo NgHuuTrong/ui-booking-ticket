@@ -35,6 +35,9 @@ export const LeaderBoardScreen = () => {
         }
       };
       fetchData();
+    } else {
+      setLoading(true);
+      setErrorMessage("");
     }
   }, [isFocused]);
 

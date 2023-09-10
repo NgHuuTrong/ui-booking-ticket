@@ -73,11 +73,11 @@ export const MyTicketScreen = () => {
           setErrorMessage(err);
         }
       };
-      setActive((prev) => prev);
       fetchData();
     } else {
-      setLoading(false);
+      setLoading(true);
       setErrorMessage("");
+      setActive(0);
     }
   }, [isFocused]);
 

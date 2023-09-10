@@ -22,20 +22,23 @@ export const GroupDetailScreen = ({ route }) => {
 
   useEffect(() => {
     if (isFocused) {
-      try {
-        const fetchData = async () => {
+      const fetchData = async () => {
+        try {
           setLoading(true);
           const resMatches = await getGroupAndMatches(publicAxios, groupId);
           const resGroup = await getGroup(publicAxios, groupId);
           setGroup(resGroup);
           setMatches(resMatches);
           setLoading(false);
-        };
-        fetchData();
-      } catch (err) {
-        setLoading(false);
-        setErrorMessage(err);
-      }
+        } catch (err) {
+          setLoading(false);
+          setErrorMessage(err);
+        }
+      };
+      fetchData();
+    } else {
+      setLoading(true);
+      setErrorMessage("");
     }
   }, [isFocused]);
   return (
