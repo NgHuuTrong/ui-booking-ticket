@@ -68,8 +68,9 @@ export const MatchDetailScreen = ({ navigation, route }) => {
                 </TouchableOpacity>
                 <View className="flex-row py-8">
                   <Club
-                    name={matchData.homeClub.name}
-                    uri={matchData.homeClub.logo}
+                    name={matchData.home_club.name}
+                    uri={matchData.home_club.logo}
+                    clubId={matchData.home_club_id}
                   />
                   <View className="flex-1 items-center justify-center">
                     {matchData.happened ? (
@@ -86,8 +87,9 @@ export const MatchDetailScreen = ({ navigation, route }) => {
                     )}
                   </View>
                   <Club
-                    name={matchData.awayClub.name}
-                    uri={matchData.awayClub.logo}
+                    name={matchData.away_club.name}
+                    uri={matchData.away_club.logo}
+                    clubId={matchData.away_club_id}
                   />
                 </View>
               </>
