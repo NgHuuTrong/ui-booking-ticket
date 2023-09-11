@@ -5,7 +5,7 @@ export const getStadium = async (axios, stadiumId) => {
     const response = await axios.get("/stadia/" + stadiumId);
 
     if (response.data.status === "success") {
-      return response?.data?.data?.data;
+      return camelize(response?.data?.data?.data);
     }
   } catch (err) {
     throw err.data.message;
