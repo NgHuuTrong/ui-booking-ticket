@@ -27,16 +27,18 @@ export const ChooseSeatScreen = () => {
       setErrorMessage("You must login to order ticket !");
       return;
     }
-    const fetchData = async () => {
-      try {
-        const res = await getMatch(authAxios, route.params.matchId);
-        setMatchData(res);
-      } catch (error) {
-        setErrorMessage(error);
-      }
-    };
+    if (isFocused) {
+      const fetchData = async () => {
+        try {
+          const res = await getMatch(authAxios, route.params.matchId);
+          setMatchData(res);
+        } catch (error) {
+          setErrorMessage(error);
+        }
+      };
+      fetchData();
+    }
 
-    fetchData();
   }, [isFocused]);
 
   return (

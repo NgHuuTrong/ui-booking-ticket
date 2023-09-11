@@ -47,33 +47,33 @@ export const ProfileScreen = () => {
   });
   const [errorMessage, setErrorMessage] = useState("");
   const isFocused = useIsFocused();
-  const { access_token } = useContext(UserContext);
+  const { access_token, isAuthenticated } = useContext(UserContext);
   const { authAxios } = useContext(AxiosContext);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await getUser(authAxios);
+    if (isFocused && isAuthenticated) {
+      const fetchData = async () => {
+        try {
+          const res = await getUser(authAxios);
 
-        setCurrentName(res.name);
-        setDetails({
-          email: res.email,
-          phone: res.phone,
-          name: res.name,
-          gender: res.gender,
-        });
-        setInputs({
-          email: res.email,
-          phone: res.phone,
-          name: res.name,
-          gender: res.gender,
-        });
-      } catch (error) {
-        setErrorMessage(error);
-      }
-    };
+          setCurrentName(res.name);
+          setDetails({
+            email: res.email,
+            phone: res.phone,
+            name: res.name,
+            gender: res.gender,
+          });
+          setInputs({
+            email: res.email,
+            phone: res.phone,
+            name: res.name,
+            gender: res.gender,
+          });
+        } catch (error) {
+          setErrorMessage(error);
+        }
+      };
 
-    if (access_token) {
       fetchData();
     }
   }, [isFocused]);
@@ -148,7 +148,7 @@ export const ProfileScreen = () => {
             onPress={() => setEdited(true)}
             className="absolute right-2 top-7"
           >
-            {access_token ? (
+            {isAuthenticated ? (
               !isEdited ? (
                 <EvilIcons name="pencil" size={38} color="white" />
               ) : (
@@ -189,9 +189,8 @@ export const ProfileScreen = () => {
             className
           />
           <Pressable
-            className={`justify-center items-center ${
-              isEdited ? "" : "opacity-80"
-            } absolute`}
+            className={`justify-center items-center ${isEdited ? "" : "opacity-80"
+              } absolute`}
             onPress={pickImage}
             disabled={!isEdited}
             style={{
@@ -332,7 +331,7 @@ export const ProfileScreen = () => {
               containerStyle={{ backgroundColor: "transparent" }}
             />
           </View>
-          {access_token && (
+          {isAuthenticated && (
             <Button
               title="Update password"
               titleStyle={{
@@ -371,7 +370,7 @@ export const ProfileScreen = () => {
               />
             </View>
           )}
-          {!access_token && <AuthSection />}
+          {!isAuthenticated && <AuthSection />}
         </ScrollView>
       </View>
     </View>

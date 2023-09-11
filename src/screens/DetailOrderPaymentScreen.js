@@ -10,8 +10,9 @@ import { SubLayout } from "../components/Common/SubLayout";
 import { MatchCarousel } from "../components/Matches/MatchCarousel";
 import { BottomSheet } from "@rneui/themed";
 import { themeColors } from "../theme";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PaymentItem } from "../components/Payment/PaymentItem";
+import { useRoute } from "@react-navigation/native";
 
 const listPayment = [
   { title: "Paypal", image: require("../../assets/images/paypal-logo.png") },
@@ -19,6 +20,7 @@ const listPayment = [
 ];
 
 export const DetailOrderPaymentScreen = ({ navigation }) => {
+  const route = useRoute();
   const [isVisible, setIsVisible] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState({
     ...listPayment[0],
@@ -27,7 +29,7 @@ export const DetailOrderPaymentScreen = ({ navigation }) => {
 
   return (
     <SubLayout title={"Payment"} goBackButton={true}>
-      <MatchCarousel />
+      {/* <MatchCarousel /> */}
       <ScrollView className="mt-5 px-5">
         <View className="justify-center items-center w-full">
           <Text className="text-white text font-semibold">

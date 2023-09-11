@@ -13,8 +13,11 @@ export const StadiumSideSection = ({ title, side, matchId, unitPrice, remainSeat
   const navigation = useNavigation();
 
   const handleChooseTickets = () => {
-    if (numberTickets > remainSeats) {
-      setErrorMessage(`Unfortunately, we currently only have ${remainSeats} tickets available for this side. We apologize for any inconvenience this may cause.`)
+    if (numberTickets === 0) {
+      setErrorMessage("Please select a number of tickets you want to buy !");
+    }
+    else if (numberTickets > remainSeats) {
+      setErrorMessage(`Unfortunately, we currently only have ${remainSeats} tickets available for this side. We apologize for any inconvenience this may cause.`);
     } else {
       navigation.navigate("DetailOrderInfor", { side, numberTickets, matchId })
     }
