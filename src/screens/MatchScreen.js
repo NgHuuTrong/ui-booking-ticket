@@ -8,61 +8,79 @@ import { datetimeTransform } from "../utils/timeTransform";
 import { getAllMatches } from "../services/match.service";
 import InAppLoading from "../components/InAppLoading";
 import { FlatList } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 
 export const MatchScreen = () => {
-  const { authAxios, publicAxios } = useContext(AxiosContext);
+  const { publicAxios } = useContext(AxiosContext);
   const tapRef = useRef(null);
   const sectionRef = useRef(null);
   const [matchDataGroupByDate, setMatchDataGroupByDate] = useState([]);
   const [sectionIndex, setSectionIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const isFocused = useIsFocused();
+  const [errorMessage, setErrorMessage] = useState("");
 
   //get and work with data from backend
   useEffect(() => {
-    const fetchMatches = async () => {
-      let data = await getAllMatches(publicAxios);
-      const sortedData = data.sort(
-        (data1, data2) => new Date(data1.time) - new Date(data2.time)
-      );
-      const dataGroupByDate = [];
-      sortedData.forEach((match) => {
-        const date = datetimeTransform(match.time, "CustomForMatchScreen");
-        if (
-          dataGroupByDate.length == 0 ||
-          dataGroupByDate[dataGroupByDate.length - 1].date !== date
-        ) {
-          dataGroupByDate.push({
-            date: date,
-            matchesByDate: [],
+    if (isFocused) {
+      const fetchMatches = async () => {
+        try {
+          setIsLoading(true);
+          let data = await getAllMatches(publicAxios);
+          const sortedData = data.sort(
+            (data1, data2) => new Date(data1.time) - new Date(data2.time)
+          );
+          const dataGroupByDate = [];
+          sortedData.forEach((match) => {
+            const date = datetimeTransform(match.time, "CustomForMatchScreen");
+            if (
+              dataGroupByDate.length === 0 ||
+              dataGroupByDate[dataGroupByDate.length - 1].date !== date
+            ) {
+              dataGroupByDate.push({
+                date: date,
+                matchesByDate: [],
+              });
+            }
+            dataGroupByDate[dataGroupByDate.length - 1].matchesByDate.push(
+              match
+            );
           });
+          dataGroupByDate.forEach((data, index) => {
+            const roundsMap = data.matchesByDate.reduce((map, match) => {
+              const { round } = match;
+              if (!map.has(round)) {
+                map.set(round, []);
+              }
+              map.get(round).push(match);
+              return map;
+            }, new Map());
+
+            roundsMap.forEach((matches) => {
+              matches.sort((a, b) => new Date(a.time) - new Date(b.time));
+            });
+
+            const roundsArray = Array.from(roundsMap).map(
+              ([round, matches]) => ({
+                round,
+                matches,
+              })
+            );
+            dataGroupByDate[index].matchesByDate = roundsArray;
+          });
+          setMatchDataGroupByDate(dataGroupByDate);
+          setIsLoading(false);
+        } catch (err) {
+          setIsLoading(false);
+          setErrorMessage(err);
         }
-        dataGroupByDate[dataGroupByDate.length - 1].matchesByDate.push(match);
-      });
-      dataGroupByDate.forEach((data, index) => {
-        const roundsMap = data.matchesByDate.reduce((map, match) => {
-          const { round } = match;
-          if (!map.has(round)) {
-            map.set(round, []);
-          }
-          map.get(round).push(match);
-          return map;
-        }, new Map());
-
-        roundsMap.forEach((matches) => {
-          matches.sort((a, b) => new Date(a.time) - new Date(b.time));
-        });
-
-        const roundsArray = Array.from(roundsMap).map(([round, matches]) => ({
-          round,
-          matches,
-        }));
-        dataGroupByDate[index].matchesByDate = roundsArray;
-      });
-      setMatchDataGroupByDate(dataGroupByDate);
-      setIsLoading(false);
-    };
-    fetchMatches();
-  }, []);
+      };
+      fetchMatches();
+    } else {
+      setIsLoading(true);
+      setErrorMessage("");
+    }
+  }, [isFocused]);
 
   //handle scroll top tap and section to index
   const handleScrollToIndex = (index) => {
@@ -158,6 +176,7 @@ export const MatchScreen = () => {
         </View>
       </View>
       <InAppLoading visible={isLoading}></InAppLoading>
+      {errorMessage && <ErrorAlertModal message={errorMessage} />}
     </MainLayout>
   );
 };

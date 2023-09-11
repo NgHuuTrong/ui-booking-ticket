@@ -6,34 +6,47 @@ import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { ErrorAlertModal } from "../ErrorAlertModal";
 
-export const StadiumSideSection = ({ title, side, matchId, unitPrice, remainSeats }) => {
+export const StadiumSideSection = ({
+  title,
+  side,
+  matchId,
+  unitPrice,
+  remainSeats,
+}) => {
   const [isShown, setShown] = useState(false);
   const [numberTickets, setNumberTickers] = useState(0);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const navigation = useNavigation();
 
   const handleChooseTickets = () => {
     if (numberTickets === 0) {
       setErrorMessage("Please select a number of tickets you want to buy !");
-    }
-    else if (numberTickets > remainSeats) {
-      setErrorMessage(`Unfortunately, we currently only have ${remainSeats} tickets available for this side. We apologize for any inconvenience this may cause.`);
+    } else if (numberTickets > remainSeats) {
+      setErrorMessage(
+        `Unfortunately, we currently only have ${remainSeats} tickets available for this side. We apologize for any inconvenience this may cause.`
+      );
     } else {
-      navigation.navigate("DetailOrderInfor", { side, numberTickets, matchId })
+      navigation.navigate("DetailOrderInfor", { side, numberTickets, matchId });
     }
-  }
+  };
 
   return (
     <Pressable
-      className={`mx-5 pt-3 my-3 rounded-md overflow-hidden ${isShown ? "border border-white" : ""
-        }`}
+      className={`mx-5 pt-3 my-3 rounded-md overflow-hidden ${
+        isShown ? "border border-white" : ""
+      }`}
       style={{ backgroundColor: themeColors.bgCard }}
       onPress={() => {
         setShown(!isShown);
         setNumberTickers(0);
       }}
     >
-      {errorMessage && <ErrorAlertModal message={errorMessage} onDismiss={() => setErrorMessage('')} />}
+      {errorMessage && (
+        <ErrorAlertModal
+          message={errorMessage}
+          onDismiss={() => setErrorMessage("")}
+        />
+      )}
       <Text className="text-white text-lg font-bold px-5 pb-3">{title}</Text>
       {isShown && (
         <>
@@ -41,7 +54,10 @@ export const StadiumSideSection = ({ title, side, matchId, unitPrice, remainSeat
             className="flex-row justify-around items-center px-5 py-3"
             style={{ backgroundColor: themeColors.bgScreen }}
           >
-            <Text className="text-white">Unit price: {unitPrice}€</Text>
+            <View>
+              <Text className="text-white">Unit price: {unitPrice}$</Text>
+              <Text className="text-white">Remain: {remainSeats}</Text>
+            </View>
             <View>
               <Text className="text-white font-bold">Number of tickets</Text>
               <View className="flex-row justify-evenly items-center mt-2">
@@ -68,7 +84,11 @@ export const StadiumSideSection = ({ title, side, matchId, unitPrice, remainSeat
                     width: 20,
                     height: 20,
                   }}
-                  onPress={() => setNumberTickers(numberTickets + 1)}
+                  onPress={() => {
+                    if (numberTickets < remainSeats) {
+                      setNumberTickers(numberTickets + 1);
+                    }
+                  }}
                 >
                   <Text className="text-white font-bold">+</Text>
                 </Pressable>

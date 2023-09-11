@@ -13,6 +13,7 @@ import { ErrorAlertModal } from "../components/ErrorAlertModal";
 import { AxiosContext } from "../services/axios.context";
 import { getMatch } from "../services/match.service";
 import { UserContext } from "../services/user/user.context";
+import { getUser } from "../services/user/user.service";
 
 const nameRegex = /^[A-Za-z\s]+$/;
 const phoneRegex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
@@ -47,7 +48,14 @@ export const DetailOrderInforScreen = () => {
       const fetchData = async () => {
         try {
           const res = await getMatch(authAxios, route.params.matchId);
+          const resUser = await getUser(authAxios);
+          console.log(resUser);
           setMatchData(res);
+          setInputs({
+            name: resUser.name,
+            email: resUser.email,
+            phone: resUser.phone,
+          });
         } catch (error) {
           setErrorMessage(error);
         }

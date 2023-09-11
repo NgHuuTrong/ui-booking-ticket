@@ -11,12 +11,12 @@ import { useContext, useEffect, useState } from "react";
 
 import { SubLayout } from "../components/Common/SubLayout";
 import { themeColors } from "../theme";
-import { TicketCard } from "../components/Ticket/ticketCard";
 import { datetimeTransform } from "../utils/timeTransform";
 import { getMyTicketById } from "../services/ticket.service";
 import { AxiosContext } from "../services/axios.context";
 import { Loading } from "../components/Loading";
 import { MatchCarousel } from "../components/Matches/MatchCarousel";
+import { ErrorAlertModal } from "../components/ErrorAlertModal";
 
 const { width } = Dimensions.get("window");
 
@@ -71,6 +71,7 @@ export const TicketDetailScreen = ({ route }) => {
         <Loading layout={SubLayout} />
       ) : (
         <SubLayout title={"Ticket Detail"} goBackButton={true}>
+          {errorMessage && <ErrorAlertModal message={errorMessage} />}
           <ScrollView>
             <View className="mt-8">
               <MatchCarousel matchData={ticket.match} />
@@ -100,12 +101,14 @@ export const TicketDetailScreen = ({ route }) => {
                       className="font-bold text-xl"
                       style={{ lineHeight: 0 }}
                     >
-                      Nguyen Huu Trong
+                      {ticket.payerName}
                     </Text>
                     <Text style={{ lineHeight: 0 }}>
-                      email: trongnh2003@gmail.com
+                      email: {ticket.payerEmail}
                     </Text>
-                    <Text style={{ lineHeight: 0 }}>phone: 0947418172</Text>
+                    <Text style={{ lineHeight: 0 }}>
+                      phone: {ticket.payerPhone}
+                    </Text>
                   </View>
                 </View>
 

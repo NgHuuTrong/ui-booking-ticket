@@ -12,7 +12,7 @@ import { BottomSheet } from "@rneui/themed";
 import { themeColors } from "../theme";
 import { useContext, useEffect, useState } from "react";
 import { PaymentItem } from "../components/Payment/PaymentItem";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useRoute } from "@react-navigation/native";
 import { getMatch } from "../services/match.service";
 import { AxiosContext } from "../services/axios.context";
 import { Loading } from "../components/Loading";
@@ -21,6 +21,15 @@ const listPayment = [
   { title: "Paypal", image: require("../../assets/images/paypal-logo.png") },
   { title: "Visa", image: require("../../assets/images/visa-logo.png") },
 ];
+
+const DetailRow = ({ left, right }) => {
+  return (
+    <View className="w-full flex-row items-center p-3">
+      <Text className="text-white text-sm w-1/2">{left}</Text>
+      <Text className="text-white text-base font-semibold w-1/2">{right}</Text>
+    </View>
+  );
+};
 
 export const DetailOrderPaymentScreen = ({ navigation }) => {
   const route = useRoute();
@@ -41,7 +50,7 @@ export const DetailOrderPaymentScreen = ({ navigation }) => {
       const fetchData = async () => {
         try {
           setLoading(true);
-          const res = await getMatch(authAxios, 25);
+          const res = await getMatch(authAxios, route.params.matchId);
           setMatch(res);
           setLoading(false);
         } catch (err) {
@@ -97,15 +106,28 @@ export const DetailOrderPaymentScreen = ({ navigation }) => {
               </Text>
             </View>
             <View className="mt-4">
+              <Text className="text-white text-lg font-bold">Detail Owner</Text>
+              <View
+                className="rounded-xl"
+                style={{ backgroundColor: themeColors.bgCard }}
+              >
+                <DetailRow left="Name" right={route.params.name} />
+                <DetailRow left="Email" right={route.params.email} />
+                <DetailRow left="Phone number" right={route.params.phone} />
+              </View>
+            </View>
+            <View className="mt-4">
               <Text className="text-white text-lg font-bold">Detail Price</Text>
               <View
-                className="rounded-lg w-full flex-row justify-around items-center p-3 mt-2"
-                style={{
-                  backgroundColor: themeColors.bgCard,
-                }}
+                className="rounded-xl"
+                style={{ backgroundColor: themeColors.bgCard }}
               >
-                <Text className="text-white text-sm">Total price</Text>
-                <Text className="text-white text-lg font-semibold">200€</Text>
+                <DetailRow left="Area" right={route.params.side} />
+                <DetailRow left="Quantity" right={route.params.numberTickets} />
+                <DetailRow
+                  left="Total price"
+                  right={`${route.params.numberTickets * match.defaultPrice}€`}
+                />
               </View>
             </View>
             <View className="mt-4">
@@ -134,7 +156,16 @@ export const DetailOrderPaymentScreen = ({ navigation }) => {
                 style={{
                   backgroundColor: themeColors.bgButton,
                 }}
-                onPress={() => navigation.navigate("PaypalPayment")}
+                onPress={() =>
+                  navigation.navigate("PaypalPayment", {
+                    matchId: route.params.matchId,
+                    numberTickets: route.params.numberTickets,
+                    side: route.params.side,
+                    name: route.params.name,
+                    phone: route.params.phone,
+                    email: route.params.email,
+                  })
+                }
               >
                 <Text
                   className="font-semibold"
