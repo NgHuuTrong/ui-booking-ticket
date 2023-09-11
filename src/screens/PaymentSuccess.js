@@ -2,17 +2,22 @@ import React, { useEffect, useRef } from "react";
 import { Dimensions, Text, TouchableOpacity, View } from "react-native";
 import { themeColors } from "../theme";
 import LottieView from "lottie-react-native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 
 const success = require("../../assets/images/payment-success.json");
 const { width } = Dimensions.get("window");
 
-export const PaymentSuccess = ({ navigation }) => {
+export const PaymentSuccess = () => {
   const successAnimation = useRef();
+  const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    successAnimation.current?.reset();
-    successAnimation.current?.play();
-  }, [navigation]);
+    if (isFocused) {
+      successAnimation.current?.reset();
+      successAnimation.current?.play();
+    }
+  }, [isFocused]);
 
   return (
     <View
