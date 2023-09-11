@@ -1,63 +1,70 @@
 import { Image, Text, View } from "react-native";
 import { themeColors } from "../../theme";
-
+import { Ionicons } from "@expo/vector-icons";
+import { useEffect } from "react";
+const background = "#337CCF";
+const textColor = "white";
 export const PlayerCard = ({ item }) => {
   return (
-    <View className="bg-white rounded-lg mr-2">
+    <View
+      className="rounded-lg mr-2"
+      style={{ backgroundColor: themeColors.bgScreen }}
+    >
       <View className="flex-row">
         {/* stat */}
-        <View className="p-2">
+        <View className="p-4">
           <StatComponent
             title={"Appearances"}
-            stat={item.appearances}
+            stat={item.appearance}
           ></StatComponent>
           <StatComponent
-            title={"Clean Sheets"}
-            stat={item.cleanSheets}
+            title={"Birthday"}
+            stat={item.birthdate}
           ></StatComponent>
-          <StatComponent title={"Saves"} stat={item.saves}></StatComponent>
+          <StatComponent title={"Height"} stat={item.height}></StatComponent>
+          <StatComponent title={"Weight"} stat={item.weight}></StatComponent>
           <StatComponent
-            title={"Goals \nConceded"}
-            stat={item.goalsConceded}
+            title={"Nationality"}
+            stat={item.nationality}
           ></StatComponent>
         </View>
         {/* player image */}
-        <View className="bg-red-500 justify-end pb-2 rounded-r-lg">
+        <View className="justify-start rounded-tr-lg overflow-hidden">
           <Image
-            source={require("../../../assets/images/player.png")}
-            className="w-48 h-48"
+            source={{ uri: item.photo }}
+            className="w-48"
+            style={{ height: 257 }}
           ></Image>
         </View>
       </View>
 
       {/* player name + nationality */}
-      <View className="p-2 flex-row">
-        <View className="flex-1 mr-2">
+      <View className="px-4 pb-2 flex-row">
+        <View className="flex-1 justify-center">
           <Text
-            className="text-base font-extrabold   "
-            style={{ color: themeColors.bgScreen }}
+            className={
+              item.name.length > 16
+                ? "text-base font-extrabold"
+                : "text-lg font-extrabold"
+            }
+            style={{ color: textColor }}
           >
-            Erling
-          </Text>
-          <Text
-            className="text-4xl font-extrabold"
-            style={{ color: themeColors.bgScreen }}
-          >
-            Halland
-          </Text>
-          <Text>
-            <Text className="font-bold" style={{ color: themeColors.bgScreen }}>
-              9
-            </Text>{" "}
-            Striker
+            {item.name}
           </Text>
         </View>
-        <View className="items-center">
-          <Image
-            source={require("../../../assets/images/nationality.png")}
-            className="w-16 h-16"
-          ></Image>
-          <Text style={{ color: themeColors.bgScreen }}>Norway</Text>
+        <View className="flex-row items-center">
+          <View>
+            <Ionicons name="shirt" size={40} color={themeColors.bgCard} />
+            <Text
+              className="absolute text-white font-bold"
+              style={
+                item.number < 10 ? { top: 13, left: 16 } : { top: 13, left: 12 }
+              }
+            >
+              {item.number}
+            </Text>
+          </View>
+          <Text className="text-white text-lg font-bold">{item.position}</Text>
         </View>
       </View>
     </View>
@@ -67,12 +74,12 @@ export const PlayerCard = ({ item }) => {
 const StatComponent = ({ title, stat }) => {
   return (
     <View className="mb-1">
-      <Text style={{ color: themeColors.bgScreen }} className="text-xs ">
+      <Text style={{ color: textColor }} className="text-xs ">
         {title}
       </Text>
       <Text
         className="text-lg font-extrabold "
-        style={{ color: themeColors.bgScreen, fontWeight: 900 }}
+        style={{ color: textColor, fontWeight: 900 }}
       >
         {stat}
       </Text>

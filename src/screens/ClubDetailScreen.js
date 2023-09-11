@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import {
+  Dimensions,
   FlatList,
   Image,
   ImageBackground,
@@ -10,76 +11,46 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { Tab } from "@rneui/themed";
-import { useState } from "react";
+import { Tab, TabView } from "@rneui/themed";
+import { useContext, useEffect, useState } from "react";
 import { themeColors } from "../theme";
 import { MatchTable } from "../components/Matches/MatchTable";
 import { PlayerCard } from "../components/Club/PlayerCard";
-export const ClubDetailScreen = () => {
-  const navigation = useNavigation();
-  const [ref, setRef] = useState(null);
+import { AxiosContext } from "../services/axios.context";
+import { getClub, getClubMatches } from "../services/club.service";
+import InAppLoading from "../components/InAppLoading";
+import { MatchCard } from "../components/Matches/MatchCard";
+import { PositionAndPlayers } from "../components/Club/PositionAndPlayers";
+
+const windowWidth = Dimensions.get("window").width;
+const positions = ["Attacker", "Defender", "Goalkeeper", "Midfielder"];
+export const ClubDetailScreen = ({ navigation, route }) => {
+  const { clubId } = route.params;
   const [index, setIndex] = useState(0);
-  const playerData = [
-    {
-      firstName: "Aaron",
-      lastName: "Ramsdale",
-      appearances: 180,
-      cleanSheets: 37,
-      saves: 487,
-      goalsConceded: 217,
-      nationality: "England",
-      id: 1,
-    },
-    {
-      firstName: "Aaron",
-      lastName: "Ramsdale",
-      appearances: 180,
-      cleanSheets: 37,
-      saves: 487,
-      goalsConceded: 217,
-      nationality: "England",
-      id: 2,
-    },
-    {
-      firstName: "Aaron",
-      lastName: "Ramsdale",
-      appearances: 180,
-      cleanSheets: 37,
-      saves: 487,
-      goalsConceded: 217,
-      nationality: "England",
-      id: 3,
-    },
-    {
-      firstName: "Aaron",
-      lastName: "Ramsdale",
-      appearances: 180,
-      cleanSheets: 37,
-      saves: 487,
-      goalsConceded: 217,
-      nationality: "England",
-      id: 4,
-    },
-    {
-      firstName: "Aaron",
-      lastName: "Ramsdale",
-      appearances: 180,
-      cleanSheets: 37,
-      saves: 487,
-      goalsConceded: 217,
-      nationality: "England",
-      id: 5,
-    },
-  ];
-  const [sectionCords, setSectionCords] = useState([]);
-  const scrollHandler = (e) => {
-    setIndex(e);
-    ref.scrollTo({
-      x: 0,
-      y: sectionCords[e],
-      animated: true,
-    });
-  };
+  const { authAxios } = useContext(AxiosContext);
+  const [clubData, setClubData] = useState(null);
+  const [clubMatches, setClubMatches] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const fetchClubData = async () => {
+      const data = await getClub(authAxios, clubId);
+      const clubMatches = await getClubMatches(authAxios, clubId);
+      setClubMatches(clubMatches.matches);
+      const weightPattern = /^\d+\s*kg$/;
+      const heightPattern = /^\d+\s*cm$/;
+      data.footballers.forEach((footballer) => {
+        footballer.weight = weightPattern.test(footballer.weight)
+          ? footballer.weight
+          : "--";
+        footballer.height = heightPattern.test(footballer.height)
+          ? footballer.height
+          : "--";
+      });
+      setClubData(data);
+      setIsLoading(false);
+    };
+    fetchClubData();
+  }, []);
   return (
     <>
       <StatusBar></StatusBar>
@@ -95,19 +66,20 @@ export const ClubDetailScreen = () => {
             >
               <AntDesign name="left" size={30} color="white" />
             </TouchableOpacity>
-            <View className="items-center justify-center mb-4">
-              <Image
-                source={require("../../assets/images/team1.png")}
-                className="h-24 w-24"
-              />
-              <Text className="text-white text-lg font-bold">Man City</Text>
-            </View>
+            {clubData && (
+              <View className="items-center justify-center mb-4">
+                <Image source={{ uri: clubData.logo }} className="h-24 w-24" />
+                <Text className="text-white text-lg font-bold">
+                  {clubData.name}
+                </Text>
+              </View>
+            )}
           </ImageBackground>
         </View>
 
         <Tab
           value={index}
-          onChange={(e) => scrollHandler(e)}
+          onChange={(e) => setIndex(e)}
           indicatorStyle={{
             backgroundColor: themeColors.bgButton,
             height: 3,
@@ -140,92 +112,106 @@ export const ClubDetailScreen = () => {
           />
         </Tab>
 
-        <ScrollView
-          ref={(ref) => {
-            setRef(ref);
-          }}
-          style={{ backgroundColor: themeColors.bgScreen }}
-        >
-          {/* Description */}
-          <View
-            className="p-4"
-            onLayout={(event) => {
-              const layout = event.nativeEvent.layout;
-              sectionCords[0] = layout.y;
-              setSectionCords([...sectionCords]);
-            }}
+        <TabView value={index} onChange={setIndex} animationType="spring">
+          <TabView.Item
+            style={{ backgroundColor: themeColors.bgScreen, width: "100%" }}
           >
-            <Text className="text-white text-xl font-bold mb-4">
-              Club Description
-            </Text>
-            <View
-              style={{ backgroundColor: themeColors.bgCard }}
-              className="rounded-lg"
-            >
-              <Text
-                className="text-white font-semibold p-4"
-                style={{ borderBottomWidth: 1 }}
-              >
-                Le Manchester City Football Club est un club de football anglais
-                basé à Manchester et fondé en 1880 sous le nom de St. Mark's. Le
-                club devint le Ardwick Association Football Club en 1887 avant
-                de prendre son nom actuel en 1894
-              </Text>
-            </View>
-          </View>
+            <ScrollView>
+              {/* Description */}
+              <View className="p-4">
+                <Text className="text-white text-xl font-bold mb-4">
+                  Club Description
+                </Text>
+                {clubData && (
+                  <View
+                    style={{ backgroundColor: themeColors.bgCard }}
+                    className="rounded-lg"
+                  >
+                    <Text
+                      className="text-white font-semibold p-4"
+                      style={{ borderBottomWidth: 1 }}
+                    >
+                      {clubData.description}
+                    </Text>
+                  </View>
+                )}
+                <Text className="text-white text-xl font-bold mt-4 mb-2">
+                  Stadium
+                </Text>
+                {clubData && (
+                  <View
+                    style={{ backgroundColor: themeColors.bgCard }}
+                    className="rounded-lg p-2"
+                  >
+                    <Image
+                      source={{ uri: clubData.stadium.image }}
+                      style={{
+                        width: windowWidth - 48,
+                        height: (15.88 * (windowWidth - 48)) / 21.17,
+                      }}
+                    ></Image>
+                    <Text className="text-white text-xl font-semibold mt-2">
+                      {clubData.stadium.name}
+                    </Text>
+                    <Text className="text-white text-base font-medium">
+                      Address: {clubData.stadium.address}
+                    </Text>
+                    <Text className="text-white text-base font-medium">
+                      Location: {clubData.stadium.location}
+                    </Text>
+                  </View>
+                )}
+              </View>
+            </ScrollView>
+          </TabView.Item>
+          <TabView.Item
+            style={{ backgroundColor: themeColors.bgScreen, width: "100%" }}
+          >
+            <ScrollView>
+              <View className="p-4">
+                {clubMatches.length > 0 && (
+                  <>
+                    <Text className="text-white text-xl font-bold mb-4">
+                      Previous matches
+                    </Text>
 
-          {/* Previous matches */}
-          <View
-            className="p-4"
-            onLayout={(event) => {
-              const layout = event.nativeEvent.layout;
-              sectionCords[1] = layout.y;
-              setSectionCords([...sectionCords]);
-            }}
+                    {clubMatches.map((match) => (
+                      <View
+                        className="p-2 rounded-lg mb-2"
+                        style={{ backgroundColor: themeColors.bgCard }}
+                        key={match.match_id}
+                      >
+                        <MatchCard matchData={match}></MatchCard>
+                      </View>
+                    ))}
+                  </>
+                )}
+              </View>
+            </ScrollView>
+          </TabView.Item>
+          <TabView.Item
+            style={{ backgroundColor: themeColors.bgCard, width: "100%" }}
           >
-            <Text className="text-white text-xl font-bold mb-4">
-              Previous matches
-            </Text>
-            {/* <MatchTable></MatchTable>
-            <MatchTable></MatchTable>
-            <MatchTable></MatchTable> */}
-          </View>
-
-          {/* Squad */}
-          <View
-            className="p-4 pr-0"
-            style={{ backgroundColor: themeColors.bgCard }}
-            onLayout={(event) => {
-              const layout = event.nativeEvent.layout;
-              sectionCords[2] = layout.y;
-              setSectionCords([...sectionCords]);
-            }}
-          >
-            <Text className="text-white text-xl font-bold mb-4">
-              Goalkeepers
-            </Text>
-            <FlatList
-              data={playerData}
-              renderItem={PlayerCard}
-              keyExtractor={(item) => item.id}
-              horizontal
-            ></FlatList>
-          </View>
-
-          <View
-            className="p-4 pr-0"
-            style={{ backgroundColor: themeColors.bgCard }}
-          >
-            <Text className="text-white text-xl font-bold mb-4">Striker</Text>
-            <FlatList
-              data={playerData}
-              renderItem={PlayerCard}
-              keyExtractor={(item) => item.id}
-              horizontal
-            ></FlatList>
-          </View>
-        </ScrollView>
+            <ScrollView>
+              <View>
+                {clubData &&
+                  positions.map((position, index) => {
+                    return (
+                      <PositionAndPlayers
+                        position={position}
+                        key={index}
+                        players={clubData.footballers.filter(
+                          (player) => player.position === position
+                        )}
+                      ></PositionAndPlayers>
+                    );
+                  })}
+              </View>
+            </ScrollView>
+          </TabView.Item>
+        </TabView>
       </View>
+      <InAppLoading visible={isLoading}></InAppLoading>
     </>
   );
 };
