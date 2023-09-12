@@ -24,7 +24,6 @@ export const VideoPlayerScreen = ({ route, navigation }) => {
     setVideos([...videoData]);
   }, []);
   const handleScroll = (index) => {
-    console.log(index);
     flatListRef.current.scrollToIndex({
       animated: true,
       index: index,
