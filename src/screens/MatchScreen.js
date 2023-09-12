@@ -77,7 +77,6 @@ export const MatchScreen = () => {
       };
       fetchMatches();
     } else {
-      setIsLoading(false);
       setErrorMessage("");
     }
   }, [isFocused]);
