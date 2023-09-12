@@ -58,8 +58,8 @@ export const HomeScreen = () => {
                   handlePress(item.url);
                 } else {
                   navigation.navigate("Video", {
-                    title: item.title,
-                    videoId: item.url.split("https://youtu.be/")[1],
+                    currentVideoId: item.newsId,
+                    videoData: news.filter((item) => item.type === "video"),
                   });
                 }
               }}
