@@ -47,7 +47,7 @@ export const ProfileScreen = () => {
   });
   const [errorMessage, setErrorMessage] = useState("");
   const isFocused = useIsFocused();
-  const { access_token, isAuthenticated } = useContext(UserContext);
+  const { access_token, isAuthenticated, logout } = useContext(UserContext);
   const { authAxios } = useContext(AxiosContext);
 
   useEffect(() => {
@@ -98,6 +98,10 @@ export const ProfileScreen = () => {
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
+  };
+  const handleLogOut = () => {
+    logout();
+    navigation.navigate("home");
   };
 
   return (
@@ -187,8 +191,9 @@ export const ProfileScreen = () => {
             }}
           />
           <Pressable
-            className={`justify-center items-center ${isEdited ? "" : "opacity-80"
-              } absolute`}
+            className={`justify-center items-center ${
+              isEdited ? "" : "opacity-80"
+            } absolute`}
             onPress={pickImage}
             disabled={!isEdited}
             style={{
@@ -302,25 +307,46 @@ export const ProfileScreen = () => {
             />
           </View>
           {isAuthenticated && (
-            <Button
-              title="Update password"
-              titleStyle={{
-                fontWeight: "700",
-                color: themeColors.bgButton,
-              }}
-              buttonStyle={{
-                backgroundColor: "transparent",
-                borderColor: themeColors.bgButton,
-                borderWidth: 1,
-              }}
-              containerStyle={{
-                width: windowWidth / 2 - 33,
-                marginLeft: 20,
-                marginVertical: 10,
-                opacity: isEdited ? 1 : 0.5
-              }}
-              onPress={() => navigation.navigate('UpdatePassword')}
-            />
+            <View className="flex-row">
+              <Button
+                title="Update password"
+                titleStyle={{
+                  fontWeight: "700",
+                  color: themeColors.bgButton,
+                }}
+                buttonStyle={{
+                  backgroundColor: "transparent",
+                  borderColor: themeColors.bgButton,
+                  borderWidth: 1,
+                }}
+                containerStyle={{
+                  width: windowWidth / 2 - 33,
+                  marginLeft: 20,
+                  marginVertical: 10,
+                  opacity: isEdited ? 1 : 0.5,
+                }}
+                onPress={() => navigation.navigate("UpdatePassword")}
+              />
+              <Button
+                title="Logout"
+                titleStyle={{
+                  fontWeight: "700",
+                  color: "red",
+                }}
+                buttonStyle={{
+                  backgroundColor: "transparent",
+                  borderColor: "red",
+                  borderWidth: 1,
+                }}
+                containerStyle={{
+                  width: windowWidth / 2 - 33,
+                  marginLeft: 20,
+                  marginVertical: 10,
+                  opacity: isEdited ? 1 : 0.5,
+                }}
+                onPress={() => handleLogOut()}
+              />
+            </View>
           )}
           {isEdited && (
             <View className="w-full justify-center items-center mt-4">
