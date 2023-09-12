@@ -23,6 +23,7 @@ import { DetailOrderPaymentScreen } from "../screens/DetailOrderPaymentScreen";
 import { PaypalPayment } from "../screens/PaypalPayment";
 import { PaymentSuccess } from "../screens/PaymentSuccess";
 import { GroupDetailScreen } from "../screens/GroupDetailScreen";
+import { UpdatePasswordScreen } from "../screens/UpdatePasswordScreen";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs([
@@ -130,6 +131,11 @@ export const AppNavigation = () => {
           name="GroupDetail"
           options={{ headerShown: false }}
           component={GroupDetailScreen}
+        />
+        <Stack.Screen
+          name="UpdatePassword"
+          options={{ headerShown: false }}
+          component={UpdatePasswordScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

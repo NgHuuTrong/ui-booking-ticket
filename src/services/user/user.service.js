@@ -41,3 +41,15 @@ export const signIn = async (axios, payload) => {
     throw err.data.message;
   }
 };
+
+export const updatePassword = async (axios, payload) => {
+  try {
+    const response = await axios.patch("/users/updateMyPassword", payload);
+
+    if (response?.data.status === "success") {
+      return camelize(response?.data);
+    }
+  } catch (err) {
+    throw err.data.message;
+  }
+};

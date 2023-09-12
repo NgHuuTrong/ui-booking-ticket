@@ -15,7 +15,6 @@ import { AxiosContext } from "../services/axios.context";
 import { getMyTicket } from "../services/ticket.service";
 import { Loading } from "../components/Loading";
 import { ErrorAlertModal } from "../components/ErrorAlertModal";
-
 const { width } = Dimensions.get("window");
 
 const List = ({ data }) => {
@@ -92,7 +91,7 @@ export const MyTicketScreen = () => {
       index: index,
     });
   };
-  console.log(active);
+
   return (
     <>
       {loading ? (

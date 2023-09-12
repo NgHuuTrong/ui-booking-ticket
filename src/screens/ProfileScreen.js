@@ -108,7 +108,6 @@ export const ProfileScreen = () => {
       {errorMessage && <ErrorAlertModal message={errorMessage} />}
       <View>
         <View
-          // source={require("../../assets/images/HeaderBackground.jpeg")}
           className="w-full items-center pt-8"
           style={{
             height: 200,
@@ -186,7 +185,6 @@ export const ProfileScreen = () => {
               borderColor: "#fff",
               borderWidth: 5,
             }}
-            className
           />
           <Pressable
             className={`justify-center items-center ${isEdited ? "" : "opacity-80"
@@ -219,7 +217,6 @@ export const ProfileScreen = () => {
                 height: 60,
                 elevation: 2,
               }}
-              //errorMessage="Please enter your email address"
               placeholder="Enter your email"
               leftIcon={
                 <MaterialCommunityIcons
@@ -244,7 +241,6 @@ export const ProfileScreen = () => {
                 height: 60,
                 elevation: 2,
               }}
-              //errorMessage="Please enter your valid phone"
               placeholder="Enter your phone"
               leftIcon={
                 <MaterialCommunityIcons
@@ -269,7 +265,6 @@ export const ProfileScreen = () => {
                 height: 60,
                 elevation: 2,
               }}
-              //errorMessage="Please enter your name"
               placeholder="Enter your name"
               leftIcon={
                 <MaterialCommunityIcons
@@ -285,31 +280,6 @@ export const ProfileScreen = () => {
               value={inputs.name}
             ></Input>
           </View>
-          {/* <View className="px-3 mt-3">
-            <Input
-              inputContainerStyle={{
-                backgroundColor: "#f9f9f9",
-                borderRadius: 10,
-                paddingHorizontal: 9,
-                height: 60,
-                elevation: 2,
-              }}
-              //errorMessage="Please enter your password"
-              placeholder="Enter your password"
-              leftIcon={
-                <MaterialCommunityIcons
-                  name="lock-outline"
-                  size={24}
-                  color="black"
-                />
-              }
-              disabled={!isEdited}
-              value={details.password}
-              onChangeText={(newText) =>
-                setDetails({ ...details, password: newText })
-              }
-            ></Input>
-          </View> */}
           <View className="px-3 flex-row items-center">
             <Text className="ml-3 font-bold text-lg text-white">Gender:</Text>
             <CheckBox
@@ -347,7 +317,9 @@ export const ProfileScreen = () => {
                 width: windowWidth / 2 - 33,
                 marginLeft: 20,
                 marginVertical: 10,
+                opacity: isEdited ? 1 : 0.5
               }}
+              onPress={() => navigation.navigate('UpdatePassword')}
             />
           )}
           {isEdited && (
