@@ -92,7 +92,6 @@ export const MyTicketScreen = () => {
       index: index,
     });
   };
-  console.log(active);
   return (
     <>
       {loading ? (

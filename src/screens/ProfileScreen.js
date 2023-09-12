@@ -37,6 +37,7 @@ export const ProfileScreen = () => {
     name: "",
     gender: "",
     photo: "",
+    image: null,
   });
   const [inputs, setInputs] = useState({
     email: "",
@@ -44,6 +45,7 @@ export const ProfileScreen = () => {
     name: "",
     gender: "",
     photo: "",
+    image: null,
   });
   const [errorMessage, setErrorMessage] = useState("");
   const isFocused = useIsFocused();
@@ -62,12 +64,14 @@ export const ProfileScreen = () => {
             phone: res.phone,
             name: res.name,
             gender: res.gender,
+            image: res.photo,
           });
           setInputs({
             email: res.email,
             phone: res.phone,
             name: res.name,
             gender: res.gender,
+            image: res.photo,
           });
         } catch (error) {
           setErrorMessage(error);
@@ -78,13 +82,29 @@ export const ProfileScreen = () => {
     }
   }, [isFocused]);
 
-  const handleChangeProfile = () => {
+  const handleChangeProfile = async () => {
     // update user here
+    try {
+      let formData = new FormData();
 
-    setEdited(false);
+      if (inputs.image !== details.image) {
+        let filename = inputs.image.split("/").pop();
+        let match = /\.(\w+)$/.exec(filename);
+        let type = match ? `image/${match[1]}` : `image`;
+
+        formData.append("photo", { uri: inputs.image, name: filename, type });
+      }
+      formData.append("name", inputs.name);
+      formData.append("email", inputs.email);
+      formData.append("phone", inputs.phone);
+
+      await updateUser(authAxios, formData);
+      setDetails(inputs);
+      setEdited(false);
+    } catch (err) {
+      setErrorMessage(err);
+    }
   };
-
-  const [image, setImage] = useState(null);
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -96,7 +116,7 @@ export const ProfileScreen = () => {
     });
 
     if (!result.canceled) {
-      setImage(result.assets[0].uri);
+      setInputs({ ...inputs, image: result.assets[0].uri });
     }
   };
 
@@ -155,12 +175,7 @@ export const ProfileScreen = () => {
                 <Pressable
                   onPress={() => {
                     setEdited(false);
-                    setInputs({
-                      email: details.email,
-                      phone: details.phone,
-                      name: details.name,
-                      gender: details.gender,
-                    });
+                    setInputs(details);
                   }}
                 >
                   <Text className="text-white text-lg font-semibold">
@@ -178,8 +193,8 @@ export const ProfileScreen = () => {
             size={120}
             rounded
             source={
-              image
-                ? { uri: image }
+              inputs.image
+                ? { uri: inputs.image }
                 : require("../../assets/images/DefaultProfilePic.png")
             }
             avatarStyle={{
@@ -189,8 +204,9 @@ export const ProfileScreen = () => {
             className
           />
           <Pressable
-            className={`justify-center items-center ${isEdited ? "" : "opacity-80"
-              } absolute`}
+            className={`justify-center items-center ${
+              isEdited ? "" : "opacity-80"
+            } absolute`}
             onPress={pickImage}
             disabled={!isEdited}
             style={{

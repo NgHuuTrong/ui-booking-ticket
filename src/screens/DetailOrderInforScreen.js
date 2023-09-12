@@ -49,7 +49,6 @@ export const DetailOrderInforScreen = () => {
         try {
           const res = await getMatch(authAxios, route.params.matchId);
           const resUser = await getUser(authAxios);
-          console.log(resUser);
           setMatchData(res);
           setInputs({
             name: resUser.name,

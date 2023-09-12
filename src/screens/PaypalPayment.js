@@ -24,7 +24,7 @@ export const PaypalPayment = () => {
       onNavigationStateChange={stateChng}
       renderLoading={() => <Loading />}
       source={{
-        uri: `${process.env.EXPO_PUBLIC_API_URL}/pay/${route.params.matchId}/${route.params.name}/${route.params.email}/${route.params.phone}/${route.params.side}/${route.params.numberTickets}`,
+        uri: `https://api-booking-ticket.onrender.com/pay/${route.params.matchId}/${route.params.name}/${route.params.email}/${route.params.phone}/${route.params.side}/${route.params.numberTickets}`,
         headers: {
           Authorization: `Bearer ${userCtx.access_token}`,
         },

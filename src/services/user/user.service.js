@@ -14,13 +14,10 @@ export const getUser = async (axios) => {
 
 export const signUp = async (axios, payload) => {
   try {
-    const response = await axios.post(
-      "/users/signup",
-      {
-        ...payload,
-        password_confirm: payload.passwordConfirm
-      }
-    );
+    const response = await axios.post("/users/signup", {
+      ...payload,
+      password_confirm: payload.passwordConfirm,
+    });
 
     if (response?.data.status === "success") {
       return camelize(response?.data);
@@ -33,6 +30,18 @@ export const signUp = async (axios, payload) => {
 export const signIn = async (axios, payload) => {
   try {
     const response = await axios.post("/users/login", payload);
+
+    if (response?.data.status === "success") {
+      return camelize(response?.data);
+    }
+  } catch (err) {
+    throw err.data.message;
+  }
+};
+
+export const updateUser = async (axios, payload) => {
+  try {
+    const response = await axios.patch("/users/updateMe", payload);
 
     if (response?.data.status === "success") {
       return camelize(response?.data);
