@@ -91,7 +91,6 @@ export const MyTicketScreen = () => {
       index: index,
     });
   };
-
   return (
     <>
       {loading ? (
