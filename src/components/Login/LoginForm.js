@@ -10,7 +10,7 @@ import { ErrorAlertModal } from "../ErrorAlertModal";
 import { signIn } from "../../services/user/user.service";
 import { useNavigation } from "@react-navigation/native";
 
-export const LoginForm = ({ handleChangeToResetMode }) => {
+export const LoginForm = ({ handleChangeToForgotMode }) => {
   const [inputs, setInputs] = useState({
     email: "",
     password: ""
@@ -91,11 +91,11 @@ export const LoginForm = ({ handleChangeToResetMode }) => {
         onPress={() => setShowPassword(!showPassword)}
       />
       <Pressable
-        onPress={handleChangeToResetMode}
+        onPress={handleChangeToForgotMode}
         className="p-2 items-end mb-12"
       >
         <Text style={{ color: themeColors.bgButton }} className="font-semibold">
-          Forgot password?
+          Forgotten password?
         </Text>
       </Pressable>
       <View className="items-center">
