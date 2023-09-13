@@ -8,7 +8,6 @@ import React, {
 import {
   FlatList,
   Image,
-  ImageBackground,
   Linking,
   Pressable,
   ScrollView,
@@ -16,13 +15,19 @@ import {
   View,
 } from "react-native";
 import { MainLayout } from "../components/Common/MainLayout";
-import { AntDesign } from "@expo/vector-icons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { AxiosContext } from "../services/axios.context";
 import { getAllNews } from "../services/news.service";
 import { ErrorAlertModal } from "../components/ErrorAlertModal";
 import AnimatedLottieView from "lottie-react-native";
-import Carousel from "react-native-snap-carousel";
+import { Tab, TabView } from "@rneui/themed";
+import { Dimensions } from "react-native";
+import { HomeCarousel } from "../components/Home/HomeCarousel";
+import { themeColors } from "../theme";
+import { getAllMatches } from "../services/match.service";
+import { datetimeTransform } from "../utils/timeTransform";
+import { MatchCard } from "../components/Matches/MatchCard";
+const windowWidth = Dimensions.get("window").width;
 export const HomeScreen = () => {
   const navigation = useNavigation();
   const handlePress = useCallback(async (url) => {
@@ -35,16 +40,46 @@ export const HomeScreen = () => {
     }
   }, []);
   const [news, setNews] = useState([]);
+  const [matchesByDate, setMatchesByDate] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const isFocused = useIsFocused();
-  const newsCarousel = useRef(null);
+  const [index, setIndex] = React.useState(0);
   const { publicAxios } = useContext(AxiosContext);
+  const groupStageRef = useRef(null);
   useEffect(() => {
     if (isFocused) {
       const fetchData = async () => {
         try {
           const res = await getAllNews(publicAxios);
           setNews(res);
+
+          //match data
+          const data = await getAllMatches(publicAxios);
+          const currentDate = new Date();
+          const filteredData = data.filter(
+            (item) => new Date(item.time) > currentDate
+          );
+          const sortedData = filteredData.sort(
+            (data1, data2) => new Date(data1.time) - new Date(data2.time)
+          );
+          const dataGroupByDate = [];
+          sortedData.forEach((match) => {
+            const date = datetimeTransform(match.time, "CustomForHomeScreen");
+            if (
+              dataGroupByDate.length === 0 ||
+              dataGroupByDate[dataGroupByDate.length - 1].date !== date
+            ) {
+              dataGroupByDate.push({
+                date: date,
+                matchesByDate: [],
+              });
+            }
+            dataGroupByDate[dataGroupByDate.length - 1].matchesByDate.push(
+              match
+            );
+          });
+          dataGroupByDate.splice(3);
+          setMatchesByDate(dataGroupByDate);
         } catch (error) {
           setErrorMessage(error);
         }
@@ -57,10 +92,15 @@ export const HomeScreen = () => {
   return (
     <MainLayout>
       {errorMessage && <ErrorAlertModal message={errorMessage} />}
-      <ScrollView>
+      <ScrollView className="w-full flex-1">
+        <HomeCarousel
+          title="NEWS"
+          data={news.filter((item) => item.type == "article")}
+        ></HomeCarousel>
+
         <View className="justify-center items-center mt-8">
           <Pressable
-            className="rounded-xl overflow-hidden relative"
+            className="rounded-xl overflow-hidden relative z-20 justify-center items-center"
             onPress={() => handlePress("https://www.nike.com")}
           >
             <AnimatedLottieView
@@ -68,83 +108,95 @@ export const HomeScreen = () => {
               autoPlay
               loop
               style={{
-                height: 203,
+                height: 200,
               }}
             />
+            <Image
+              source={require("../../assets/images/nike.png")}
+              style={{
+                width: (130 * 968) / 479,
+                height: 130,
+              }}
+              className="absolute"
+            />
           </Pressable>
-          <Image
-            source={require("../../assets/images/nike.png")}
-            style={{ width: 230, height: (479 / 968) * 230 }}
-            className="absolute"
-          />
         </View>
-        {/* <Carousel
-          layout="tinder"
-          layoutCardOffset={9}
-          ref={newsCarousel}
-          data={news}
-          renderItem={(item, index) => (
-            <View
-              key={index}
-              className="bg-black"
-              source={{ uri: item.thumbnail }}
-              style={{ width: 300, height: 100 }}
-            >
-              <Text className="text-white">{index}</Text>
-            </View>
+
+        <HomeCarousel
+          title="VIDEOS"
+          data={news.filter((item) => item.type == "video")}
+          playReverse={true}
+        ></HomeCarousel>
+        <View
+          style={{
+            width: windowWidth - 25,
+            alignSelf: "center",
+            backgroundColor: themeColors.bgCard,
+          }}
+          className="rounded-xl p-2 mb-4 mt-4"
+        >
+          {matchesByDate.length > 0 && (
+            <>
+              <Text className="text-white ml-2 mt-2 text-lg font-bold">
+                Group Stage
+              </Text>
+              <Tab
+                value={index}
+                onChange={(e) => {
+                  groupStageRef?.current.scrollToIndex({
+                    index: e,
+                    animated: true,
+                  });
+                  setIndex(e);
+                }}
+                indicatorStyle={{ backgroundColor: themeColors.bgButton }}
+              >
+                {matchesByDate.map((match, i) => {
+                  return (
+                    <Tab.Item
+                      title={match.date}
+                      key={i}
+                      titleStyle={{
+                        fontSize: 12,
+                        fontWeight: "900",
+                        color: index == i ? themeColors.bgButton : "white",
+                      }}
+                    />
+                  );
+                })}
+              </Tab>
+              <FlatList
+                ref={groupStageRef}
+                data={matchesByDate}
+                keyExtractor={(item) => item.date}
+                horizontal
+                scrollEnabled={false}
+                renderItem={({ item }) => (
+                  <View style={{ width: windowWidth - 25 }} className="pt-2">
+                    {item.matchesByDate.map((match) => (
+                      <View key={match.matchId} className="mb-2">
+                        <MatchCard matchData={match}></MatchCard>
+                      </View>
+                    ))}
+                  </View>
+                )}
+              ></FlatList>
+              <Pressable
+                className="p-2 pt-4 border-t-gray-400"
+                style={{ borderTopWidth: 1 }}
+                onPress={() => navigation.navigate("Match")}
+              >
+                <Text
+                  style={{ color: themeColors.bgButton }}
+                  className="font-bold"
+                >
+                  View all matches {">"}
+                </Text>
+              </Pressable>
+            </>
           )}
-          sliderWidth={370}
-          itemWidth={300}
-          inactiveSlideShift={0}
-          useScrollView={true}
-        /> */}
+        </View>
       </ScrollView>
     </MainLayout>
   );
 };
-
-// renderItem={({ item }) => (
-//           <View className="flex-row justify-center items-center">
-//             <Pressable
-//               className="my-4 rounded-xl overflow-hidden relative"
-//               style={{
-//                 width: 370,
-//                 height: 200,
-//               }}
-//               onPress={() => {
-//                 if (item.type === "article") {
-//                   handlePress(item.url);
-//                 } else {
-//                   navigation.navigate("Video", {
-//                     currentVideoId: item.newsId,
-//                     videoData: news.filter((item) => item.type === "video"),
-//                   });
-//                 }
-//               }}
-//             >
-//               <Image
-//                 source={{ uri: item.thumbnail }}
-//                 className="top-0 bottom-0 left-0 right-0 absolute"
-//               />
-//               <View
-//                 className="absolute top-0 bottom-0 left-0 right-0"
-//                 style={{
-//                   backgroundColor: "rgba(0,0,0,0.4)",
-//                 }}
-//               />
-//               <View className="absolute bottom-1 flex-row justify-around items-center px-4">
-//                 <Text className="text-lg text-white font-extrabold mr-10">
-//                   {item.title}
-//                 </Text>
-//                 {item.type === "article" && (
-//                   <AntDesign name="upload" size={20} color="white" />
-//                 )}
-//               </View>
-//               {item.type === "video" && (
-//                 <View className="absolute top-2 right-2">
-//                   <AntDesign name="playcircleo" size={24} color="white" />
-//                 </View>
-//               )}
-//             </Pressable>
-//           </View>
-//         )}
