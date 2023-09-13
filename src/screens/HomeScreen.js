@@ -6,6 +6,7 @@ import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { AxiosContext } from "../services/axios.context";
 import { getAllNews } from "../services/news.service";
 import { ErrorAlertModal } from "../components/ErrorAlertModal";
+import AnimatedLottieView from "lottie-react-native";
 
 export const HomeScreen = () => {
   const navigation = useNavigation();
@@ -45,6 +46,25 @@ export const HomeScreen = () => {
       {errorMessage && <ErrorAlertModal message={errorMessage} />}
       <FlatList
         data={news}
+        ListHeaderComponent={() => (
+          <View className="justify-center items-center mt-8">
+            <Pressable className="rounded-xl overflow-hidden relative">
+              <AnimatedLottieView
+                source={require("../../assets/Lottie/revenue.json")}
+                autoPlay
+                loop
+                style={{
+                  height: 203,
+                }}
+              />
+            </Pressable>
+            <Image
+              source={require("../../assets/images/nike.png")}
+              style={{ width: 230, height: (479 / 968) * 230 }}
+              className="absolute"
+            />
+          </View>
+        )}
         renderItem={({ item }) => (
           <View className="flex-row justify-center items-center">
             <Pressable

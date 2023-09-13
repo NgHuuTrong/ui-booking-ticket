@@ -108,7 +108,7 @@ export const MatchDetailScreen = ({ navigation, route }) => {
               >
                 <View className="w-full">
                   <Text className="text-white text-xl font-semibold">
-                    Stadium: {stadium.name}
+                    {stadium.name}
                   </Text>
                   <Text className="text-white text-base font-medium">
                     Address: {stadium.address}
