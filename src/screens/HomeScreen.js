@@ -27,6 +27,7 @@ import { themeColors } from "../theme";
 import { getAllMatches } from "../services/match.service";
 import { datetimeTransform } from "../utils/timeTransform";
 import { MatchCard } from "../components/Matches/MatchCard";
+import InAppLoading from "../components/InAppLoading";
 const windowWidth = Dimensions.get("window").width;
 export const HomeScreen = () => {
   const navigation = useNavigation();
@@ -46,8 +47,10 @@ export const HomeScreen = () => {
   const [index, setIndex] = React.useState(0);
   const { publicAxios } = useContext(AxiosContext);
   const groupStageRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     if (isFocused) {
+      setIsLoading(true);
       const fetchData = async () => {
         try {
           const res = await getAllNews(publicAxios);
@@ -80,6 +83,7 @@ export const HomeScreen = () => {
           });
           dataGroupByDate.splice(3);
           setMatchesByDate(dataGroupByDate);
+          setIsLoading(false);
         } catch (error) {
           setErrorMessage(error);
         }
@@ -92,6 +96,7 @@ export const HomeScreen = () => {
   return (
     <MainLayout>
       {errorMessage && <ErrorAlertModal message={errorMessage} />}
+      <InAppLoading visible={isLoading}></InAppLoading>
       <ScrollView className="w-full flex-1">
         <HomeCarousel
           title="NEWS"
