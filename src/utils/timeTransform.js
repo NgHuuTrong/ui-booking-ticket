@@ -58,5 +58,28 @@ export const datetimeTransform = (datetime, type = "all") => {
       const formattedDate = `${day}, ${dayOfMonth} ${month}, ${year}`;
       return formattedDate;
     }
+    case "CustomForHomeScreen": {
+      const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      const monthsOfYear = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      const inputDate = new Date(datetime);
+      const dayOfWeek = daysOfWeek[inputDate.getUTCDay()];
+      const month = monthsOfYear[inputDate.getUTCMonth()];
+      const day = inputDate.getUTCDate();
+      const formattedDate = `${dayOfWeek} ${day} ${month}`;
+      return formattedDate;
+    }
   }
 };
