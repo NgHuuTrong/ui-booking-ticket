@@ -19,31 +19,49 @@ import { getStadium } from "../services/stadium.service";
 import InAppLoading from "../components/InAppLoading";
 import { datetimeTransform } from "../utils/timeTransform";
 import { Button } from "@rneui/themed";
+import { useIsFocused } from "@react-navigation/native";
 
 const windowWidth = Dimensions.get("window").width;
 export const MatchDetailScreen = ({ navigation, route }) => {
   const [stadium, setStadium] = useState(null);
   const [matchData, setMatchData] = useState(null);
   const { authAxios, publicAxios } = useContext(AxiosContext);
+  const isFocused = useIsFocused();
   const { matchId } = route.params;
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    async function fetchMatch() {
-      const matchData = await getMatch(authAxios, matchId);
-      matchData.time = datetimeTransform(matchData.time);
-      matchData.remainSeats =
-        matchData.remainSeatsNorth +
-        matchData.remainSeatsSouth +
-        matchData.remainSeatsEast +
-        matchData.remainSeatsWest;
-      setMatchData(matchData);
-      fetchStadium(matchData.stadiumId);
+    if (isFocused) {
+      setIsLoading(true);
+      async function fetchMatch() {
+        try {
+          const matchData = await getMatch(authAxios, matchId);
+          matchData.time = datetimeTransform(matchData.time);
+          matchData.remainSeats =
+            matchData.remainSeatsNorth +
+            matchData.remainSeatsSouth +
+            matchData.remainSeatsEast +
+            matchData.remainSeatsWest;
+          setMatchData(matchData);
+          fetchStadium(matchData.stadiumId);
+        } catch (err) {
+          setErrorMessage(err);
+          setIsLoading(false);
+        }
+      }
+      async function fetchStadium(stadiumId) {
+        try {
+          const data = await getStadium(authAxios, stadiumId);
+          setStadium(data);
+        } catch (err) {
+          setErrorMessage(err);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+      fetchMatch();
     }
-    async function fetchStadium(stadiumId) {
-      const data = await getStadium(authAxios, stadiumId);
-      setTimeout(() => setStadium(data), 1000);
-    }
-    fetchMatch();
-  }, []);
+  }, [isFocused]);
   const handleNavigate = () => {
     if (matchData.happened == false && matchData.remainSeats > 0) {
       navigation.navigate("ChooseSeat", { matchId: matchData.matchId });
@@ -53,6 +71,8 @@ export const MatchDetailScreen = ({ navigation, route }) => {
     <>
       <StatusBar></StatusBar>
       <View className="flex-1">
+        <InAppLoading visible={isLoading}></InAppLoading>
+        {errorMessage && <ErrorAlertModal message={errorMessage} />}
         <View>
           <ImageBackground
             source={require("../../assets/images/MatchDetailBackground.jpg")}

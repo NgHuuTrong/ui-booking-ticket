@@ -18,7 +18,7 @@ export const ErrorAlertModal = ({ message, onDismiss }) => {
               className="w-32 h-32"
             ></Image>
           </View>
-          <View className="items-center">
+          <View className="items-center px-2">
             <Text
               style={{ color: "#7d6bfc" }}
               className="text-xl font-semibold"

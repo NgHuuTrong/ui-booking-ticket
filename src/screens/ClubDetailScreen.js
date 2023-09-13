@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { Tab, TabView } from "@rneui/themed";
 import { useContext, useEffect, useState } from "react";
 import { themeColors } from "../theme";
@@ -25,36 +25,46 @@ import { PositionAndPlayers } from "../components/Club/PositionAndPlayers";
 const windowWidth = Dimensions.get("window").width;
 const positions = ["Attacker", "Defender", "Goalkeeper", "Midfielder"];
 export const ClubDetailScreen = ({ navigation, route }) => {
+  const isFocused = useIsFocused();
   const { clubId } = route.params;
   const [index, setIndex] = useState(0);
   const { authAxios } = useContext(AxiosContext);
   const [clubData, setClubData] = useState(null);
   const [clubMatches, setClubMatches] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
   useEffect(() => {
-    const fetchClubData = async () => {
-      const data = await getClub(authAxios, clubId);
-      const clubMatches = await getClubMatches(authAxios, clubId);
-      setClubMatches(clubMatches.matches);
-      const weightPattern = /^\d+\s*kg$/;
-      const heightPattern = /^\d+\s*cm$/;
-      data.footballers.forEach((footballer) => {
-        footballer.weight = weightPattern.test(footballer.weight)
-          ? footballer.weight
-          : "--";
-        footballer.height = heightPattern.test(footballer.height)
-          ? footballer.height
-          : "--";
-      });
-      setClubData(data);
-      setIsLoading(false);
-    };
-    fetchClubData();
-  }, []);
+    if (isFocused) {
+      const fetchClubData = async () => {
+        try {
+          const data = await getClub(authAxios, clubId);
+          const clubMatches = await getClubMatches(authAxios, clubId);
+          setClubMatches(clubMatches.matches);
+          const weightPattern = /^\d+\s*kg$/;
+          const heightPattern = /^\d+\s*cm$/;
+          data.footballers.forEach((footballer) => {
+            footballer.weight = weightPattern.test(footballer.weight)
+              ? footballer.weight
+              : "--";
+            footballer.height = heightPattern.test(footballer.height)
+              ? footballer.height
+              : "--";
+          });
+          setClubData(data);
+        } catch (error) {
+          setErrorMessage(error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      fetchClubData();
+    }
+  }, [isFocused]);
   return (
     <>
       <StatusBar></StatusBar>
       <View className="flex-1">
+        {errorMessage && <ErrorAlertModal message={errorMessage} />}
         <View>
           <ImageBackground
             source={require("../../assets/images/HeaderBackground.jpeg")}
