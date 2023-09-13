@@ -5,19 +5,19 @@ import { UserContext } from "./user/user.context";
 export const AxiosContext = createContext();
 
 export const AxiosContextProvider = ({ children }) => {
-  const userCtx = useContext(UserContext);
+  const { access_token } = useContext(UserContext);
 
   const authAxios = axios.create({
-    baseURL: "https://api-booking-ticket.onrender.com/api/v1", //domain of backend
+    baseURL: "http://172.22.128.1:3000/api/v1", //domain of backend
   });
   const publicAxios = axios.create({
-    baseURL: "https://api-booking-ticket.onrender.com/api/v1", //domain of backend
+    baseURL: "http://172.22.128.1:3000/api/v1", //domain of backend
   });
 
   authAxios.interceptors.request.use(
     (config) => {
       if (!config.headers.Authorization) {
-        config.headers.Authorization = `Bearer ${userCtx.access_token}`;
+        config.headers.Authorization = `Bearer ${access_token}`;
       }
 
       return config;

@@ -62,3 +62,30 @@ export const updateUser = async (axios, payload) => {
     throw err.data.message;
   }
 };
+
+export const forgotPassword = async (axios, payload) => {
+  try {
+    const response = await axios.post("/users/forgotPassword", payload);
+
+    if (response?.data.status === "success") {
+      return camelize(response?.data);
+    }
+  } catch (err) {
+    throw err.data.message;
+  }
+};
+
+export const resetPassword = async (axios, payload) => {
+  try {
+    const response = await axios.patch("/users/resetPassword", {
+      ...payload,
+      token: payload.resetToken
+    });
+
+    if (response?.data.status === "success") {
+      return camelize(response?.data);
+    }
+  } catch (err) {
+    throw err.data.message;
+  }
+};
