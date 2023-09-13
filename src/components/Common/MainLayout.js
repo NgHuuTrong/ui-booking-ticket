@@ -1,6 +1,5 @@
 import { StatusBar } from "expo-status-bar";
 import { Image, ImageBackground, Pressable, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import { themeColors } from "../../theme";
 

@@ -13,7 +13,10 @@ export const SubLayout = ({ children, title, goBackButton }) => {
         className={"bg-white flex-1"}
         style={{ backgroundColor: themeColors.bgScreen }}
       >
-        <View className="p-4 flex-row justify-center items-center border-b-8 border-b-black drop-shadow-lg ">
+        <View
+          className="p-4 flex-row justify-center items-center border-b-white drop-shadow-lg "
+          style={{ borderBottomWidth: 1 }}
+        >
           {goBackButton && (
             <TouchableOpacity
               className=" rounded-full absolute left-2 top-4"
@@ -26,7 +29,7 @@ export const SubLayout = ({ children, title, goBackButton }) => {
             <Text className="text-lg font-bold text-white">{title}</Text>
           </View>
         </View>
-        <View className="flex-1 mt-8">{children}</View>
+        <View className="flex-1">{children}</View>
       </SafeAreaView>
     </View>
   );
