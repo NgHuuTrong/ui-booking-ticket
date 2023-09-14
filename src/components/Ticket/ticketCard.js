@@ -43,6 +43,7 @@ export const TicketCard = ({ ticket }) => {
             <Club
               name={ticket.match.homeClub.name}
               uri={ticket.match.homeClub.logo}
+              clubId={ticket.match.homeClubId}
             />
           </View>
 
@@ -54,6 +55,7 @@ export const TicketCard = ({ ticket }) => {
             <Club
               name={ticket.match.awayClub.name}
               uri={ticket.match.awayClub.logo}
+              clubId={ticket.match.homeClubId}
             />
           </View>
         </View>

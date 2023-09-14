@@ -82,28 +82,30 @@ export const ProfileScreen = () => {
     }
   }, [isFocused]);
 
-  const handleChangeProfile = async () => {
+  const handleChangeProfile = () => {
     // update user here
-    try {
-      let formData = new FormData();
+    const updateProfile = async () => {
+      try {
+        let formData = new FormData();
 
-      if (inputs.image !== details.image) {
-        let filename = inputs.image.split("/").pop();
-        let match = /\.(\w+)$/.exec(filename);
-        let type = match ? `image/${match[1]}` : `image`;
+        if (inputs.image !== details.image) {
+          let filename = inputs.image.split("/").pop();
+          let match = /\.(\w+)$/.exec(filename);
+          let type = match ? `image/${match[1]}` : `image`;
 
-        formData.append("photo", { uri: inputs.image, name: filename, type });
+          formData.append("photo", { uri: inputs.image, name: filename, type });
+        }
+        formData.append("name", inputs.name);
+        formData.append("email", inputs.email);
+        formData.append("phone", inputs.phone);
+        await updateUser(authAxios, formData);
+        setDetails(inputs);
+        setEdited(false);
+      } catch (err) {
+        setErrorMessage(err);
       }
-      formData.append("name", inputs.name);
-      formData.append("email", inputs.email);
-      formData.append("phone", inputs.phone);
-
-      await updateUser(authAxios, formData);
-      setDetails(inputs);
-      setEdited(false);
-    } catch (err) {
-      setErrorMessage(err);
-    }
+    };
+    updateProfile();
   };
 
   const pickImage = async () => {
