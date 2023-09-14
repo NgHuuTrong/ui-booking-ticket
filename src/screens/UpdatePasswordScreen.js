@@ -95,6 +95,7 @@ export const UpdatePasswordScreen = () => {
           navigation.goBack();
         }, 3000);
       } catch (error) {
+        setLoading(false);
         setErrorMessage(error);
       }
     };

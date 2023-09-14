@@ -208,9 +208,8 @@ export const ProfileScreen = () => {
             }}
           />
           <Pressable
-            className={`justify-center items-center ${
-              isEdited ? "" : "opacity-80"
-            } absolute`}
+            className={`justify-center items-center ${isEdited ? "" : "opacity-80"
+              } absolute`}
             onPress={pickImage}
             disabled={!isEdited}
             style={{
