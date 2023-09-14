@@ -10,7 +10,7 @@ export const SubLayout = ({ children, title, goBackButton }) => {
     <View className="flex-1 relative bg-black">
       <StatusBar />
       <SafeAreaView
-        className={"bg-white flex-1"}
+        className={"flex-1"}
         style={{ backgroundColor: themeColors.bgScreen }}
       >
         <View

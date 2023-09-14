@@ -2,14 +2,13 @@ import { StatusBar } from "expo-status-bar";
 import { Image, ImageBackground, Pressable, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { themeColors } from "../../theme";
-
 export const MainLayout = ({ children }) => {
   const navigation = useNavigation();
   return (
-    <View className="flex-1 relative bg-black">
+    <>
       <StatusBar />
       <View
-        className={"bg-white flex-1"}
+        className={"flex-1"}
         style={{ backgroundColor: themeColors.bgScreen }}
       >
         <View className="flex-row justify-center items-center h-24">
@@ -24,7 +23,7 @@ export const MainLayout = ({ children }) => {
             ></Image>
 
             {/* Icon profile */}
-            <Pressable onPress={() => navigation.navigate("Profile")}>
+            <Pressable onPress={() => navigation.openDrawer()}>
               <Image
                 className="w-6 h-6"
                 source={require("../../../assets/images/ProfileIcon.png")}
@@ -39,6 +38,6 @@ export const MainLayout = ({ children }) => {
           {children}
         </View>
       </View>
-    </View>
+    </>
   );
 };

@@ -28,8 +28,6 @@ import { getAllMatches } from "../services/match.service";
 import { datetimeTransform } from "../utils/timeTransform";
 import { MatchCard } from "../components/Matches/MatchCard";
 import InAppLoading from "../components/InAppLoading";
-import { SuccessModal } from "../components/SuccessModal";
-import { ConfirmModal } from "../components/ConfirmModal";
 const windowWidth = Dimensions.get("window").width;
 export const HomeScreen = () => {
   const navigation = useNavigation();

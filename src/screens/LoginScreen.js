@@ -34,26 +34,30 @@ export const LoginScreen = () => {
 
   const renderForm = () => {
     switch (mode) {
-      case 'signIn': {
-        return <LoginForm
-          handleChangeToForgotMode={handleChangeToForgotMode}
-        />
+      case "signIn": {
+        return (
+          <LoginForm handleChangeToForgotMode={handleChangeToForgotMode} />
+        );
       }
-      case 'signUp': {
-        return <SignUpForm />
+      case "signUp": {
+        return <SignUpForm />;
       }
-      case 'resetPassword': {
-        return <ResetPasswordForm
-          handleChangeToLoginMode={handleChangeToLoginMode}
-        />
+      case "resetPassword": {
+        return (
+          <ResetPasswordForm
+            handleChangeToLoginMode={handleChangeToLoginMode}
+          />
+        );
       }
       default:
-        return <ForgotPasswordForm
-          handleChangeToLoginMode={handleChangeToLoginMode}
-          handleChangeToResetMode={handleChangeToResetMode}
-        />
+        return (
+          <ForgotPasswordForm
+            handleChangeToLoginMode={handleChangeToLoginMode}
+            handleChangeToResetMode={handleChangeToResetMode}
+          />
+        );
     }
-  }
+  };
 
   const handleChangeMode = () => {
     if (mode === "signIn") {
@@ -68,17 +72,17 @@ export const LoginScreen = () => {
   const handleChangeToLoginMode = () => {
     animationState.transitionTo("signIn");
     setMode("signIn");
-  }
+  };
 
   const handleChangeToForgotMode = () => {
     animationState.transitionTo("forgotPassword");
     setMode("forgotPassword");
-  }
+  };
 
   const handleChangeToResetMode = () => {
     animationState.transitionTo("resetPassword");
     setMode("resetPassword");
-  }
+  };
 
   return (
     <ScrollView className="p-4">
@@ -101,23 +105,21 @@ export const LoginScreen = () => {
         {renderForm()}
       </MotiView>
       <Pressable className="items-center" onPress={handleChangeMode}>
-        {
-          mode === "signIn" ? (
-            <>
-              <Text className="text-slate-500 ">
-                I don't have account.{" "}
-                <Text style={{ color: themeColors.bgButton }}>Sign up.</Text>
-              </Text>
-            </>
-          ) : (
-            <>
-              <Text className="text-slate-500 ">
-                I already have an account.{" "}
-                <Text style={{ color: themeColors.bgButton }}>Sign in.</Text>
-              </Text>
-            </>
-          )
-        }
+        {mode === "signIn" ? (
+          <>
+            <Text className="text-slate-500 ">
+              I don't have account.{" "}
+              <Text style={{ color: themeColors.bgButton }}>Sign up.</Text>
+            </Text>
+          </>
+        ) : (
+          <>
+            <Text className="text-slate-500 ">
+              I already have an account.{" "}
+              <Text style={{ color: themeColors.bgButton }}>Sign in.</Text>
+            </Text>
+          </>
+        )}
       </Pressable>
     </ScrollView>
   );

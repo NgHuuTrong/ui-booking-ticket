@@ -121,10 +121,6 @@ export const ProfileScreen = () => {
       setInputs({ ...inputs, image: result.assets[0].uri });
     }
   };
-  const handleLogOut = () => {
-    logout();
-    navigation.navigate("home");
-  };
 
   return (
     <View
