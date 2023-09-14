@@ -20,14 +20,16 @@ export const ConfirmModal = ({
               className="w-24 h-24"
             ></Image>
           </View>
-          <View className="items-center">
+          <View className="items-center px-4">
             <Text
               style={{ color: "#5074fc" }}
-              className="text-xl font-semibold"
+              className="text-xl font-semibold mt-2"
             >
               {title}
             </Text>
-            <Text className="mt-2 font-semibold">{message}</Text>
+            <Text className="mt-2 font-semibold text-zinc-500 text-center">
+              {message}
+            </Text>
           </View>
           <View className="mt-4 flex-row w-full">
             <Pressable

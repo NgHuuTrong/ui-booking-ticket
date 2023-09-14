@@ -340,7 +340,7 @@ export const ProfileScreen = () => {
                   width: windowWidth / 2 - 33,
                   marginLeft: 20,
                   marginVertical: 10,
-                  opacity: isEdited ? 1 : 0.5,
+                  opacity: 0.8,
                 }}
                 onPress={() => navigation.navigate("UpdatePassword")}
               />
@@ -359,7 +359,7 @@ export const ProfileScreen = () => {
                   width: windowWidth / 2 - 33,
                   marginLeft: 20,
                   marginVertical: 10,
-                  opacity: isEdited ? 1 : 0.5,
+                  opacity: 0.8,
                 }}
                 onPress={() => handleLogOut()}
               />

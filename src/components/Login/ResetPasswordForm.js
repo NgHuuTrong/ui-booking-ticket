@@ -1,35 +1,41 @@
 import { Button, Input } from "@rneui/themed";
 import { Alert, Pressable, Text } from "react-native";
 import { View } from "react-native";
-import { FontAwesome5, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  FontAwesome5,
+  Ionicons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 import { useCallback, useContext, useState } from "react";
 import { AxiosContext } from "../../services/axios.context";
 import { resetPassword } from "../../services/user/user.service";
 import { ErrorAlertModal } from "../ErrorAlertModal";
+import { SuccessModal } from "../SuccessModal";
 
 export const ResetPasswordForm = ({ handleChangeToLoginMode }) => {
   const [inputs, setInputs] = useState({
-    resetToken: '',
-    password: '',
-    passwordConfirm: ''
+    resetToken: "",
+    password: "",
+    passwordConfirm: "",
   });
   const [isHided, setHided] = useState({
     password: true,
-    passwordConfirm: true
+    passwordConfirm: true,
   });
   const [isError, setErrors] = useState({
     password: false,
-    passwordConfirm: false
+    passwordConfirm: false,
   });
   const [errorMessage, setErrorMessage] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const { publicAxios } = useContext(AxiosContext);
 
   const validatePassword = useCallback((password) => {
     if (password.length < 8) {
       setErrors({
         ...isError,
-        password: true
-      })
+        password: true,
+      });
     }
   });
 
@@ -37,8 +43,8 @@ export const ResetPasswordForm = ({ handleChangeToLoginMode }) => {
     if (password !== passwordConfirm) {
       setErrors({
         ...isError,
-        passwordConfirm: true
-      })
+        passwordConfirm: true,
+      });
     }
   });
 
@@ -60,28 +66,39 @@ export const ResetPasswordForm = ({ handleChangeToLoginMode }) => {
       try {
         const res = await resetPassword(publicAxios, inputs);
 
-        Alert.alert('Reset password successfully', '', [
-          {},
-          { text: 'OK', onPress: () => handleChangeToLoginMode() },
-        ]);
+        setShowSuccessModal(true);
+        setTimeout(() => {
+          setShowSuccessModal(false);
+        }, 2000);
+        setTimeout(() => {
+          handleChangeToLoginMode();
+        }, 3000);
       } catch (error) {
         setErrorMessage(error);
       }
-    }
+    };
 
     resetPasswordFunction();
-  }
+  };
 
   return (
     <View className="rounded-lg shadow-sm p-4">
-      {errorMessage && <ErrorAlertModal message={errorMessage} onDismiss={() => setErrorMessage('')} />}
+      {errorMessage && (
+        <ErrorAlertModal
+          message={errorMessage}
+          onDismiss={() => setErrorMessage("")}
+        />
+      )}
+      <SuccessModal
+        title="Password reset successfully"
+        message="Your password has been reset successfully. Navigating back..."
+        visible={showSuccessModal}
+      ></SuccessModal>
       <Text className="text-3xl font-extrabold mb-12">
         {"Reset your password."}
       </Text>
       <Input
-        leftIcon={
-          <FontAwesome5 name="coins" size={24} color="black" />
-        }
+        leftIcon={<FontAwesome5 name="coins" size={24} color="black" />}
         placeholder="Reset token"
         onChangeText={(value) => setInputs({ ...inputs, resetToken: value })}
         value={inputs.resetToken}
@@ -93,12 +110,15 @@ export const ResetPasswordForm = ({ handleChangeToLoginMode }) => {
         }
         rightIcon={
           <Pressable
-            onPress={() => setHided({ ...isHided, password: !isHided.password })}
-          >
-            {
-              isHided.password ? <Ionicons name="eye-outline" size={24} color="black" /> :
-                <Ionicons name="eye-off-outline" size={24} color="black" />
+            onPress={() =>
+              setHided({ ...isHided, password: !isHided.password })
             }
+          >
+            {isHided.password ? (
+              <Ionicons name="eye-outline" size={24} color="black" />
+            ) : (
+              <Ionicons name="eye-off-outline" size={24} color="black" />
+            )}
           </Pressable>
         }
         placeholder="Password"
@@ -106,7 +126,7 @@ export const ResetPasswordForm = ({ handleChangeToLoginMode }) => {
         value={inputs.password}
         errorMessage="Please fill a valid password (at least 8 characters)"
         errorStyle={{
-          opacity: isError.password ? 1 : 0
+          opacity: isError.password ? 1 : 0,
         }}
         onTouchEnd={() => setErrors({ ...isError, password: false })}
         onBlur={() => validatePassword(inputs.password)}
@@ -114,27 +134,41 @@ export const ResetPasswordForm = ({ handleChangeToLoginMode }) => {
       />
       <Input
         leftIcon={
-          <MaterialCommunityIcons name="lock-open-check-outline" size={24} color="black" />
+          <MaterialCommunityIcons
+            name="lock-open-check-outline"
+            size={24}
+            color="black"
+          />
         }
         rightIcon={
           <Pressable
-            onPress={() => setHided({ ...isHided, passwordConfirm: !isHided.passwordConfirm })}
-          >
-            {
-              isHided.passwordConfirm ? <Ionicons name="eye-outline" size={24} color="black" /> :
-                <Ionicons name="eye-off-outline" size={24} color="black" />
+            onPress={() =>
+              setHided({
+                ...isHided,
+                passwordConfirm: !isHided.passwordConfirm,
+              })
             }
+          >
+            {isHided.passwordConfirm ? (
+              <Ionicons name="eye-outline" size={24} color="black" />
+            ) : (
+              <Ionicons name="eye-off-outline" size={24} color="black" />
+            )}
           </Pressable>
         }
         placeholder="Password confirm"
-        onChangeText={(value) => setInputs({ ...inputs, passwordConfirm: value })}
+        onChangeText={(value) =>
+          setInputs({ ...inputs, passwordConfirm: value })
+        }
         value={inputs.passwordConfirm}
         errorMessage="Not match the new password"
         errorStyle={{
-          opacity: isError.passwordConfirm ? 1 : 0
+          opacity: isError.passwordConfirm ? 1 : 0,
         }}
         onTouchEnd={() => setErrors({ ...isError, passwordConfirm: false })}
-        onBlur={() => validatePasswordConfirm(inputs.password, inputs.passwordConfirm)}
+        onBlur={() =>
+          validatePasswordConfirm(inputs.password, inputs.passwordConfirm)
+        }
         secureTextEntry={isHided.passwordConfirm}
       />
       <View className="items-center">
