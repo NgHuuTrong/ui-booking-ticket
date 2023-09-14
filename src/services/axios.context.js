@@ -8,21 +8,25 @@ export const AxiosContextProvider = ({ children }) => {
   const userCtx = useContext(UserContext);
 
   const authAxios = axios.create({
-    baseURL: "https://api-booking-ticket.onrender.com/api/v1", //domain of backend
+    // baseURL: "https://api-booking-ticket.onrender.com/api/v1", //domain of backend
+    baseURL: "http://192.168.1.132:3000/api/v1", //domain of backend
   });
   const publicAxios = axios.create({
-    baseURL: "https://api-booking-ticket.onrender.com/api/v1", //domain of backend
+    baseURL: "http://192.168.1.132:3000/api/v1", //domain of backend
+    // baseURL: "https://api-booking-ticket.onrender.com/api/v1", //domain of backend
   });
 
   authAxios.interceptors.request.use(
     (config) => {
       if (!config.headers.Authorization) {
         config.headers.Authorization = `Bearer ${userCtx.access_token}`;
+        config.headers["Content-Type"] = "multipart/form-data";
       }
 
       return config;
     },
     (error) => {
+      console.log("request", error);
       throw error.response;
     }
   );
@@ -32,6 +36,7 @@ export const AxiosContextProvider = ({ children }) => {
       return response;
     },
     (error) => {
+      console.log("response", error);
       throw error.response;
     }
   );

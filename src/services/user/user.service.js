@@ -53,11 +53,7 @@ export const updatePassword = async (axios, payload) => {
 
 export const updateUser = async (axios, payload) => {
   try {
-    const response = await axios.patch("/users/updateMe", payload);
-
-    if (response?.data.status === "success") {
-      return camelize(response?.data);
-    }
+    await axios.patch("/users/updateMe", payload);
   } catch (err) {
     throw err.data.message;
   }

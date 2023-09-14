@@ -17,6 +17,8 @@ import { AxiosContext } from "../services/axios.context";
 import { Loading } from "../components/Loading";
 import { MatchCarousel } from "../components/Matches/MatchCarousel";
 import { ErrorAlertModal } from "../components/ErrorAlertModal";
+import { MapBox } from "../components/Club/MapBox";
+import { TouchableOpacity } from "react-native";
 
 const { width } = Dimensions.get("window");
 
@@ -35,7 +37,7 @@ const RowDetail = ({ left, right, color = "white" }) => (
   </View>
 );
 
-export const TicketDetailScreen = ({ route }) => {
+export const TicketDetailScreen = ({ route, navigation }) => {
   const { ticketId } = route.params;
   const [ticket, setTicket] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -93,22 +95,13 @@ export const TicketDetailScreen = ({ route }) => {
                     borderTopRightRadius: 12,
                   }}
                 >
-                  <Text className="font-bold" style={{ lineHeight: 0 }}>
-                    Ticket Code : xxxxxxxxxx
-                  </Text>
+                  <Text className="font-bold">Ticket Code : xxxxxxxxxx</Text>
                   <View className="items-center py-8">
-                    <Text
-                      className="font-bold text-xl"
-                      style={{ lineHeight: 0 }}
-                    >
+                    <Text className="font-bold text-xl">
                       {ticket.payerName}
                     </Text>
-                    <Text style={{ lineHeight: 0 }}>
-                      email: {ticket.payerEmail}
-                    </Text>
-                    <Text style={{ lineHeight: 0 }}>
-                      phone: {ticket.payerPhone}
-                    </Text>
+                    <Text>email: {ticket.payerEmail}</Text>
+                    <Text>phone: {ticket.payerPhone}</Text>
                   </View>
                 </View>
 
@@ -171,16 +164,11 @@ export const TicketDetailScreen = ({ route }) => {
                     }}
                   />
                   <View>
-                    <Text
-                      className="font-bold text-base"
-                      style={{ lineHeight: 0 }}
-                    >
+                    <Text className="font-bold text-base">
                       {ticket.area.toUpperCase()} AREA - Seat: {ticket.seat}
                     </Text>
-                    <Text style={{ lineHeight: 0 }}>
-                      Price : ${ticket.price}
-                    </Text>
-                    <Text style={{ lineHeight: 0 }}>
+                    <Text>Price : ${ticket.price}</Text>
+                    <Text>
                       Order. At : {datetimeTransform(ticket.createdAt)}
                     </Text>
                     <Text
@@ -206,7 +194,7 @@ export const TicketDetailScreen = ({ route }) => {
                 Stadium Detail
               </Text>
               <View
-                className="px-4 pt-6 rounded-2xl m-4 w-full"
+                className="px-4 py-6 rounded-2xl m-4 w-full"
                 style={{
                   backgroundColor: themeColors.bgCard,
                   width: width - 32,
@@ -229,6 +217,27 @@ export const TicketDetailScreen = ({ route }) => {
                   source={{ uri: ticket.match.stadium.image }}
                   style={{ height: 300, objectFit: "contain" }}
                 />
+                {/* <MapBox /> */}
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("MapBox", {
+                      longitude: Number(
+                        ticket.match.stadium.coordinates.split(", ")[1]
+                      ),
+                      latitude: Number(
+                        ticket.match.stadium.coordinates.split(", ")[0]
+                      ),
+                      longitudeDelta: 0.01,
+                      latitudeDelta: 0.01,
+                      stadiumName: ticket.match.stadium.name,
+                      clubName: ticket.match.homeClub.name,
+                    })
+                  }
+                  className="p-3 rounded-2xl items-center"
+                  style={{ backgroundColor: themeColors.bgButton }}
+                >
+                  <Text className="font-bold text-base">View map</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </ScrollView>

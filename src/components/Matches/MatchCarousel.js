@@ -13,7 +13,11 @@ export const MatchCarousel = ({ matchData }) => {
     >
       <View className="flex-row justify-center items-center">
         <View className="w-1/3 justify-center items-center">
-          <Club name={matchData.homeClub.name} uri={matchData.homeClub.logo} />
+          <Club
+            name={matchData.homeClub.name}
+            uri={matchData.homeClub.logo}
+            clubId={matchData.homeClubId}
+          />
         </View>
         <View className="w-1/3 justify-center items-center">
           <Text className="text-white text-center">
@@ -34,7 +38,11 @@ export const MatchCarousel = ({ matchData }) => {
           </Text>
         </View>
         <View className="w-1/3 justify-center items-center">
-          <Club name={matchData.awayClub.name} uri={matchData.awayClub.logo} />
+          <Club
+            name={matchData.awayClub.name}
+            uri={matchData.awayClub.logo}
+            clubId={matchData.homeClubId}
+          />
         </View>
       </View>
       <Text className="text-white text-xl font-extrabold mt-3">

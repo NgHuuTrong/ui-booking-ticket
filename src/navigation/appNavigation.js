@@ -24,6 +24,7 @@ import { PaypalPayment } from "../screens/PaypalPayment";
 import { PaymentSuccess } from "../screens/PaymentSuccess";
 import { GroupDetailScreen } from "../screens/GroupDetailScreen";
 import { UpdatePasswordScreen } from "../screens/UpdatePasswordScreen";
+import { MapBoxScreen } from "../components/Club/MapBox";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs([
@@ -136,6 +137,11 @@ export const AppNavigation = () => {
           name="UpdatePassword"
           options={{ headerShown: false }}
           component={UpdatePasswordScreen}
+        />
+        <Stack.Screen
+          name="MapBox"
+          options={{ headerShown: false }}
+          component={MapBoxScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
