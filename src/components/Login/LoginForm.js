@@ -9,16 +9,18 @@ import { UserContext } from "../../services/user/user.context";
 import { ErrorAlertModal } from "../ErrorAlertModal";
 import { signIn } from "../../services/user/user.service";
 import { useNavigation } from "@react-navigation/native";
+import { SuccessModal } from "../SuccessModal";
 
 export const LoginForm = ({ handleChangeToForgotMode }) => {
   const [inputs, setInputs] = useState({
     email: "",
-    password: ""
+    password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const { publicAxios } = useContext(AxiosContext);
   const { authenticate } = useContext(UserContext);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const navigation = useNavigation();
 
   const handleSignIn = () => {
@@ -29,21 +31,34 @@ export const LoginForm = ({ handleChangeToForgotMode }) => {
         //get token
         authenticate(res.token);
 
-        Alert.alert('Sign in successfully', '', [
-          {},
-          { text: 'OK', onPress: () => navigation.navigate("home") },
-        ]);
+        setShowSuccessModal(true);
+        setTimeout(() => {
+          setShowSuccessModal(false);
+        }, 2000);
+        setTimeout(() => {
+          navigation.navigate("home");
+        }, 3000);
       } catch (error) {
         setErrorMessage(error);
       }
-    }
+    };
 
     signInFunction();
-  }
+  };
 
   return (
     <ScrollView className="rounded-lg shadow-sm p-4">
-      {errorMessage && <ErrorAlertModal message={errorMessage} onDismiss={() => setErrorMessage('')} />}
+      {errorMessage && (
+        <ErrorAlertModal
+          message={errorMessage}
+          onDismiss={() => setErrorMessage("")}
+        />
+      )}
+      <SuccessModal
+        title="Login successfully"
+        message="You have successfully signed in, navigating to Home screen..."
+        visible={showSuccessModal}
+      ></SuccessModal>
       <Text className="text-3xl font-extrabold mb-12">
         {"Sign in to continue"}
       </Text>
@@ -56,7 +71,7 @@ export const LoginForm = ({ handleChangeToForgotMode }) => {
           />
         }
         rightIcon={
-          <Pressable onPress={() => setInputs({ ...inputs, email: '' })}>
+          <Pressable onPress={() => setInputs({ ...inputs, email: "" })}>
             <MaterialCommunityIcons name="close" size={24} color="black" />
           </Pressable>
         }
@@ -70,7 +85,7 @@ export const LoginForm = ({ handleChangeToForgotMode }) => {
           <MaterialCommunityIcons name="lock-outline" size={24} color="black" />
         }
         rightIcon={
-          <Pressable onPress={() => setInputs({ ...inputs, password: '' })}>
+          <Pressable onPress={() => setInputs({ ...inputs, password: "" })}>
             <MaterialCommunityIcons name="close" size={24} color="black" />
           </Pressable>
         }
@@ -86,7 +101,7 @@ export const LoginForm = ({ handleChangeToForgotMode }) => {
         containerStyle={{
           padding: 0,
           margin: 0,
-          marginBottom: 15
+          marginBottom: 15,
         }}
         onPress={() => setShowPassword(!showPassword)}
       />

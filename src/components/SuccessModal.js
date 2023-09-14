@@ -19,14 +19,16 @@ export const SuccessModal = ({ title, message, visible }) => {
               style={{ width: 50 }}
             />
           </View>
-          <View className="items-center">
+          <View className="items-center px-4">
             <Text
               style={{ color: "#2bda95" }}
-              className="text-xl font-semibold"
+              className="text-2xl font-semibold"
             >
               {title}
             </Text>
-            <Text className="mt-2 font-semibold">{message}</Text>
+            <Text className="mt-4 mb-2 font-semibold text-zinc-500 text-center ">
+              {message}
+            </Text>
           </View>
         </View>
       </View>

@@ -25,7 +25,9 @@ export const ErrorAlertModal = ({ message, onDismiss }) => {
             >
               Oh snap!
             </Text>
-            <Text className="mt-2 font-semibold">{message}</Text>
+            <Text className="mt-2 font-semibold text-center text-zinc-500">
+              {message}
+            </Text>
           </View>
           <View className="mt-4">
             <Button
