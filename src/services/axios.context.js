@@ -19,7 +19,7 @@ export const AxiosContextProvider = ({ children }) => {
   authAxios.interceptors.request.use(
     (config) => {
       if (!config.headers.Authorization) {
-        config.headers.Authorization = `Bearer ${userCtx.access_token}`;
+        config.headers.Authorization = `Bearer ${access_token}`;
         config.headers["Content-Type"] = "multipart/form-data";
       }
 

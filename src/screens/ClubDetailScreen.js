@@ -171,6 +171,28 @@ export const ClubDetailScreen = ({ navigation, route }) => {
                     </Text>
                   </View>
                 )}
+                {clubData && (
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("MapBox", {
+                        longitude: Number(
+                          clubData.stadium.coordinates.split(", ")[1]
+                        ),
+                        latitude: Number(
+                          clubData.stadium.coordinates.split(", ")[0]
+                        ),
+                        longitudeDelta: 0.01,
+                        latitudeDelta: 0.01,
+                        stadiumName: clubData.stadium.name,
+                        clubName: clubData.name,
+                      })
+                    }
+                    className="p-3 rounded-2xl items-center"
+                    style={{ backgroundColor: themeColors.bgButton }}
+                  >
+                    <Text className="font-bold text-base">View map</Text>
+                  </TouchableOpacity>
+                )}
               </View>
             </ScrollView>
           </TabView.Item>
@@ -189,7 +211,7 @@ export const ClubDetailScreen = ({ navigation, route }) => {
                       <View
                         className="p-2 rounded-lg mb-2"
                         style={{ backgroundColor: themeColors.bgCard }}
-                        key={match.match_id}
+                        key={match.matchId}
                       >
                         <MatchCard matchData={match}></MatchCard>
                       </View>
