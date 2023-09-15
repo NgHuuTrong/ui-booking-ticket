@@ -36,7 +36,7 @@ export const LoginForm = ({ handleChangeToForgotMode }) => {
           setShowSuccessModal(false);
         }, 2000);
         setTimeout(() => {
-          navigation.navigate("home");
+          navigation.navigate("Home2");
         }, 3000);
       } catch (error) {
         setErrorMessage(error);

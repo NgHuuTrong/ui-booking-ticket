@@ -6,14 +6,12 @@ import { MyTicketScreen } from "../screens/MyTicketScreen";
 import { Image, LogBox, Text, TouchableOpacity, View } from "react-native";
 import { themeColors } from "../theme";
 import { useDrawerStatus } from "@react-navigation/drawer";
-import LinearGradient from "react-native-linear-gradient";
 import { useDrawerProgress } from "@react-navigation/drawer";
 import Animated, {
   interpolate,
   useAnimatedStyle,
 } from "react-native-reanimated";
 import { StyleSheet } from "react-native";
-import colors from "../theme/colors";
 import { Ionicons } from "@expo/vector-icons";
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs([
@@ -37,7 +35,7 @@ export const HomeTabs = () => {
         //   },
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Home2" component={HomeScreen} />
       <Tab.Screen name="Match" component={MatchScreen} />
       <Tab.Screen name="MyTicket" component={MyTicketScreen} />
       <Tab.Screen name="LeaderBoard" component={LeaderBoardScreen} />
@@ -122,12 +120,7 @@ const BottomTab = ({ type, color, size = 24, isFocused, index }) => {
     );
   }
 
-  let buttonClass = isFocused ? "bg-white" : "";
-  return (
-    <View className={"flex items-center rounded-full p-3 shadow" + buttonClass}>
-      {icon}
-    </View>
-  );
+  return icon;
 };
 
 const MyTabBar = ({ state, descriptors, navigation }) => {
@@ -155,8 +148,6 @@ const MyTabBar = ({ state, descriptors, navigation }) => {
             }
           };
 
-          const color = isFocused ? colors.dark : colors.gray;
-
           return (
             <TouchableOpacity
               key={index}
@@ -164,15 +155,7 @@ const MyTabBar = ({ state, descriptors, navigation }) => {
               testID={options.tabBarTestID}
               accessibilityRole="button"
             >
-              <BottomTab
-                //   type={
-                //     index !== 1 ? Icons.MaterialCommunityIcons : Icons.FontAwesome5
-                //   }
-                index={index}
-                isFocused={isFocused}
-                size={24}
-                color={color}
-              />
+              <BottomTab index={index} isFocused={isFocused} size={24} />
             </TouchableOpacity>
           );
         })}
@@ -183,7 +166,7 @@ const MyTabBar = ({ state, descriptors, navigation }) => {
 
 const styles = StyleSheet.create({
   bottomBar: {
-    height: 70,
+    height: 75,
     backgroundColor: themeColors.bgScreen,
     alignItems: "center",
     flexDirection: "row",

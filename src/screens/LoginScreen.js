@@ -87,7 +87,7 @@ export const LoginScreen = () => {
   return (
     <ScrollView className="p-4">
       <View className="items-end">
-        <Pressable onPress={() => navigation.goBack()}>
+        <Pressable onPress={() => navigation.navigate("Home")}>
           <Text className="text-yellow-500 font-bold text-lg ">Close</Text>
         </Pressable>
       </View>

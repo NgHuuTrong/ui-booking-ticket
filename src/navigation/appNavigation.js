@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MatchDetailScreen } from "../screens/MatchDetailScreen";
-import { Easing, Image, LogBox, Text, View } from "react-native";
+import { Easing, LogBox } from "react-native";
 import { ProfileScreen } from "../screens/ProfileScreen";
 import { VideoPlayerScreen } from "../screens/VideoPlayerScreen";
 import { ClubDetailScreen } from "../screens/ClubDetailScreen";
@@ -41,7 +41,7 @@ const config = {
 const closeConfig = {
   animation: "timing",
   config: {
-    duration: 200,
+    duration: 300,
     easing: Easing.linear,
   },
 };

@@ -10,23 +10,23 @@ import {
 import {
   DrawerContentScrollView,
   DrawerItemList,
+  DrawerItem,
 } from "@react-navigation/drawer";
 
 import Ionicons from "react-native-vector-icons/Ionicons";
+import Feather from "react-native-vector-icons/Feather";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { themeColors } from "../theme";
 import { useDrawerStatus } from "@react-navigation/drawer";
 import { getUser } from "../services/user/user.service";
 import { UserContext } from "../services/user/user.context";
 import { AxiosContext } from "../services/axios.context";
 import { ErrorAlertModal } from "../components/ErrorAlertModal";
-import { useNavigation } from "@react-navigation/native";
-import { SuccessModal } from "../components/SuccessModal";
 
 const CustomDrawer = (props) => {
   const [currentName, setCurrentName] = useState("");
   const [currentImage, setCurrentImage] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const isDrawerOpen = useDrawerStatus() === "open";
   const { isAuthenticated, logout } = useContext(UserContext);
   const { authAxios } = useContext(AxiosContext);
@@ -110,6 +110,82 @@ const CustomDrawer = (props) => {
           }}
         >
           <DrawerItemList {...props} />
+          {!isAuthenticated && (
+            <>
+              <DrawerItem
+                label={() => {
+                  return (
+                    <View className="flex-row">
+                      <MaterialCommunityIcons
+                        name="login-variant"
+                        size={22}
+                        color="white"
+                      />
+                      <Text className="text-white ml-2">Login</Text>
+                    </View>
+                  );
+                }}
+                onPress={() =>
+                  props.navigation.navigate("Login", { mode: "signIn" })
+                }
+                activeBackgroundColor="#0a41cf"
+                activeTintColor="#fff"
+                inactiveTintColor="#fff"
+              />
+              <DrawerItem
+                label={() => {
+                  return (
+                    <View className="flex-row">
+                      <Feather name="user-plus" size={22} color="white" />
+                      <Text className="text-white ml-2">Sign up</Text>
+                    </View>
+                  );
+                }}
+                onPress={() =>
+                  props.navigation.navigate("Login", { mode: "signUp" })
+                }
+                activeBackgroundColor="#0a41cf"
+                activeTintColor="#fff"
+                inactiveTintColor="#fff"
+              />
+            </>
+          )}
+          {isAuthenticated && (
+            <>
+              <DrawerItem
+                label={() => {
+                  return (
+                    <View className="flex-row">
+                      <Ionicons name="person-outline" size={22} color="white" />
+                      <Text className="text-white ml-2">Profile</Text>
+                    </View>
+                  );
+                }}
+                onPress={() => props.navigation.navigate("Profile")}
+                activeBackgroundColor="#0a41cf"
+                activeTintColor="#fff"
+                inactiveTintColor="#fff"
+              />
+              <DrawerItem
+                label={() => {
+                  return (
+                    <View className="flex-row">
+                      <MaterialCommunityIcons
+                        name="lock-outline"
+                        size={22}
+                        color="white"
+                      />
+                      <Text className="text-white ml-2">Update password</Text>
+                    </View>
+                  );
+                }}
+                onPress={() => props.navigation.navigate("UpdatePassword")}
+                activeBackgroundColor="#0a41cf"
+                activeTintColor="#fff"
+                inactiveTintColor="#fff"
+              />
+            </>
+          )}
         </View>
       </DrawerContentScrollView>
       <View style={{ padding: 20, borderTopWidth: 1, borderTopColor: "#ccc" }}>
