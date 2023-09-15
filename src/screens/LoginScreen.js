@@ -88,11 +88,10 @@ export const LoginScreen = () => {
     <ScrollView className="p-4">
       <View className="items-end">
         <Pressable onPress={() => {
-          const routes = navigation.getState()?.routes;
-          if (routes.length === 1) {
-            navigation.navigate("home");
+          if (navigation.canGoBack()) {
+            navigation.goBack();
           } else {
-            navigation.goBack()
+            navigation.navigate("home");
           }
         }}>
           <Text className="text-yellow-500 font-bold text-lg ">Close</Text>
