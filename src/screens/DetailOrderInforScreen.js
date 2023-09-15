@@ -23,11 +23,14 @@ export const DetailOrderInforScreen = () => {
   const navigation = useNavigation();
   const route = useRoute(); // .params.matchId, .params.numberTickets, .params.side
   const isFocused = useIsFocused();
-  const { isAuthenticated } = useContext(UserContext);
-  const { authAxios } = useContext(AxiosContext);
+
+  const { isAuthenticated, logout } = useContext(UserContext);
+  const { authAxios, publicAxios } = useContext(AxiosContext);
+
   const [matchData, setMatchData] = useState(null);
   const [checked, setChecked] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isUnauthorized, setUnauthorized] = useState(false);
   const [inputs, setInputs] = useState({
     name: "",
     phone: "",
@@ -40,14 +43,14 @@ export const DetailOrderInforScreen = () => {
   });
 
   useEffect(() => {
-    if (!isAuthenticated && isFocused) {
+    if (isFocused && !isAuthenticated) {
       setErrorMessage("You must login to order ticket !");
       return;
     }
     if (isFocused) {
       const fetchData = async () => {
         try {
-          const res = await getMatch(authAxios, route.params.matchId);
+          const res = await getMatch(publicAxios, route.params.matchId);
           const resUser = await getUser(authAxios);
           setMatchData(res);
           setInputs({
@@ -56,7 +59,10 @@ export const DetailOrderInforScreen = () => {
             phone: resUser.phone,
           });
         } catch (error) {
-          setErrorMessage(error);
+          if (error.status === 401) {
+            setUnauthorized(true);
+          }
+          setErrorMessage(error.message);
         }
       };
 
@@ -112,7 +118,21 @@ export const DetailOrderInforScreen = () => {
       {errorMessage && (
         <ErrorAlertModal
           message={errorMessage}
-          onDismiss={() => setErrorMessage("")}
+          onDismiss={() => {
+            if (isUnauthorized) {
+              setUnauthorized(false);
+              setErrorMessage("");
+              logout();
+
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              });
+            } else {
+              setErrorMessage("");
+              navigation.goBack();
+            }
+          }}
         />
       )}
       {matchData && <MatchCarousel matchData={matchData} />}
@@ -132,9 +152,8 @@ export const DetailOrderInforScreen = () => {
             onBlur={() => validateName(inputs.name)}
           />
           <Text
-            className={`text-sm text-red-700 ${
-              isError.name ? "block" : "hidden"
-            }`}
+            className={`text-sm text-red-700 ${isError.name ? "block" : "hidden"
+              }`}
           >
             Please fill a valid name
           </Text>
@@ -154,9 +173,8 @@ export const DetailOrderInforScreen = () => {
             onBlur={() => validatePhone(inputs.phone)}
           />
           <Text
-            className={`text-sm text-red-700 ${
-              isError.phone ? "block" : "hidden"
-            }`}
+            className={`text-sm text-red-700 ${isError.phone ? "block" : "hidden"
+              }`}
           >
             Please fill a valid phone number
           </Text>
@@ -174,9 +192,8 @@ export const DetailOrderInforScreen = () => {
             onBlur={() => validateEmail(inputs.email)}
           />
           <Text
-            className={`text-sm text-red-700 ${
-              isError.email ? "block" : "hidden"
-            }`}
+            className={`text-sm text-red-700 ${isError.email ? "block" : "hidden"
+              }`}
           >
             Please fill a valid email
           </Text>

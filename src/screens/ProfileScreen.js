@@ -48,8 +48,9 @@ export const ProfileScreen = () => {
     image: null,
   });
   const [errorMessage, setErrorMessage] = useState("");
+  const [isUnauthorized, setUnauthorized] = useState(false);
   const isFocused = useIsFocused();
-  const { access_token, isAuthenticated, logout } = useContext(UserContext);
+  const { isAuthenticated, logout } = useContext(UserContext);
   const { authAxios } = useContext(AxiosContext);
 
   useEffect(() => {
@@ -74,7 +75,10 @@ export const ProfileScreen = () => {
             image: res.photo,
           });
         } catch (error) {
-          setErrorMessage(error);
+          if (error.status === 401) {
+            setUnauthorized(true);
+          }
+          setErrorMessage(error.message);
         }
       };
 
@@ -99,10 +103,12 @@ export const ProfileScreen = () => {
         formData.append("email", inputs.email);
         formData.append("phone", inputs.phone);
         await updateUser(authAxios, formData);
+
         setDetails(inputs);
+        setCurrentName(inputs.name);
         setEdited(false);
       } catch (err) {
-        setErrorMessage(err);
+        setErrorMessage(err.message);
       }
     };
     updateProfile();
@@ -127,7 +133,26 @@ export const ProfileScreen = () => {
       className="flex-1 bg-white"
       style={{ backgroundColor: themeColors.bgCard }}
     >
-      {errorMessage && <ErrorAlertModal message={errorMessage} />}
+      {errorMessage && (
+        <ErrorAlertModal
+          message={errorMessage}
+          onDismiss={() => {
+            if (isUnauthorized) {
+              setUnauthorized(false);
+              setErrorMessage("");
+              logout();
+
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              });
+            } else {
+              setErrorMessage("");
+              navigation.goBack();
+            }
+          }}
+        />
+      )}
       <View>
         <View
           className="w-full items-center pt-8"
@@ -204,9 +229,8 @@ export const ProfileScreen = () => {
             }}
           />
           <Pressable
-            className={`justify-center items-center ${
-              isEdited ? "" : "opacity-80"
-            } absolute`}
+            className={`justify-center items-center ${isEdited ? "" : "opacity-80"
+              } absolute`}
             onPress={pickImage}
             disabled={!isEdited}
             style={{

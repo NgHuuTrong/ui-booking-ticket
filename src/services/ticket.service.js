@@ -13,7 +13,10 @@ export const getMyTicket = async (axios) => {
       return camelize(result);
     }
   } catch (err) {
-    throw err.data.message;
+    throw {
+      status: err.status,
+      message: err.data.message
+    };
   }
 };
 
@@ -25,6 +28,9 @@ export const getMyTicketById = async (axios, ticketId) => {
       return camelize(response.data.ticket);
     }
   } catch (err) {
-    throw err.data.message;
+    throw {
+      status: err.status,
+      message: err.data.message
+    };
   }
 };

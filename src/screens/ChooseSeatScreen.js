@@ -18,22 +18,22 @@ export const ChooseSeatScreen = () => {
   const [matchData, setMatchData] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const { isAuthenticated } = useContext(UserContext);
-  const { authAxios } = useContext(AxiosContext);
+  const { publicAxios } = useContext(AxiosContext);
   const isFocused = useIsFocused();
   const navigation = useNavigation();
 
   useEffect(() => {
-    if (!isAuthenticated && isFocused) {
+    if (isFocused && !isAuthenticated) {
       setErrorMessage("You must login to order ticket !");
       return;
     }
     if (isFocused) {
       const fetchData = async () => {
         try {
-          const res = await getMatch(authAxios, route.params.matchId);
+          const res = await getMatch(publicAxios, route.params.matchId);
           setMatchData(res);
         } catch (error) {
-          setErrorMessage(error);
+          setErrorMessage(error.message);
         }
       };
       fetchData();

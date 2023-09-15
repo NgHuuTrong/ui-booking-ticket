@@ -28,17 +28,18 @@ export const ClubDetailScreen = ({ navigation, route }) => {
   const isFocused = useIsFocused();
   const { clubId } = route.params;
   const [index, setIndex] = useState(0);
-  const { authAxios } = useContext(AxiosContext);
+  const { publicAxios } = useContext(AxiosContext);
   const [clubData, setClubData] = useState(null);
   const [clubMatches, setClubMatches] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   useEffect(() => {
     if (isFocused) {
       const fetchClubData = async () => {
         try {
-          const data = await getClub(authAxios, clubId);
-          const clubMatches = await getClubMatches(authAxios, clubId);
+          setIsLoading(true);
+          const data = await getClub(publicAxios, clubId);
+          const clubMatches = await getClubMatches(publicAxios, clubId);
           setClubMatches(clubMatches.matches);
           const weightPattern = /^\d+\s*kg$/;
           const heightPattern = /^\d+\s*cm$/;
@@ -52,7 +53,7 @@ export const ClubDetailScreen = ({ navigation, route }) => {
           });
           setClubData(data);
         } catch (error) {
-          setErrorMessage(error);
+          setErrorMessage(error.message);
         } finally {
           setIsLoading(false);
         }

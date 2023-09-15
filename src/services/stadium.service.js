@@ -8,6 +8,9 @@ export const getStadium = async (axios, stadiumId) => {
       return camelize(response?.data?.data?.data);
     }
   } catch (err) {
-    throw err.data.message;
+    throw {
+      status: err.status,
+      message: err.data.message
+    };
   }
 };

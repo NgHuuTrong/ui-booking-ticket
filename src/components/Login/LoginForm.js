@@ -39,7 +39,7 @@ export const LoginForm = ({ handleChangeToForgotMode }) => {
           navigation.navigate("Home2");
         }, 3000);
       } catch (error) {
-        setErrorMessage(error);
+        setErrorMessage(error.message);
       }
     };
 

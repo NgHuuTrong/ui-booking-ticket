@@ -74,7 +74,7 @@ export const ResetPasswordForm = ({ handleChangeToLoginMode }) => {
           handleChangeToLoginMode();
         }, 3000);
       } catch (error) {
-        setErrorMessage(error);
+        setErrorMessage(error.message);
       }
     };
 

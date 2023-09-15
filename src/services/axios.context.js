@@ -9,10 +9,10 @@ export const AxiosContextProvider = ({ children }) => {
 
   const authAxios = axios.create({
     // baseURL: "https://api-booking-ticket.onrender.com/api/v1", //domain of backend
-    baseURL: "http://172.20.10.5:3000/api/v1", //domain of backend
+    baseURL: "http://172.22.128.1:3000/api/v1", //domain of backend
   });
   const publicAxios = axios.create({
-    baseURL: "http://172.20.10.5:3000/api/v1", //domain of backend
+    baseURL: "http://172.22.128.1:3000/api/v1", //domain of backend
     // baseURL: "https://api-booking-ticket.onrender.com/api/v1", //domain of backend
   });
 
@@ -20,13 +20,14 @@ export const AxiosContextProvider = ({ children }) => {
     (config) => {
       if (!config.headers.Authorization) {
         config.headers.Authorization = `Bearer ${access_token}`;
-        config.headers["Content-Type"] = "multipart/form-data";
+        if (config.url === "/users/updateMe") {
+          config.headers["Content-Type"] = "multipart/form-data";
+        }
       }
 
       return config;
     },
     (error) => {
-      console.log("request", error);
       throw error.response;
     }
   );
@@ -36,7 +37,6 @@ export const AxiosContextProvider = ({ children }) => {
       return response;
     },
     (error) => {
-      console.log("response", error);
       throw error.response;
     }
   );

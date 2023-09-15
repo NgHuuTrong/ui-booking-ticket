@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useIsFocused } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 
 import { MainLayout } from "../components/Common/MainLayout";
 import { themeColors } from "../theme";
@@ -15,6 +15,7 @@ import { AxiosContext } from "../services/axios.context";
 import { getMyTicket } from "../services/ticket.service";
 import { Loading } from "../components/Loading";
 import { ErrorAlertModal } from "../components/ErrorAlertModal";
+import { UserContext } from "../services/user/user.context";
 const { width } = Dimensions.get("window");
 
 const List = ({ data }) => {
@@ -54,12 +55,20 @@ export const MyTicketScreen = () => {
   const [ticket, setTicket] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isUnauthorized, setUnauthorized] = useState(false);
 
   const { authAxios } = useContext(AxiosContext);
+  const { isAuthenticated, logout } = useContext(UserContext);
 
   const isFocused = useIsFocused();
+  const navigation = useNavigation();
 
   useEffect(() => {
+    if (isFocused && !isAuthenticated) {
+      setLoading(false);
+      setErrorMessage("You must login to view your ordered tickets !");
+      return;
+    }
     if (isFocused) {
       const fetchData = async () => {
         try {
@@ -69,7 +78,10 @@ export const MyTicketScreen = () => {
           setLoading(false);
         } catch (err) {
           setLoading(false);
-          setErrorMessage(err);
+          if (err.status === 401) {
+            setUnauthorized(true);
+          }
+          setErrorMessage(err.message);
         }
       };
       fetchData();
@@ -97,7 +109,26 @@ export const MyTicketScreen = () => {
         <Loading />
       ) : (
         <MainLayout>
-          {errorMessage && <ErrorAlertModal message={errorMessage} />}
+          {errorMessage && (
+            <ErrorAlertModal
+              message={errorMessage}
+              onDismiss={() => {
+                if (isUnauthorized) {
+                  setUnauthorized(false);
+                  setErrorMessage("");
+                  logout();
+
+                  navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Login' }],
+                  });
+                } else {
+                  setErrorMessage("");
+                  navigation.goBack();
+                }
+              }}
+            />
+          )}
           <View>
             <View className="flex-row items-center mb-4">
               {part.map((ele, index) => (

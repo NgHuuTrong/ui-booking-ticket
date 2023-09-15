@@ -35,10 +35,11 @@ export const UpdatePasswordScreen = () => {
     newPasswordConfirm: false,
   });
   const [errorMessage, setErrorMessage] = useState("");
+  const [isUnauthorized, setUnauthorized] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const { authAxios } = useContext(AxiosContext);
-  const { authenticate } = useContext(UserContext);
+  const { authenticate, logout } = useContext(UserContext);
   const navigation = useNavigation();
 
   const validateNewPassword = useCallback((newPassword) => {
@@ -95,7 +96,11 @@ export const UpdatePasswordScreen = () => {
           navigation.goBack();
         }, 3000);
       } catch (error) {
-        setErrorMessage(error);
+        setLoading(false);
+        if (error.status === 401) {
+          setUnauthorized(true);
+        }
+        setErrorMessage(error.message);
       }
     };
 
@@ -107,7 +112,21 @@ export const UpdatePasswordScreen = () => {
       {errorMessage && (
         <ErrorAlertModal
           message={errorMessage}
-          onDismiss={() => setErrorMessage("")}
+          onDismiss={() => {
+            if (isUnauthorized) {
+              setUnauthorized(false);
+              setErrorMessage("");
+              logout();
+
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Login' }],
+              });
+            } else {
+              setErrorMessage("");
+              navigation.goBack();
+            }
+          }}
         />
       )}
       <InAppLoading visible={isLoading} />

@@ -43,19 +43,19 @@ export const DetailOrderPaymentScreen = ({ navigation }) => {
   });
   const isFocused = useIsFocused();
 
-  const { authAxios } = useContext(AxiosContext);
+  const { publicAxios } = useContext(AxiosContext);
 
   useEffect(() => {
     if (isFocused) {
       const fetchData = async () => {
         try {
           setLoading(true);
-          const res = await getMatch(authAxios, route.params.matchId);
+          const res = await getMatch(publicAxios, route.params.matchId);
           setMatch(res);
           setLoading(false);
         } catch (err) {
           setLoading(false);
-          setErrorMessage(err);
+          setErrorMessage(err.message);
         }
       };
       fetchData();

@@ -31,7 +31,7 @@ export const LeaderBoardScreen = () => {
           setLoading(false);
         } catch (err) {
           setLoading(false);
-          setErrorMessage(err);
+          setErrorMessage(err.message);
         }
       };
       fetchData();
