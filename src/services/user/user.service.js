@@ -10,7 +10,7 @@ export const getUser = async (axios) => {
   } catch (err) {
     throw {
       status: err.status,
-      message: err.data.message
+      message: err.data.message,
     };
   }
 };
@@ -28,7 +28,7 @@ export const signUp = async (axios, payload) => {
   } catch (err) {
     throw {
       status: err.status,
-      message: err.data.message
+      message: err.data.message,
     };
   }
 };
@@ -43,7 +43,7 @@ export const signIn = async (axios, payload) => {
   } catch (err) {
     throw {
       status: err.status,
-      message: err.data.message
+      message: err.data.message,
     };
   }
 };
@@ -58,7 +58,7 @@ export const updatePassword = async (axios, payload) => {
   } catch (err) {
     throw {
       status: err.status,
-      message: err.data.message
+      message: err.data.message,
     };
   }
 };
@@ -69,7 +69,34 @@ export const updateUser = async (axios, payload) => {
   } catch (err) {
     throw {
       status: err.status,
-      message: err.data.message
+      message: err.data.message,
     };
+  }
+};
+
+export const forgotPassword = async (axios, payload) => {
+  try {
+    const response = await axios.post("/users/forgotPassword", payload);
+
+    if (response?.data.status === "success") {
+      return camelize(response?.data);
+    }
+  } catch (err) {
+    throw err.data.message;
+  }
+};
+
+export const resetPassword = async (axios, payload) => {
+  try {
+    const response = await axios.patch("/users/resetPassword", {
+      ...payload,
+      token: payload.resetToken,
+    });
+
+    if (response?.data.status === "success") {
+      return camelize(response?.data);
+    }
+  } catch (err) {
+    throw err.data.message;
   }
 };

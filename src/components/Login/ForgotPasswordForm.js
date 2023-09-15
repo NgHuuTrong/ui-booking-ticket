@@ -37,9 +37,7 @@ export const ForgotPasswordForm = ({
 
     const forgotPasswordFunction = async () => {
       try {
-        const res = await forgotPassword(publicAxios, { email });
-
-        console.log("reset token: " + res.resetToken);
+        await forgotPassword(publicAxios, { email });
 
         setShowSuccessModal(true);
         setTimeout(() => {
