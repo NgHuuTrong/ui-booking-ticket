@@ -64,7 +64,8 @@ export const MyTicketScreen = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    if (!isAuthenticated && isFocused) {
+    if (isFocused && !isAuthenticated) {
+      setLoading(false);
       setErrorMessage("You must login to view your ordered tickets !");
       return;
     }
@@ -122,6 +123,7 @@ export const MyTicketScreen = () => {
                     routes: [{ name: 'Login' }],
                   });
                 } else {
+                  setErrorMessage("");
                   navigation.goBack();
                 }
               }}

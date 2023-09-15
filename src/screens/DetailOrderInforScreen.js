@@ -43,7 +43,7 @@ export const DetailOrderInforScreen = () => {
   });
 
   useEffect(() => {
-    if (!isAuthenticated && isFocused) {
+    if (isFocused && !isAuthenticated) {
       setErrorMessage("You must login to order ticket !");
       return;
     }
@@ -129,6 +129,7 @@ export const DetailOrderInforScreen = () => {
                 routes: [{ name: 'Login' }],
               });
             } else {
+              setErrorMessage("");
               navigation.goBack();
             }
           }}

@@ -93,6 +93,7 @@ export const TicketDetailScreen = ({ route, navigation }) => {
                     routes: [{ name: 'Login' }],
                   });
                 } else {
+                  setErrorMessage("");
                   navigation.goBack();
                 }
               }}

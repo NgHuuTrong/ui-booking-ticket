@@ -151,6 +151,7 @@ export const ProfileScreen = () => {
                 routes: [{ name: 'Login' }],
               });
             } else {
+              setErrorMessage("");
               navigation.goBack();
             }
           }}

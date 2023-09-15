@@ -123,6 +123,7 @@ export const UpdatePasswordScreen = () => {
                 routes: [{ name: 'Login' }],
               });
             } else {
+              setErrorMessage("");
               navigation.goBack();
             }
           }}
