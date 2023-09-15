@@ -103,7 +103,9 @@ export const ProfileScreen = () => {
         formData.append("email", inputs.email);
         formData.append("phone", inputs.phone);
         await updateUser(authAxios, formData);
+
         setDetails(inputs);
+        setCurrentName(inputs.name);
         setEdited(false);
       } catch (err) {
         setErrorMessage(err.message);
