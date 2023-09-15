@@ -8,7 +8,10 @@ export const getAllGroup = async (axios) => {
       return camelize(response.data.data.data);
     }
   } catch (err) {
-    throw err.data.message;
+    throw {
+      status: err.status,
+      message: err.data.message
+    };
   }
 };
 
@@ -20,7 +23,10 @@ export const getGroup = async (axios, groupId) => {
       return camelize(response.data.data.data);
     }
   } catch (err) {
-    throw err.data.message;
+    throw {
+      status: err.status,
+      message: err.data.message
+    };
   }
 };
 
@@ -32,6 +38,9 @@ export const getGroupAndMatches = async (axios, groupId) => {
       return camelize(response.data.data.matches);
     }
   } catch (err) {
-    throw err.data.message;
+    throw {
+      status: err.status,
+      message: err.data.message
+    };
   }
 };

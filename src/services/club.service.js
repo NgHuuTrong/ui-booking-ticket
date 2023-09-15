@@ -8,7 +8,10 @@ export const getClub = async (axios, clubId) => {
       return response.message;
     }
   } catch (error) {
-    console.log(error);
+    throw {
+      status: error.status,
+      message: error.data.message
+    };
   }
 };
 
@@ -21,6 +24,9 @@ export const getClubMatches = async (axios, clubId) => {
       return response.message;
     }
   } catch (error) {
-    console.log(error);
+    throw {
+      status: error.status,
+      message: error.data.message
+    };
   }
 };

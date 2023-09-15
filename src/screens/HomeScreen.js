@@ -52,9 +52,9 @@ export const HomeScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     if (isFocused) {
-      setIsLoading(true);
       const fetchData = async () => {
         try {
+          setIsLoading(true);
           const res = await getAllNews(publicAxios);
           setNews(res);
 
@@ -87,7 +87,9 @@ export const HomeScreen = () => {
           setMatchesByDate(dataGroupByDate);
           setIsLoading(false);
         } catch (error) {
-          setErrorMessage(error);
+          setIsLoading(false);
+          console.log('status: ' + error.status);
+          setErrorMessage(error.message);
         }
       };
 

@@ -28,7 +28,6 @@ export const AxiosContextProvider = ({ children }) => {
       return config;
     },
     (error) => {
-      console.log("request", error);
       throw error.response;
     }
   );
@@ -38,7 +37,6 @@ export const AxiosContextProvider = ({ children }) => {
       return response;
     },
     (error) => {
-      console.log("response", error);
       throw error.response;
     }
   );

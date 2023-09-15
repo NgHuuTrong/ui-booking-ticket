@@ -43,7 +43,7 @@ export const SignUpForm = () => {
           navigation.navigate("home");
         }, 3000);
       } catch (error) {
-        setErrorMessage(error);
+        setErrorMessage(error.message);
       }
     };
 

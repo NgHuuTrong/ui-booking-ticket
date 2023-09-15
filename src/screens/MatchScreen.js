@@ -72,7 +72,7 @@ export const MatchScreen = () => {
           setIsLoading(false);
         } catch (err) {
           setIsLoading(false);
-          setErrorMessage(err);
+          setErrorMessage(err.message);
         }
       };
       fetchMatches();
@@ -126,13 +126,13 @@ export const MatchScreen = () => {
                 style={
                   index == sectionIndex
                     ? {
-                        backgroundColor: themeColors.bgButton,
-                      }
+                      backgroundColor: themeColors.bgButton,
+                    }
                     : {
-                        backgroundColor: "transparent",
-                        borderWidth: 1,
-                        borderColor: themeColors.bgButton,
-                      }
+                      backgroundColor: "transparent",
+                      borderWidth: 1,
+                      borderColor: themeColors.bgButton,
+                    }
                 }
                 className="h-9 items-center justify-center ml-2 p-2 rounded-lg"
                 onPress={() => handleScrollToIndex(index)}

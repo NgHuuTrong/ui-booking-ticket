@@ -20,12 +20,13 @@ import InAppLoading from "../components/InAppLoading";
 import { datetimeTransform } from "../utils/timeTransform";
 import { Button } from "@rneui/themed";
 import { useIsFocused } from "@react-navigation/native";
+import { ErrorAlertModal } from "../components/ErrorAlertModal";
 
 const windowWidth = Dimensions.get("window").width;
 export const MatchDetailScreen = ({ navigation, route }) => {
   const [stadium, setStadium] = useState(null);
   const [matchData, setMatchData] = useState(null);
-  const { authAxios, publicAxios } = useContext(AxiosContext);
+  const { publicAxios } = useContext(AxiosContext);
   const isFocused = useIsFocused();
   const { matchId } = route.params;
   const [errorMessage, setErrorMessage] = useState("");
@@ -35,7 +36,7 @@ export const MatchDetailScreen = ({ navigation, route }) => {
       setIsLoading(true);
       async function fetchMatch() {
         try {
-          const matchData = await getMatch(authAxios, matchId);
+          const matchData = await getMatch(publicAxios, matchId);
           matchData.time = datetimeTransform(matchData.time);
           matchData.remainSeats =
             matchData.remainSeatsNorth +
@@ -45,16 +46,16 @@ export const MatchDetailScreen = ({ navigation, route }) => {
           setMatchData(matchData);
           fetchStadium(matchData.stadiumId);
         } catch (err) {
-          setErrorMessage(err);
+          setErrorMessage(err.message);
           setIsLoading(false);
         }
       }
       async function fetchStadium(stadiumId) {
         try {
-          const data = await getStadium(authAxios, stadiumId);
+          const data = await getStadium(publicAxios, stadiumId);
           setStadium(data);
         } catch (err) {
-          setErrorMessage(err);
+          setErrorMessage(err.message);
         } finally {
           setIsLoading(false);
         }
@@ -170,8 +171,8 @@ export const MatchDetailScreen = ({ navigation, route }) => {
                       matchData.happened
                         ? "Match is overed"
                         : matchData.remainSeats == 0
-                        ? "Sold out"
-                        : "Choose seat"
+                          ? "Sold out"
+                          : "Choose seat"
                     }
                     titleStyle={{ fontWeight: "700", color: "white" }}
                     buttonStyle={{

@@ -8,7 +8,10 @@ export const getUser = async (axios) => {
       return camelize(response?.data?.data?.data);
     }
   } catch (err) {
-    throw err.data.message;
+    throw {
+      status: err.status,
+      message: err.data.message
+    };
   }
 };
 
@@ -23,7 +26,10 @@ export const signUp = async (axios, payload) => {
       return camelize(response?.data);
     }
   } catch (err) {
-    throw err.data.message;
+    throw {
+      status: err.status,
+      message: err.data.message
+    };
   }
 };
 
@@ -35,7 +41,10 @@ export const signIn = async (axios, payload) => {
       return camelize(response?.data);
     }
   } catch (err) {
-    throw err.data.message;
+    throw {
+      status: err.status,
+      message: err.data.message
+    };
   }
 };
 
@@ -47,7 +56,10 @@ export const updatePassword = async (axios, payload) => {
       return camelize(response?.data);
     }
   } catch (err) {
-    throw err.data.message;
+    throw {
+      status: err.status,
+      message: err.data.message
+    };
   }
 };
 
@@ -55,6 +67,9 @@ export const updateUser = async (axios, payload) => {
   try {
     await axios.patch("/users/updateMe", payload);
   } catch (err) {
-    throw err.data.message;
+    throw {
+      status: err.status,
+      message: err.data.message
+    };
   }
 };

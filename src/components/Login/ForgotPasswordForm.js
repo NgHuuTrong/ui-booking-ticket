@@ -49,7 +49,7 @@ export const ForgotPasswordForm = ({
           handleChangeToResetMode();
         }, 5000);
       } catch (error) {
-        setErrorMessage(error);
+        setErrorMessage(error.message);
       }
     };
 

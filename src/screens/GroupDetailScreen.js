@@ -32,7 +32,7 @@ export const GroupDetailScreen = ({ route }) => {
           setLoading(false);
         } catch (err) {
           setLoading(false);
-          setErrorMessage(err);
+          setErrorMessage(err.message);
         }
       };
       fetchData();

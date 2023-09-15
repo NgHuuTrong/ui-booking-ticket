@@ -19,6 +19,7 @@ import { MatchCarousel } from "../components/Matches/MatchCarousel";
 import { ErrorAlertModal } from "../components/ErrorAlertModal";
 import { MapBox } from "../components/Club/MapBox";
 import { TouchableOpacity } from "react-native";
+import { UserContext } from "../services/user/user.context";
 
 const { width } = Dimensions.get("window");
 
@@ -39,11 +40,13 @@ const RowDetail = ({ left, right, color = "white" }) => (
 
 export const TicketDetailScreen = ({ route, navigation }) => {
   const { ticketId } = route.params;
-  const [ticket, setTicket] = useState([]);
+  const [ticket, setTicket] = useState(null);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isUnauthorized, setUnauthorized] = useState(false);
 
   const { authAxios } = useContext(AxiosContext);
+  const { logout } = useContext(UserContext);
 
   const isFocused = useIsFocused();
 
@@ -57,7 +60,10 @@ export const TicketDetailScreen = ({ route, navigation }) => {
           setLoading(false);
         } catch (err) {
           setLoading(false);
-          setErrorMessage(err);
+          if (err.status === 401) {
+            setUnauthorized(true);
+          }
+          setErrorMessage(err.message);
         }
       };
       fetchData();
@@ -73,8 +79,26 @@ export const TicketDetailScreen = ({ route, navigation }) => {
         <Loading layout={SubLayout} />
       ) : (
         <SubLayout title={"Ticket Detail"} goBackButton={true}>
-          {errorMessage && <ErrorAlertModal message={errorMessage} />}
-          <ScrollView>
+          {errorMessage && (
+            <ErrorAlertModal
+              message={errorMessage}
+              onDismiss={() => {
+                if (isUnauthorized) {
+                  setUnauthorized(false);
+                  setErrorMessage("");
+                  logout();
+
+                  navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Login' }],
+                  });
+                } else {
+                  navigation.goBack();
+                }
+              }}
+            />
+          )}
+          {ticket && <ScrollView>
             <View className="mt-8">
               <MatchCarousel matchData={ticket.match} />
             </View>
@@ -207,11 +231,10 @@ export const TicketDetailScreen = ({ route, navigation }) => {
                 />
                 <RowDetail
                   left={"Address"}
-                  right={`${
-                    ticket.match.stadium.address +
+                  right={`${ticket.match.stadium.address +
                     ", " +
                     ticket.match.stadium.location
-                  }`}
+                    }`}
                 />
                 <Image
                   source={{ uri: ticket.match.stadium.image }}
@@ -240,7 +263,7 @@ export const TicketDetailScreen = ({ route, navigation }) => {
                 </TouchableOpacity>
               </View>
             </View>
-          </ScrollView>
+          </ScrollView>}
         </SubLayout>
       )}
     </>

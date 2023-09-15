@@ -7,7 +7,10 @@ export const getAllMatches = async (axios) => {
       return camelize(response?.data?.data?.data);
     }
   } catch (err) {
-    throw err.data.message;
+    throw {
+      status: err.status,
+      message: err.data.message
+    };
   }
 };
 
@@ -18,6 +21,9 @@ export const getMatch = async (axios, matchId) => {
       return camelize(response?.data?.data?.data);
     }
   } catch (err) {
-    throw err.data.message;
+    throw {
+      status: err.status,
+      message: err.data.message
+    };
   }
 };

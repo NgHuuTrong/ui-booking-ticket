@@ -11,7 +11,7 @@ import { ScrollView } from "react-native";
 import { ForgotPasswordForm } from "../components/Login/ForgotPasswordForm";
 export const LoginScreen = () => {
   const route = useRoute();
-  const [mode, setMode] = useState(route.params.mode);
+  const [mode, setMode] = useState(route?.params?.mode ? route.params.mode : "signIn");
   const navigation = useNavigation();
   const animationState = useAnimationState({
     forgotPassword: {
@@ -83,7 +83,14 @@ export const LoginScreen = () => {
   return (
     <ScrollView className="p-4">
       <View className="items-end">
-        <Pressable onPress={() => navigation.goBack()}>
+        <Pressable onPress={() => {
+          const routes = navigation.getState()?.routes;
+          if (routes.length === 1) {
+            navigation.navigate("home");
+          } else {
+            navigation.goBack()
+          }
+        }}>
           <Text className="text-yellow-500 font-bold text-lg ">Close</Text>
         </Pressable>
       </View>

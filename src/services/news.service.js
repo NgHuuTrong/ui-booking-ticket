@@ -12,6 +12,9 @@ export const getAllNews = async (axios) => {
       return camelize(result);
     }
   } catch (err) {
-    throw err.data.message;
+    throw {
+      status: err.status,
+      message: err.data.message
+    };
   }
 };
