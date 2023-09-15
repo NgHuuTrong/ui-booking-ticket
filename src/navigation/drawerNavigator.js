@@ -36,6 +36,7 @@ const closeConfig = {
 
 export const AuthStack = () => {
   const { isAuthenticated } = useContext(UserContext);
+
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawer {...props} />}
@@ -51,7 +52,7 @@ export const AuthStack = () => {
         },
         swipeEdgeWidth: 180,
         overlayColor: "transparent",
-        sceneContainerStyle: { flex: 1, backgroundColor: "black" },
+        sceneContainerStyle: { flex: 1 },
       }}
     >
       <Drawer.Screen
@@ -103,14 +104,6 @@ export const AuthStack = () => {
                   color="white"
                 />
               ),
-              //   gestureDirection: "vertical",
-              //   headerShown: false,
-              //   transitionSpec: {
-              //     open: config,
-              //     close: closeConfig,
-              //   },
-              //   cardStyleInterpolator:
-              //     CardStyleInterpolators.forModalPresentationIOS,
             }}
           />
           <Drawer.Screen

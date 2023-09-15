@@ -5,6 +5,7 @@ import {
   ImageBackground,
   Image,
   TouchableOpacity,
+  Share,
 } from "react-native";
 import {
   DrawerContentScrollView,
@@ -19,17 +20,30 @@ import { UserContext } from "../services/user/user.context";
 import { AxiosContext } from "../services/axios.context";
 import { ErrorAlertModal } from "../components/ErrorAlertModal";
 import { useNavigation } from "@react-navigation/native";
+import { SuccessModal } from "../components/SuccessModal";
 
 const CustomDrawer = (props) => {
   const [currentName, setCurrentName] = useState("");
   const [currentImage, setCurrentImage] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const isDrawerOpen = useDrawerStatus() === "open";
   const { isAuthenticated, logout } = useContext(UserContext);
   const { authAxios } = useContext(AxiosContext);
   const handleLogOut = () => {
     logout();
     props.navigation.closeDrawer();
+  };
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        url: "https://www.uefa.com/uefachampionsleague/",
+      });
+    } catch (error) {
+      setErrorMessage(
+        "Error occurs when sharing content, please try again later."
+      );
+    }
   };
 
   useEffect(() => {
@@ -44,7 +58,7 @@ const CustomDrawer = (props) => {
           setCurrentName(res.name);
           setCurrentImage(res.photo);
         } catch (error) {
-          setErrorMessage(error);
+          setErrorMessage("Error while fetching user's data");
         }
       };
 
@@ -53,14 +67,11 @@ const CustomDrawer = (props) => {
   }, [isDrawerOpen]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: themeColors.bgScreen }}>
+    <View style={{ flex: 1, backgroundColor: themeColors.bgCard }}>
       {errorMessage && (
-        <ErrorAlertModal message="Error while fetching user's data"></ErrorAlertModal>
+        <ErrorAlertModal message={errorMessage}></ErrorAlertModal>
       )}
-      <DrawerContentScrollView
-        {...props}
-        // contentContainerStyle={{ backgroundColor: "#041334" }}
-      >
+      <DrawerContentScrollView {...props}>
         <ImageBackground
           source={require("../../assets/images/DrawerBackground.jpg")}
           style={{ padding: 20 }}
@@ -102,7 +113,12 @@ const CustomDrawer = (props) => {
         </View>
       </DrawerContentScrollView>
       <View style={{ padding: 20, borderTopWidth: 1, borderTopColor: "#ccc" }}>
-        <TouchableOpacity onPress={() => {}} style={{ paddingVertical: 15 }}>
+        <TouchableOpacity
+          onPress={() => {
+            onShare();
+          }}
+          style={{ paddingVertical: 15 }}
+        >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Ionicons name="share-social-outline" size={22} color={"white"} />
             <Text

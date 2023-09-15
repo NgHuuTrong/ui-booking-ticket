@@ -9,6 +9,7 @@ import { getAllMatches } from "../services/match.service";
 import InAppLoading from "../components/InAppLoading";
 import { FlatList } from "react-native";
 import { useIsFocused } from "@react-navigation/native";
+import { ErrorAlertModal } from "../components/ErrorAlertModal";
 
 export const MatchScreen = () => {
   const { publicAxios } = useContext(AxiosContext);

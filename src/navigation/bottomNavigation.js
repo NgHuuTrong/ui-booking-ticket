@@ -3,25 +3,38 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { LeaderBoardScreen } from "../screens/LeaderBoardScreen";
 import { MatchScreen } from "../screens/MatchScreen";
 import { MyTicketScreen } from "../screens/MyTicketScreen";
-import { Image, LogBox, Text, View } from "react-native";
+import { Image, LogBox, Text, TouchableOpacity, View } from "react-native";
 import { themeColors } from "../theme";
+import { useDrawerStatus } from "@react-navigation/drawer";
+import LinearGradient from "react-native-linear-gradient";
+import { useDrawerProgress } from "@react-navigation/drawer";
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+} from "react-native-reanimated";
+import { StyleSheet } from "react-native";
+import colors from "../theme/colors";
+import { Ionicons } from "@expo/vector-icons";
 const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
 ]);
 
 export const HomeTabs = () => {
+  const isDrawerOpen = useDrawerStatus() === "open";
   return (
     <Tab.Navigator
+      tabBar={(props) => <MyTabBar {...props} />}
       screenOptions={({ route }) => ({
         headerShown: false,
-        tabBarShowLabel: false,
-        tabBarIcon: ({ focused }) => menuIcons(route, focused),
-        tabBarStyle: {
-          height: 75,
-          alignItems: "center",
-          backgroundColor: themeColors.bgScreen,
-        },
+        //   tabBarShowLabel: false,
+        //   tabBarIcon: ({ focused }) => menuIcons(route, focused),
+        //   tabBarStyle: {
+        //     height: isDrawerOpen ? 0 : 80,
+        //     alignItems: "center",
+        //     backgroundColor: themeColors.bgCard,
+        //     transform: "rotateX(45deg) rotateZ(0.785398rad)",
+        //   },
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
@@ -29,14 +42,14 @@ export const HomeTabs = () => {
       <Tab.Screen name="MyTicket" component={MyTicketScreen} />
       <Tab.Screen name="LeaderBoard" component={LeaderBoardScreen} />
     </Tab.Navigator>
+    // </View>
   );
 };
 
-const menuIcons = (route, focused) => {
+const BottomTab = ({ type, color, size = 24, isFocused, index }) => {
   let icon;
-
-  if (route.name === "Home") {
-    icon = focused ? (
+  if (index == 0) {
+    icon = isFocused ? (
       <View className="items-center">
         <Image
           source={require("../../assets/images/HomeIconGreen.png")}
@@ -53,8 +66,8 @@ const menuIcons = (route, focused) => {
         <Text className="text-white">Home</Text>
       </View>
     );
-  } else if (route.name === "Match") {
-    icon = focused ? (
+  } else if (index == 1) {
+    icon = isFocused ? (
       <View className="items-center">
         <Image
           source={require("../../assets/images/MatchesIconGreen.png")}
@@ -71,8 +84,8 @@ const menuIcons = (route, focused) => {
         <Text className="text-white">Matches</Text>
       </View>
     );
-  } else if (route.name === "MyTicket") {
-    icon = focused ? (
+  } else if (index == 2) {
+    icon = isFocused ? (
       <View className="items-center">
         <Image
           source={require("../../assets/images/TicketIconGreen.png")}
@@ -89,8 +102,8 @@ const menuIcons = (route, focused) => {
         <Text className="text-white">My Ticket</Text>
       </View>
     );
-  } else if (route.name === "LeaderBoard") {
-    icon = focused ? (
+  } else if (index == 3) {
+    icon = isFocused ? (
       <View className="items-center">
         <Image
           source={require("../../assets/images/LeaderBoardIconGreen.png")}
@@ -109,10 +122,84 @@ const menuIcons = (route, focused) => {
     );
   }
 
-  let buttonClass = focused ? "bg-white" : "";
+  let buttonClass = isFocused ? "bg-white" : "";
   return (
     <View className={"flex items-center rounded-full p-3 shadow" + buttonClass}>
       {icon}
     </View>
   );
 };
+
+const MyTabBar = ({ state, descriptors, navigation }) => {
+  const drawerProgress = useDrawerProgress();
+  const viewStyles = useAnimatedStyle(() => {
+    const scale = interpolate(drawerProgress.value, [0, 1], [1, 0]);
+    return {
+      transform: [{ scale }],
+    };
+  });
+  return (
+    <View style={{ backgroundColor: themeColors.bgCard }}>
+      <Animated.View style={[styles.bottomBar, viewStyles]}>
+        {state.routes.map((route, index) => {
+          const isFocused = state.index === index;
+          const { options } = descriptors[route.key];
+
+          const onPress = () => {
+            const event = navigation.emit({
+              type: "tabPress",
+              target: route.key,
+            });
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate(route.name);
+            }
+          };
+
+          const color = isFocused ? colors.dark : colors.gray;
+
+          return (
+            <TouchableOpacity
+              key={index}
+              onPress={onPress}
+              testID={options.tabBarTestID}
+              accessibilityRole="button"
+            >
+              <BottomTab
+                //   type={
+                //     index !== 1 ? Icons.MaterialCommunityIcons : Icons.FontAwesome5
+                //   }
+                index={index}
+                isFocused={isFocused}
+                size={24}
+                color={color}
+              />
+            </TouchableOpacity>
+          );
+        })}
+      </Animated.View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  bottomBar: {
+    height: 70,
+    backgroundColor: themeColors.bgScreen,
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  middleIcon: {
+    bottom: 18,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: "red",
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "black",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.6,
+    elevation: 8,
+  },
+});

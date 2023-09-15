@@ -319,48 +319,6 @@ export const ProfileScreen = () => {
               containerStyle={{ backgroundColor: "transparent" }}
             />
           </View>
-          {isAuthenticated && (
-            <View className="flex-row">
-              <Button
-                title="Update password"
-                titleStyle={{
-                  fontWeight: "700",
-                  color: themeColors.bgButton,
-                }}
-                buttonStyle={{
-                  backgroundColor: "transparent",
-                  borderColor: themeColors.bgButton,
-                  borderWidth: 1,
-                }}
-                containerStyle={{
-                  width: windowWidth / 2 - 33,
-                  marginLeft: 20,
-                  marginVertical: 10,
-                  opacity: 0.8,
-                }}
-                onPress={() => navigation.navigate("UpdatePassword")}
-              />
-              <Button
-                title="Logout"
-                titleStyle={{
-                  fontWeight: "700",
-                  color: "red",
-                }}
-                buttonStyle={{
-                  backgroundColor: "transparent",
-                  borderColor: "red",
-                  borderWidth: 1,
-                }}
-                containerStyle={{
-                  width: windowWidth / 2 - 33,
-                  marginLeft: 20,
-                  marginVertical: 10,
-                  opacity: 0.8,
-                }}
-                onPress={() => handleLogOut()}
-              />
-            </View>
-          )}
           {isEdited && (
             <View className="w-full justify-center items-center mt-4">
               <Button
