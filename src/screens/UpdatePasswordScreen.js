@@ -16,6 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import InAppLoading from "../components/InAppLoading";
 import { SuccessModal } from "../components/SuccessModal";
+import { ConfirmModal } from "../components/ConfirmModal";
 
 export const UpdatePasswordScreen = () => {
   const [inputs, setInputs] = useState({
@@ -35,6 +36,7 @@ export const UpdatePasswordScreen = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isUnauthorized, setUnauthorized] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [isLoading, setLoading] = useState(false);
   const { authAxios } = useContext(AxiosContext);
   const { authenticate, logout } = useContext(UserContext);
@@ -77,32 +79,31 @@ export const UpdatePasswordScreen = () => {
       );
       return;
     }
+    setShowConfirmModal(true);
+  };
 
-    const updatePasswordFunction = async () => {
-      try {
-        setLoading(true);
-        const res = await updatePassword(authAxios, inputs);
+  const updatePasswordFunction = async () => {
+    try {
+      setLoading(true);
+      const res = await updatePassword(authAxios, inputs);
 
-        authenticate(res.token);
+      authenticate(res.token);
 
-        setLoading(false);
-        setShowSuccessModal(true);
-        setTimeout(() => {
-          setShowSuccessModal(false);
-        }, 2000);
-        setTimeout(() => {
-          navigation.goBack();
-        }, 3000);
-      } catch (error) {
-        setLoading(false);
-        if (error.status === 401) {
-          setUnauthorized(true);
-        }
-        setErrorMessage(error.message);
+      setLoading(false);
+      setShowSuccessModal(true);
+      setTimeout(() => {
+        setShowSuccessModal(false);
+      }, 2000);
+      setTimeout(() => {
+        navigation.goBack();
+      }, 3000);
+    } catch (error) {
+      setLoading(false);
+      if (error.status === 401) {
+        setUnauthorized(true);
       }
-    };
-
-    updatePasswordFunction();
+      setErrorMessage(error.message);
+    }
   };
 
   return (
@@ -133,6 +134,15 @@ export const UpdatePasswordScreen = () => {
         message="Your password has been updated. Navigating back..."
         visible={showSuccessModal}
       ></SuccessModal>
+      <ConfirmModal
+        title="Are you sure?"
+        message="Click continue to change your password!"
+        handleConfirm={() =>
+          setShowConfirmModal(false, updatePasswordFunction())
+        }
+        handleCancel={() => setShowConfirmModal(false)}
+        onDisplay={showConfirmModal}
+      ></ConfirmModal>
       <ScrollView className="mt-10 px-3 ">
         <TouchableOpacity
           className=" rounded-full absolute left-2 top-4"

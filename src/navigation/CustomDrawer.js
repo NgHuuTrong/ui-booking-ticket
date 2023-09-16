@@ -121,13 +121,16 @@ const CustomDrawer = (props) => {
                         size={22}
                         color="white"
                       />
-                      <Text className="text-white ml-2">Login</Text>
+                      <Text className="text-white ml-2 font-semibold">
+                        Login
+                      </Text>
                     </View>
                   );
                 }}
-                onPress={() =>
-                  props.navigation.navigate("Login", { mode: "signIn" })
-                }
+                onPress={() => {
+                  props.navigation.navigate("Login", { mode: "signIn" });
+                  props.navigation.closeDrawer();
+                }}
                 activeBackgroundColor="#0a41cf"
                 activeTintColor="#fff"
                 inactiveTintColor="#fff"
@@ -137,13 +140,41 @@ const CustomDrawer = (props) => {
                   return (
                     <View className="flex-row">
                       <Feather name="user-plus" size={22} color="white" />
-                      <Text className="text-white ml-2">Sign up</Text>
+                      <Text className="text-white ml-2 font-semibold">
+                        Sign up
+                      </Text>
                     </View>
                   );
                 }}
-                onPress={() =>
-                  props.navigation.navigate("Login", { mode: "signUp" })
-                }
+                onPress={() => {
+                  props.navigation.navigate("Login", { mode: "signUp" });
+                  props.navigation.closeDrawer();
+                }}
+                activeBackgroundColor="#0a41cf"
+                activeTintColor="#fff"
+                inactiveTintColor="#fff"
+              />
+              <DrawerItem
+                label={() => {
+                  return (
+                    <View className="flex-row">
+                      <MaterialCommunityIcons
+                        name="lock-open-check-outline"
+                        size={22}
+                        color="white"
+                      />
+                      <Text className="text-white ml-2 font-semibold">
+                        Forgot password?
+                      </Text>
+                    </View>
+                  );
+                }}
+                onPress={() => {
+                  props.navigation.navigate("Login", {
+                    mode: "forgotPassword",
+                  });
+                  props.navigation.closeDrawer();
+                }}
                 activeBackgroundColor="#0a41cf"
                 activeTintColor="#fff"
                 inactiveTintColor="#fff"
@@ -157,11 +188,16 @@ const CustomDrawer = (props) => {
                   return (
                     <View className="flex-row">
                       <Ionicons name="person-outline" size={22} color="white" />
-                      <Text className="text-white ml-2">Profile</Text>
+                      <Text className="text-white ml-2 font-semibold">
+                        Profile
+                      </Text>
                     </View>
                   );
                 }}
-                onPress={() => props.navigation.navigate("Profile")}
+                onPress={() => {
+                  props.navigation.navigate("Profile");
+                  props.navigation.closeDrawer();
+                }}
                 activeBackgroundColor="#0a41cf"
                 activeTintColor="#fff"
                 inactiveTintColor="#fff"
@@ -175,11 +211,16 @@ const CustomDrawer = (props) => {
                         size={22}
                         color="white"
                       />
-                      <Text className="text-white ml-2">Update password</Text>
+                      <Text className="text-white ml-2 font-semibold">
+                        Update password
+                      </Text>
                     </View>
                   );
                 }}
-                onPress={() => props.navigation.navigate("UpdatePassword")}
+                onPress={() => {
+                  props.navigation.navigate("UpdatePassword");
+                  props.navigation.closeDrawer();
+                }}
                 activeBackgroundColor="#0a41cf"
                 activeTintColor="#fff"
                 inactiveTintColor="#fff"
