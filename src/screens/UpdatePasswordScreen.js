@@ -5,14 +5,12 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { SubLayout } from "../components/Common/SubLayout";
 import { Button, Input } from "@rneui/themed";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useCallback, useContext, useState } from "react";
 import { updatePassword } from "../services/user/user.service";
 import { AxiosContext } from "../services/axios.context";
 import { UserContext } from "../services/user/user.context";
-import { Alert } from "react-native";
 import { ErrorAlertModal } from "../components/ErrorAlertModal";
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
@@ -120,7 +118,7 @@ export const UpdatePasswordScreen = () => {
 
               navigation.reset({
                 index: 0,
-                routes: [{ name: 'Login' }],
+                routes: [{ name: "Login" }],
               });
             } else {
               setErrorMessage("");

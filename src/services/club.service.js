@@ -4,13 +4,11 @@ export const getClub = async (axios, clubId) => {
     const response = await axios.get("/clubs/" + clubId);
     if (response.data.status === "success") {
       return camelize(response?.data?.data?.data);
-    } else {
-      return response.message;
     }
   } catch (error) {
     throw {
       status: error.status,
-      message: error.data.message
+      message: error.data.message,
     };
   }
 };
@@ -20,13 +18,11 @@ export const getClubMatches = async (axios, clubId) => {
     const response = await axios.get("/clubs/" + clubId + "/matches");
     if (response.data.status === "success") {
       return camelize(response?.data?.data);
-    } else {
-      return response.message;
     }
   } catch (error) {
     throw {
       status: error.status,
-      message: error.data.message
+      message: error.data.message,
     };
   }
 };

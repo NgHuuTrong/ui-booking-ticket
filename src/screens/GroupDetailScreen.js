@@ -5,9 +5,7 @@ import { AxiosContext } from "../services/axios.context";
 import { getGroup, getGroupAndMatches } from "../services/group.service";
 import { Loading } from "../components/Loading";
 import { SubLayout } from "../components/Common/SubLayout";
-import { MatchCard } from "../components/Matches/MatchCard";
 import { FlatList, Text, View } from "react-native";
-import { themeColors } from "../theme";
 import { MatchTable } from "../components/Matches/MatchTable";
 
 export const GroupDetailScreen = ({ route }) => {
@@ -47,6 +45,12 @@ export const GroupDetailScreen = ({ route }) => {
         <Loading layout={SubLayout} />
       ) : (
         <SubLayout title="Group Detail" goBackButton={true}>
+          {errorMessage && (
+            <ErrorAlertModal
+              message={errorMessage}
+              onDismiss={() => setErrorMessage("")}
+            />
+          )}
           <GroupCart group={group} viewBtn={false} />
           <Text className="text-xl text-white font-bold mt-2 ml-4">
             List Matches

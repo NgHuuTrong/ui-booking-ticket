@@ -47,6 +47,12 @@ export const LeaderBoardScreen = () => {
         <Loading />
       ) : (
         <MainLayout>
+          {errorMessage && (
+            <ErrorAlertModal
+              message={errorMessage}
+              onDismiss={() => setErrorMessage("")}
+            />
+          )}
           <ScrollView>
             <Text
               style={{ color: themeColors.bgButton }}

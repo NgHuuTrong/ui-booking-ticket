@@ -3,7 +3,6 @@ import {
   Dimensions,
   Image,
   ImageBackground,
-  Pressable,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -14,7 +13,7 @@ import { useContext, useEffect, useState } from "react";
 import { themeColors } from "../theme";
 import { Club } from "../components/Club/Club";
 import { AxiosContext } from "../services/axios.context";
-import { getAllMatches, getMatch } from "../services/match.service";
+import { getMatch } from "../services/match.service";
 import { getStadium } from "../services/stadium.service";
 import InAppLoading from "../components/InAppLoading";
 import { datetimeTransform } from "../utils/timeTransform";
@@ -171,8 +170,8 @@ export const MatchDetailScreen = ({ navigation, route }) => {
                       matchData.happened
                         ? "Match is overed"
                         : matchData.remainSeats == 0
-                          ? "Sold out"
-                          : "Choose seat"
+                        ? "Sold out"
+                        : "Choose seat"
                     }
                     titleStyle={{ fontWeight: "700", color: "white" }}
                     buttonStyle={{

@@ -36,7 +36,6 @@ export const ProfileScreen = () => {
     phone: "",
     name: "",
     gender: "",
-    photo: "",
     image: null,
   });
   const [inputs, setInputs] = useState({
@@ -44,7 +43,6 @@ export const ProfileScreen = () => {
     phone: "",
     name: "",
     gender: "",
-    photo: "",
     image: null,
   });
   const [errorMessage, setErrorMessage] = useState("");
@@ -102,6 +100,7 @@ export const ProfileScreen = () => {
         formData.append("name", inputs.name);
         formData.append("email", inputs.email);
         formData.append("phone", inputs.phone);
+        formData.append("gender", inputs.gender);
         await updateUser(authAxios, formData);
 
         setDetails(inputs);
@@ -144,7 +143,7 @@ export const ProfileScreen = () => {
 
               navigation.reset({
                 index: 0,
-                routes: [{ name: 'Login' }],
+                routes: [{ name: "Login" }],
               });
             } else {
               setErrorMessage("");
@@ -229,8 +228,9 @@ export const ProfileScreen = () => {
             }}
           />
           <Pressable
-            className={`justify-center items-center ${isEdited ? "" : "opacity-80"
-              } absolute`}
+            className={`justify-center items-center ${
+              isEdited ? "" : "opacity-80"
+            } absolute`}
             onPress={pickImage}
             disabled={!isEdited}
             style={{

@@ -71,6 +71,12 @@ export const DetailOrderPaymentScreen = ({ navigation }) => {
         <Loading layout={SubLayout} />
       ) : (
         <SubLayout title={"Payment"} goBackButton={true}>
+          {errorMessage && (
+            <ErrorAlertModal
+              message={errorMessage}
+              onDismiss={() => setErrorMessage("")}
+            />
+          )}
           <MatchCarousel matchData={match} />
           <ScrollView className="mt-5 px-5">
             <View className="justify-center items-center w-full">

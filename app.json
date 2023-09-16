@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -24,10 +26,26 @@
         "googleMaps": {
           "apiKey": "AIzaSyB-iG-l9WNc0T-xHoR8pDY5Kz03Y4IIP2c"
         }
-      }
+      },
+      "package": "com.trongnh2003.frontend"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "4bcea189-ce21-4de2-a244-dce5786c3cf1"
+      }
     }
   }
 }

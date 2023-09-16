@@ -1,7 +1,6 @@
 import { Image, Pressable, Text, View } from "react-native";
 import { MotiView, useAnimationState } from "moti";
 import { useEffect, useState } from "react";
-import { Button } from "@rneui/themed";
 import { LoginForm } from "../components/Login/LoginForm";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SignUpForm } from "../components/Login/SignUpForm";
@@ -11,14 +10,16 @@ import { ScrollView } from "react-native";
 import { ForgotPasswordForm } from "../components/Login/ForgotPasswordForm";
 export const LoginScreen = () => {
   const route = useRoute();
-  const [mode, setMode] = useState(route?.params?.mode ? route.params.mode : "signIn");
+  const [mode, setMode] = useState(
+    route?.params?.mode ? route.params.mode : "signIn"
+  );
   const navigation = useNavigation();
   const animationState = useAnimationState({
     forgotPassword: {
       height: 300,
     },
     resetPassword: {
-      height: 450,
+      height: 600,
     },
     signIn: {
       height: 469,
@@ -87,13 +88,15 @@ export const LoginScreen = () => {
   return (
     <ScrollView className="p-4">
       <View className="items-end">
-        <Pressable onPress={() => {
-          if (navigation.canGoBack()) {
-            navigation.goBack();
-          } else {
-            navigation.navigate("home");
-          }
-        }}>
+        <Pressable
+          onPress={() => {
+            if (navigation.canGoBack()) {
+              navigation.goBack();
+            } else {
+              navigation.navigate("home");
+            }
+          }}
+        >
           <Text className="text-yellow-500 font-bold text-lg ">Close</Text>
         </Pressable>
       </View>

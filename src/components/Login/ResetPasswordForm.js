@@ -1,5 +1,5 @@
 import { Button, Input } from "@rneui/themed";
-import { Alert, Pressable, Text } from "react-native";
+import { Pressable, Text } from "react-native";
 import { View } from "react-native";
 import {
   FontAwesome5,

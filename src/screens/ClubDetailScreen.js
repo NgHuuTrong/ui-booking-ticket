@@ -1,7 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import {
   Dimensions,
-  FlatList,
   Image,
   ImageBackground,
   ScrollView,
@@ -14,8 +13,6 @@ import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { Tab, TabView } from "@rneui/themed";
 import { useContext, useEffect, useState } from "react";
 import { themeColors } from "../theme";
-import { MatchTable } from "../components/Matches/MatchTable";
-import { PlayerCard } from "../components/Club/PlayerCard";
 import { AxiosContext } from "../services/axios.context";
 import { getClub, getClubMatches } from "../services/club.service";
 import InAppLoading from "../components/InAppLoading";
@@ -23,7 +20,7 @@ import { MatchCard } from "../components/Matches/MatchCard";
 import { PositionAndPlayers } from "../components/Club/PositionAndPlayers";
 
 const windowWidth = Dimensions.get("window").width;
-const positions = ["Attacker", "Defender", "Goalkeeper", "Midfielder"];
+const positions = ["Goalkeeper", "Defender", "Midfielder", "Attacker"];
 export const ClubDetailScreen = ({ navigation, route }) => {
   const isFocused = useIsFocused();
   const { clubId } = route.params;
@@ -208,7 +205,7 @@ export const ClubDetailScreen = ({ navigation, route }) => {
                       Previous matches
                     </Text>
 
-                    {clubMatches.map((match) => (
+                    {/* {clubMatches.map((match) => (
                       <View
                         className="p-2 rounded-lg mb-2"
                         style={{ backgroundColor: themeColors.bgCard }}
@@ -216,7 +213,7 @@ export const ClubDetailScreen = ({ navigation, route }) => {
                       >
                         <MatchCard matchData={match}></MatchCard>
                       </View>
-                    ))}
+                    ))} */}
                   </>
                 )}
               </View>
@@ -228,14 +225,14 @@ export const ClubDetailScreen = ({ navigation, route }) => {
             <ScrollView>
               <View>
                 {clubData &&
-                  positions.map((position, index) => {
+                  positions.map((position, idx) => {
                     return (
                       <PositionAndPlayers
                         position={position}
-                        key={index}
                         players={clubData.footballers.filter(
                           (player) => player.position === position
                         )}
+                        idx={idx}
                       ></PositionAndPlayers>
                     );
                   })}

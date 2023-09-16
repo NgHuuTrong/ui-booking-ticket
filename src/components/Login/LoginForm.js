@@ -1,5 +1,5 @@
 import { Button, CheckBox, Input } from "@rneui/themed";
-import { Alert, Pressable, ScrollView, Text } from "react-native";
+import { Pressable, ScrollView, Text } from "react-native";
 import { View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useContext, useState } from "react";
@@ -36,7 +36,7 @@ export const LoginForm = ({ handleChangeToForgotMode }) => {
           setShowSuccessModal(false);
         }, 2000);
         setTimeout(() => {
-          navigation.navigate("Home2");
+          navigation.navigate("home");
         }, 3000);
       } catch (error) {
         setErrorMessage(error.message);

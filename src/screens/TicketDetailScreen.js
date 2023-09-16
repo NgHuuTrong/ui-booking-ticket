@@ -17,7 +17,6 @@ import { AxiosContext } from "../services/axios.context";
 import { Loading } from "../components/Loading";
 import { MatchCarousel } from "../components/Matches/MatchCarousel";
 import { ErrorAlertModal } from "../components/ErrorAlertModal";
-import { MapBox } from "../components/Club/MapBox";
 import { TouchableOpacity } from "react-native";
 import { UserContext } from "../services/user/user.context";
 
@@ -90,7 +89,7 @@ export const TicketDetailScreen = ({ route, navigation }) => {
 
                   navigation.reset({
                     index: 0,
-                    routes: [{ name: 'Login' }],
+                    routes: [{ name: "Login" }],
                   });
                 } else {
                   setErrorMessage("");
@@ -99,172 +98,178 @@ export const TicketDetailScreen = ({ route, navigation }) => {
               }}
             />
           )}
-          {ticket && <ScrollView>
-            <View className="mt-8">
-              <MatchCarousel matchData={ticket.match} />
-            </View>
-            <View className="my-8">
-              <Text
-                className="text-xl ml-6 mb-6 font-bold"
-                style={{ color: themeColors.bgButton }}
-              >
-                Ticket Detail
-              </Text>
-              <View className="mx-4 items-center">
-                <View
-                  className="px-4 pt-2"
-                  style={{
-                    backgroundColor: "white",
-                    width: width - 80,
-                    borderTopLeftRadius: 12,
-                    borderTopRightRadius: 12,
-                  }}
+          {ticket && (
+            <ScrollView>
+              <View className="mt-8">
+                <MatchCarousel matchData={ticket.match} />
+              </View>
+              <View className="my-8">
+                <Text
+                  className="text-xl ml-6 mb-6 font-bold"
+                  style={{ color: themeColors.bgButton }}
                 >
-                  <Text className="font-bold">Ticket Code : xxxxxxxxxx</Text>
-                  <View className="items-center py-8">
-                    <Text className="font-bold text-xl">
-                      {ticket.payerName}
-                    </Text>
-                    <Text>email: {ticket.payerEmail}</Text>
-                    <Text>phone: {ticket.payerPhone}</Text>
-                  </View>
-                </View>
-
-                <View
-                  className="flex-row relative items-center"
-                  style={{
-                    height: (width - 80) / 5,
-                    backgroundColor: "white",
-                    width: width - 80,
-                  }}
-                >
+                  Ticket Detail
+                </Text>
+                <View className="mx-4 items-center">
                   <View
-                    className="absolute rounded-full"
+                    className="px-4 pt-2"
                     style={{
-                      left: (80 - width) / 10,
-                      width: (width - 80) / 5,
-                      height: (width - 80) / 5,
-                      backgroundColor: themeColors.bgScreen,
-                    }}
-                  ></View>
-                  <View
-                    style={{
-                      borderBottomColor: "black",
-                      borderWidth: StyleSheet.hairlineWidth,
-                      width: "100%",
-                    }}
-                  />
-                  <View
-                    className="absolute rounded-full"
-                    style={{
-                      right: (80 - width) / 10,
-                      width: (width - 80) / 5,
-                      height: (width - 80) / 5,
-                      backgroundColor: themeColors.bgScreen,
-                    }}
-                  ></View>
-                </View>
-
-                <View
-                  className="bg-white items-center"
-                  style={{
-                    width: width - 80,
-                    borderBottomLeftRadius: 12,
-                    borderBottomRightRadius: 12,
-                  }}
-                >
-                  <Text
-                    className="py-6 font-bold text-lg"
-                    style={{
-                      color: "#6D6D6D",
+                      backgroundColor: "white",
+                      width: width - 80,
+                      borderTopLeftRadius: 12,
+                      borderTopRightRadius: 12,
                     }}
                   >
-                    Scan this code at the entrance.
-                  </Text>
-                  <Image
-                    width={width - 100}
-                    height={width - 100}
-                    source={{
-                      uri: ticket.code,
+                    <Text className="font-bold">Ticket Code : xxxxxxxxxx</Text>
+                    <View className="items-center py-8">
+                      <Text className="font-bold text-xl">
+                        {ticket.payerName}
+                      </Text>
+                      <Text>email: {ticket.payerEmail}</Text>
+                      <Text>phone: {ticket.payerPhone}</Text>
+                    </View>
+                  </View>
+
+                  <View
+                    className="flex-row relative items-center"
+                    style={{
+                      height: (width - 80) / 5,
+                      backgroundColor: "white",
+                      width: width - 80,
                     }}
-                  />
-                  <View>
-                    <Text className="font-bold text-base">
-                      {ticket.area.toUpperCase()} AREA - Seat: {ticket.seat}
-                    </Text>
-                    <Text>Price : ${ticket.price}</Text>
-                    <Text>
-                      Order. At : {datetimeTransform(ticket.createdAt)}
-                    </Text>
+                  >
+                    <View
+                      className="absolute rounded-full"
+                      style={{
+                        left: (80 - width) / 10,
+                        width: (width - 80) / 5,
+                        height: (width - 80) / 5,
+                        backgroundColor: themeColors.bgScreen,
+                      }}
+                    ></View>
+                    <View
+                      style={{
+                        borderBottomColor: "black",
+                        borderWidth: StyleSheet.hairlineWidth,
+                        width: "100%",
+                      }}
+                    />
+                    <View
+                      className="absolute rounded-full"
+                      style={{
+                        right: (80 - width) / 10,
+                        width: (width - 80) / 5,
+                        height: (width - 80) / 5,
+                        backgroundColor: themeColors.bgScreen,
+                      }}
+                    ></View>
+                  </View>
+
+                  <View
+                    className="bg-white items-center"
+                    style={{
+                      width: width - 80,
+                      borderBottomLeftRadius: 12,
+                      borderBottomRightRadius: 12,
+                    }}
+                  >
                     <Text
-                      className="text-sm"
+                      className="py-6 font-bold text-lg"
                       style={{
                         color: "#6D6D6D",
                       }}
                     >
-                      (Please be at the gate before 1h to make procedure)
+                      Scan this code at the entrance.
                     </Text>
+                    <Image
+                      width={width - 100}
+                      height={width - 100}
+                      source={{
+                        uri: ticket.code,
+                      }}
+                    />
+                    <View>
+                      <Text className="font-bold text-base">
+                        {ticket.area.toUpperCase()} AREA - Seat: {ticket.seat}
+                      </Text>
+                      <Text>Price : ${ticket.price}</Text>
+                      <Text>
+                        Order. At : {datetimeTransform(ticket.createdAt)}
+                      </Text>
+                      <Text
+                        className="text-sm"
+                        style={{
+                          color: "#6D6D6D",
+                        }}
+                      >
+                        (Please be at the gate before 1h to make procedure)
+                      </Text>
+                    </View>
                   </View>
                 </View>
               </View>
-            </View>
 
-            <View className="my-2 h-0.5 bg-white w-full"></View>
+              <View className="my-2 h-0.5 bg-white w-full"></View>
 
-            <View>
-              <Text
-                className="text-xl ml-6 font-bold"
-                style={{ color: themeColors.bgButton }}
-              >
-                Stadium Detail
-              </Text>
-              <View
-                className="px-4 py-6 rounded-2xl m-4 w-full"
-                style={{
-                  backgroundColor: themeColors.bgCard,
-                  width: width - 32,
-                }}
-              >
-                <RowDetail left={"Stadium"} right={ticket.match.stadium.name} />
-                <RowDetail
-                  left={"Capacity"}
-                  right={ticket.match.stadium.capacity}
-                />
-                <RowDetail
-                  left={"Address"}
-                  right={`${ticket.match.stadium.address +
-                    ", " +
-                    ticket.match.stadium.location
-                    }`}
-                />
-                <Image
-                  source={{ uri: ticket.match.stadium.image }}
-                  style={{ height: 300, objectFit: "contain" }}
-                />
-                {/* <MapBox /> */}
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate("MapBox", {
-                      longitude: Number(
-                        ticket.match.stadium.coordinates.split(", ")[1]
-                      ),
-                      latitude: Number(
-                        ticket.match.stadium.coordinates.split(", ")[0]
-                      ),
-                      longitudeDelta: 0.01,
-                      latitudeDelta: 0.01,
-                      stadiumName: ticket.match.stadium.name,
-                      clubName: ticket.match.homeClub.name,
-                    })
-                  }
-                  className="p-3 rounded-2xl items-center"
-                  style={{ backgroundColor: themeColors.bgButton }}
+              <View>
+                <Text
+                  className="text-xl ml-6 font-bold"
+                  style={{ color: themeColors.bgButton }}
                 >
-                  <Text className="font-bold text-base">View map</Text>
-                </TouchableOpacity>
+                  Stadium Detail
+                </Text>
+                <View
+                  className="px-4 py-6 rounded-2xl m-4 w-full"
+                  style={{
+                    backgroundColor: themeColors.bgCard,
+                    width: width - 32,
+                  }}
+                >
+                  <RowDetail
+                    left={"Stadium"}
+                    right={ticket.match.stadium.name}
+                  />
+                  <RowDetail
+                    left={"Capacity"}
+                    right={ticket.match.stadium.capacity}
+                  />
+                  <RowDetail
+                    left={"Address"}
+                    right={`${
+                      ticket.match.stadium.address +
+                      ", " +
+                      ticket.match.stadium.location
+                    }`}
+                  />
+                  <Image
+                    source={{ uri: ticket.match.stadium.image }}
+                    style={{ height: 300, objectFit: "contain" }}
+                  />
+                  {/* <MapBox /> */}
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("MapBox", {
+                        longitude: Number(
+                          ticket.match.stadium.coordinates.split(", ")[1]
+                        ),
+                        latitude: Number(
+                          ticket.match.stadium.coordinates.split(", ")[0]
+                        ),
+                        longitudeDelta: 0.01,
+                        latitudeDelta: 0.01,
+                        stadiumName: ticket.match.stadium.name,
+                        clubName: ticket.match.homeClub.name,
+                      })
+                    }
+                    className="p-3 rounded-2xl items-center"
+                    style={{ backgroundColor: themeColors.bgButton }}
+                  >
+                    <Text className="font-bold text-base">View map</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-          </ScrollView>}
+            </ScrollView>
+          )}
         </SubLayout>
       )}
     </>

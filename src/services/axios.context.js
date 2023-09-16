@@ -8,12 +8,12 @@ export const AxiosContextProvider = ({ children }) => {
   const { access_token } = useContext(UserContext);
 
   const authAxios = axios.create({
-    // baseURL: "https://api-booking-ticket.onrender.com/api/v1", //domain of backend
-    baseURL: "http://172.22.128.1:3000/api/v1", //domain of backend
+    baseURL: "https://api-booking-ticket.onrender.com/api/v1", //domain of backend
+    // baseURL: "http://192.168.1.132:3000/api/v1", //domain of backend
   });
   const publicAxios = axios.create({
-    baseURL: "http://172.22.128.1:3000/api/v1", //domain of backend
-    // baseURL: "https://api-booking-ticket.onrender.com/api/v1", //domain of backend
+    // baseURL: "http://192.168.1.132:3000/api/v1", //domain of backend
+    baseURL: "https://api-booking-ticket.onrender.com/api/v1", //domain of backend
   });
 
   authAxios.interceptors.request.use(

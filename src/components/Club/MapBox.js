@@ -10,7 +10,6 @@ export const MapBoxScreen = ({ route }) => {
   const mapRef = useRef();
 
   const takeSnapshotAndShare = async () => {
-    console.log("hi");
     const snapshot = await mapRef.current.takeSnapshot({
       width: 300,
       height: 300,

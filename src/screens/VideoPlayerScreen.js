@@ -1,4 +1,3 @@
-import { SubLayout } from "../components/Common/SubLayout";
 import { Dimensions, Pressable, Text, View } from "react-native";
 import { useState, useEffect, useRef } from "react";
 import { themeColors } from "../theme";
@@ -9,7 +8,7 @@ import {
   InCenterConsumer,
 } from "@n1ru4l/react-in-center-of-screen";
 import { FlatList } from "react-native";
-import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 const { height: windowHeight } = Dimensions.get("window");
 const boxHeight = windowHeight / 3;
 export const VideoPlayerScreen = ({ route, navigation }) => {

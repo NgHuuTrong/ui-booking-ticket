@@ -20,7 +20,7 @@ import { AxiosContext } from "../services/axios.context";
 import { getAllNews } from "../services/news.service";
 import { ErrorAlertModal } from "../components/ErrorAlertModal";
 import AnimatedLottieView from "lottie-react-native";
-import { Tab, TabView } from "@rneui/themed";
+import { Tab } from "@rneui/themed";
 import { Dimensions } from "react-native";
 import { HomeCarousel } from "../components/Home/HomeCarousel";
 import { themeColors } from "../theme";
@@ -86,7 +86,7 @@ export const HomeScreen = () => {
           setIsLoading(false);
         } catch (error) {
           setIsLoading(false);
-          console.log('status: ' + error.status);
+          console.log("status: " + error.status);
           setErrorMessage(error.message);
         }
       };
