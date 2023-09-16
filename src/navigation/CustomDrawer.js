@@ -154,31 +154,6 @@ const CustomDrawer = (props) => {
                 activeTintColor="#fff"
                 inactiveTintColor="#fff"
               />
-              <DrawerItem
-                label={() => {
-                  return (
-                    <View className="flex-row">
-                      <MaterialCommunityIcons
-                        name="lock-open-check-outline"
-                        size={22}
-                        color="white"
-                      />
-                      <Text className="text-white ml-2 font-semibold">
-                        Forgot password?
-                      </Text>
-                    </View>
-                  );
-                }}
-                onPress={() => {
-                  props.navigation.navigate("Login", {
-                    mode: "forgotPassword",
-                  });
-                  props.navigation.closeDrawer();
-                }}
-                activeBackgroundColor="#0a41cf"
-                activeTintColor="#fff"
-                inactiveTintColor="#fff"
-              />
             </>
           )}
           {isAuthenticated && (

@@ -30,15 +30,18 @@ export const LoginScreen = () => {
   });
 
   useEffect(() => {
-    switch (mode) {
+    switch (route?.params?.mode) {
       case "signIn": {
         animationState.transitionTo("signIn");
+        break;
       }
       case "signUp": {
         animationState.transitionTo("signUp");
+        break;
       }
       case "resetPassword": {
         animationState.transitionTo("resetPassword");
+        break;
       }
       default:
         animationState.transitionTo("forgotPassword");
@@ -74,27 +77,40 @@ export const LoginScreen = () => {
 
   const handleChangeMode = () => {
     if (mode === "signIn") {
-      animationState.transitionTo("signUp");
+      navigation.setParams({
+        mode: "signUp",
+      });
       setMode("signUp");
     } else {
       animationState.transitionTo("signIn");
+      navigation.setParams({
+        mode: "signIn",
+      });
       setMode("signIn");
     }
   };
 
   const handleChangeToLoginMode = () => {
     animationState.transitionTo("signIn");
+    navigation.setParams({
+      mode: "signIn",
+    });
     setMode("signIn");
   };
 
   const handleChangeToForgotMode = () => {
     animationState.transitionTo("forgotPassword");
+    navigation.setParams({
+      mode: "forgotPassword",
+    });
     setMode("forgotPassword");
   };
 
   const handleChangeToResetMode = () => {
-    animationState.transitionTo("resetPassword");
-    setMode("resetPassword");
+    navigation.setParams({
+      mode: "resetPassword",
+    });
+    setMode("resetPassword", animationState.transitionTo("resetPassword"));
   };
 
   return (

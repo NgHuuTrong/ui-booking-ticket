@@ -42,10 +42,10 @@ export const ForgotPasswordForm = ({
         setShowSuccessModal(true);
         setTimeout(() => {
           setShowSuccessModal(false);
-        }, 4000);
+        }, 2000);
         setTimeout(() => {
           handleChangeToResetMode();
-        }, 5000);
+        }, 3000);
       } catch (error) {
         setErrorMessage(error.message);
       }
