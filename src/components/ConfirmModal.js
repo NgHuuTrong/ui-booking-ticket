@@ -23,7 +23,7 @@ export const ConfirmModal = ({
           <View className="items-center px-4">
             <Text
               style={{ color: "#5074fc" }}
-              className="text-xl font-semibold mt-2"
+              className="text-xl font-semibold mt-2 text-center"
             >
               {title}
             </Text>

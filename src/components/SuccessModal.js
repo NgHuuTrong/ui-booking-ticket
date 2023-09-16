@@ -22,7 +22,7 @@ export const SuccessModal = ({ title, message, visible }) => {
           <View className="items-center px-4">
             <Text
               style={{ color: "#2bda95" }}
-              className="text-2xl font-semibold"
+              className="text-2xl font-semibold text-center"
             >
               {title}
             </Text>

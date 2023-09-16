@@ -19,7 +19,7 @@ export const LoginScreen = () => {
       height: 300,
     },
     resetPassword: {
-      height: 600,
+      height: 420,
     },
     signIn: {
       height: 469,
@@ -30,7 +30,19 @@ export const LoginScreen = () => {
   });
 
   useEffect(() => {
-    animationState.transitionTo("signIn");
+    switch (mode) {
+      case "signIn": {
+        animationState.transitionTo("signIn");
+      }
+      case "signUp": {
+        animationState.transitionTo("signUp");
+      }
+      case "resetPassword": {
+        animationState.transitionTo("resetPassword");
+      }
+      default:
+        animationState.transitionTo("forgotPassword");
+    }
   }, []);
 
   const renderForm = () => {
