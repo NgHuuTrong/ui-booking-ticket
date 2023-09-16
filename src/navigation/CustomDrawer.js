@@ -37,7 +37,7 @@ const CustomDrawer = (props) => {
   const onShare = async () => {
     try {
       const result = await Share.share({
-        url: "https://www.uefa.com/uefachampionsleague/",
+        message: "https://www.uefa.com/uefachampionsleague/",
       });
     } catch (error) {
       setErrorMessage(
