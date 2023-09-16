@@ -205,7 +205,7 @@ export const ClubDetailScreen = ({ navigation, route }) => {
                       Previous matches
                     </Text>
 
-                    {/* {clubMatches.map((match) => (
+                    {clubMatches.map((match) => (
                       <View
                         className="p-2 rounded-lg mb-2"
                         style={{ backgroundColor: themeColors.bgCard }}
@@ -213,7 +213,7 @@ export const ClubDetailScreen = ({ navigation, route }) => {
                       >
                         <MatchCard matchData={match}></MatchCard>
                       </View>
-                    ))} */}
+                    ))}
                   </>
                 )}
               </View>
@@ -232,8 +232,8 @@ export const ClubDetailScreen = ({ navigation, route }) => {
                         players={clubData.footballers.filter(
                           (player) => player.position === position
                         )}
-                        idx={idx}
-                      ></PositionAndPlayers>
+                        key={idx}
+                      />
                     );
                   })}
               </View>
