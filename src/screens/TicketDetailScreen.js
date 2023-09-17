@@ -188,7 +188,7 @@ export const TicketDetailScreen = ({ route, navigation }) => {
                         uri: ticket.code,
                       }}
                     />
-                    <View>
+                    <View className="p-2">
                       <Text className="font-bold text-base">
                         {ticket.area.toUpperCase()} AREA - Seat: {ticket.seat}
                       </Text>

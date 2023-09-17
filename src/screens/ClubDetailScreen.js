@@ -18,6 +18,7 @@ import { getClub, getClubMatches } from "../services/club.service";
 import InAppLoading from "../components/InAppLoading";
 import { MatchCard } from "../components/Matches/MatchCard";
 import { PositionAndPlayers } from "../components/Club/PositionAndPlayers";
+import { ErrorAlertModal } from "../components/ErrorAlertModal";
 
 const windowWidth = Dimensions.get("window").width;
 const positions = ["Goalkeeper", "Defender", "Midfielder", "Attacker"];
@@ -164,32 +165,30 @@ export const ClubDetailScreen = ({ navigation, route }) => {
                     <Text className="text-white text-base font-medium">
                       Address: {clubData.stadium.address}
                     </Text>
-                    <Text className="text-white text-base font-medium">
+                    <Text className="text-white text-base font-medium mb-2">
                       Location: {clubData.stadium.location}
                     </Text>
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate("MapBox", {
+                          longitude: Number(
+                            clubData.stadium.coordinates.split(", ")[1]
+                          ),
+                          latitude: Number(
+                            clubData.stadium.coordinates.split(", ")[0]
+                          ),
+                          longitudeDelta: 0.01,
+                          latitudeDelta: 0.01,
+                          stadiumName: clubData.stadium.name,
+                          clubName: clubData.name,
+                        })
+                      }
+                      className="p-3 items-center mb-2"
+                      style={{ backgroundColor: themeColors.bgButton }}
+                    >
+                      <Text className="font-bold text-base">View map</Text>
+                    </TouchableOpacity>
                   </View>
-                )}
-                {clubData && (
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate("MapBox", {
-                        longitude: Number(
-                          clubData.stadium.coordinates.split(", ")[1]
-                        ),
-                        latitude: Number(
-                          clubData.stadium.coordinates.split(", ")[0]
-                        ),
-                        longitudeDelta: 0.01,
-                        latitudeDelta: 0.01,
-                        stadiumName: clubData.stadium.name,
-                        clubName: clubData.name,
-                      })
-                    }
-                    className="p-3 rounded-2xl items-center"
-                    style={{ backgroundColor: themeColors.bgButton }}
-                  >
-                    <Text className="font-bold text-base">View map</Text>
-                  </TouchableOpacity>
                 )}
               </View>
             </ScrollView>

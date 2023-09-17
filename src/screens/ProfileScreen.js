@@ -23,6 +23,7 @@ import { UserContext } from "../services/user/user.context";
 import { AuthSection } from "../components/AuthSection";
 import { ErrorAlertModal } from "../components/ErrorAlertModal";
 import { SuccessModal } from "../components/SuccessModal";
+import InAppLoading from "../components/InAppLoading";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -87,11 +88,6 @@ export const ProfileScreen = () => {
     }
   }, [isFocused]);
 
-  function handleShowSuccessModal() {
-    setShowSuccessModal(true);
-    setTimeout(setShowSuccessModal(false), 2000);
-  }
-
   const handleChangeProfile = () => {
     // update user here
     const updateProfile = async () => {
@@ -115,7 +111,9 @@ export const ProfileScreen = () => {
         setDetails(inputs);
         setCurrentName(inputs.name);
         setEdited(false);
-        setIsLoading(false, handleShowSuccessModal());
+        setIsLoading(false);
+        setShowSuccessModal(true);
+        setTimeout(() => setShowSuccessModal(false), 2000);
       } catch (err) {
         setErrorMessage(err.message);
       }
@@ -162,6 +160,7 @@ export const ProfileScreen = () => {
           }}
         />
       )}
+      <InAppLoading visible={isLoading}></InAppLoading>
       <SuccessModal
         title="Update successfully"
         message="Your information has been updated!"
