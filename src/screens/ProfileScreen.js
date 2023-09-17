@@ -22,6 +22,7 @@ import { AxiosContext } from "../services/axios.context";
 import { UserContext } from "../services/user/user.context";
 import { AuthSection } from "../components/AuthSection";
 import { ErrorAlertModal } from "../components/ErrorAlertModal";
+import { SuccessModal } from "../components/SuccessModal";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -47,6 +48,8 @@ export const ProfileScreen = () => {
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [isUnauthorized, setUnauthorized] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const isFocused = useIsFocused();
   const { isAuthenticated, logout } = useContext(UserContext);
   const { authAxios } = useContext(AxiosContext);
@@ -84,10 +87,16 @@ export const ProfileScreen = () => {
     }
   }, [isFocused]);
 
+  function handleShowSuccessModal() {
+    setShowSuccessModal(true);
+    setTimeout(setShowSuccessModal(false), 2000);
+  }
+
   const handleChangeProfile = () => {
     // update user here
     const updateProfile = async () => {
       try {
+        setIsLoading(true);
         let formData = new FormData();
 
         if (inputs.image !== details.image) {
@@ -106,6 +115,7 @@ export const ProfileScreen = () => {
         setDetails(inputs);
         setCurrentName(inputs.name);
         setEdited(false);
+        setIsLoading(false, handleShowSuccessModal());
       } catch (err) {
         setErrorMessage(err.message);
       }
@@ -152,6 +162,11 @@ export const ProfileScreen = () => {
           }}
         />
       )}
+      <SuccessModal
+        title="Update successfully"
+        message="Your information has been updated!"
+        visible={showSuccessModal}
+      ></SuccessModal>
       <View>
         <View
           className="w-full items-center pt-8"
