@@ -76,17 +76,16 @@ export const LoginScreen = () => {
   };
 
   const handleChangeMode = () => {
-    if (mode === "signIn") {
+    if (mode == "signIn") {
       navigation.setParams({
         mode: "signUp",
       });
-      setMode("signUp");
+      setMode("signUp", animationState.transitionTo("signUp"));
     } else {
-      animationState.transitionTo("signIn");
       navigation.setParams({
         mode: "signIn",
       });
-      setMode("signIn");
+      setMode("signIn", animationState.transitionTo("signIn"));
     }
   };
 
