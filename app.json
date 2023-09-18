@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "front-end",
-    "slug": "front-end",
+    "name": "Football App",
+    "slug": "football-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/app-icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -19,7 +19,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/app-icon.png",
         "backgroundColor": "#ffffff"
       },
       "config": {
@@ -27,7 +27,7 @@
           "apiKey": "AIzaSyB-iG-l9WNc0T-xHoR8pDY5Kz03Y4IIP2c"
         }
       },
-      "package": "com.trongnh2003.frontend"
+      "package": "com.ngvahiu.footballapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -42,6 +42,10 @@
         }
       ]
     ],
-    "extra": {}
+    "extra": {
+      "eas": {
+        "projectId": "b39fc3f8-93d7-49cd-810c-691b7e8211d9"
+      }
+    }
   }
 }
