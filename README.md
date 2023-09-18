@@ -6,7 +6,7 @@ To run this project, please follow these steps:
 
 Install dev dependencies, because there is a compatibility issue in `@n1ru4l/react-in-center-of-screen` package, you may not use default `npm install` command, instead:
 
-### `npm install ----legacy-peer-deps`
+### `npm install --legacy-peer-deps`
 
 ## Then
 
